@@ -4,7 +4,7 @@ Donate link: http://redactweb.com
 Tags: woocommerce, faq, frequently asked questions, faqs, woocommerce faqs, woocommerce frequently asked questions
 Requires at least: 3.5.1
 Tested up to: 3.6
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,6 +17,8 @@ If you have ever used eBay's 'Ask Buyer' system before, you will know how this p
 This plugin requires WooCommerce (and will not activate until WooCommerce is active).
 
 It extends WooCommerce to allow visitors to ask questions about specific products, get answers, and view other threads.
+
+View the "Installation" tab of this page for detailed usage instructions.
 
 The submission of FAQs fights spam in one of two ways, with the admin being able to pick between:
 
@@ -79,7 +81,7 @@ Format: (filter ; filtered variable ; available variables: var1 (explanation [va
 * Consider a settings field for admin notification email
 
 = Incompatibilities =
-*Disqus - interferes with the `comment_form` function. Will hopefully rectify this soon.
+* Disqus - interferes with the `comment_form` function. Will hopefully rectify this soon.
 
 == Installation ==
 
@@ -87,6 +89,16 @@ Format: (filter ; filtered variable ; available variables: var1 (explanation [va
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Visit WooCommerce -> Settings -> FAQs to manage the settings of the plugin
 4. Upon *uninstallation (deletion)* of this plugin, this plugin will delete its settings, but not the questions in the database
+
+= The process is as follows: =
+1. A user will visit the single product page.
+2. They can click the "FAQs" tab, and view other questions, along with a question form.
+3. They may submit the form, pending all required information is submitted.
+4. You will receive an email with the product, question, and a link to administer the question.
+5. If you desire, you can click the 'Approve' link for that question (which just publishes it).
+6. After approving it, you can click 'View', to view it on the front-end.
+7. From the front-end, you may click that question to expand it and reply to it.
+8. Once you have replied to a question, the asker will receive an email with a link to that product's page/faq tab.
 
 == Frequently Asked Questions ==
 
@@ -103,7 +115,7 @@ This plugin is currently incompatible with Disqus. For now, you will have to pic
 5. Administrator previewing question on front-end (with quick approve)
 
 == Changelog ==
-= 1.0.2 =
+= 1.0.2 & 1.0.3 =
 * Better email support *
 
 = 1.0.1 =
@@ -112,3 +124,7 @@ This plugin is currently incompatible with Disqus. For now, you will have to pic
 
 = 1.0.0 =
 * Initial release *
+
+== Upgrade Path ==
+Coming from 1.0.0 to 1.0.2, any FAQs that were posted will not support notifications to the question author.
+All releases 1.0.1 and up include this feature.

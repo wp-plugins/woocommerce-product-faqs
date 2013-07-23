@@ -1134,7 +1134,7 @@ class WooCommerce_FAQs {
 
 				'product_id'=> $product_id,
 
-				'faq_author_email'=>get_post_meta($post_id, '_' . $this->post_type . '_author_email', true );
+				'faq_author_email'=>get_post_meta($post_id, '_' . $this->post_type . '_author_email', true )
 
 				);
 
