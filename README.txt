@@ -4,7 +4,7 @@ Donate link: http://redactweb.com
 Tags: woocommerce, faq, frequently asked questions, faqs, woocommerce faqs, woocommerce frequently asked questions
 Requires at least: 3.5.1
 Tested up to: 3.6
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -103,7 +103,12 @@ This plugin is currently incompatible with Disqus. For now, you will have to pic
 5. Administrator previewing question on front-end (with quick approve)
 
 == Changelog ==
+= 1.0.2 =
+* Better email support *
+
 = 1.0.1 =
 * Added `$args` to the `comment_form` function to disclude everything but the textarea.
+* Moved $_GET style requests to query_vars and parse_request *
+
 = 1.0.0 =
 * Initial release *
