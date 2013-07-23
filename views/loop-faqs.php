@@ -172,6 +172,29 @@ if( $faqs->have_posts() ){
 		//we don't want to allow answers on an unpublished
 		//faq, or allow unauthorized users to answer
 		if( current_user_can( $answer_caps ) && $preview != 'preview' ) {
+
+			$args = array(
+				'id_form'           => 'commentform',
+				'id_submit'         => 'submit',
+				'title_reply'       => __( 'Leave a Reply' ),
+				'title_reply_to'    => __( 'Leave a Reply to %s' ),
+				'cancel_reply_link' => __( 'Cancel Reply' ),
+				'label_submit'      => __( 'Post Comment' ),
+
+				'comment_field' =>  '<p class="comment-form-comment"><label for="comment">' . _x( 'Comment', 'noun' ) .
+				'</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true">' .
+				'</textarea></p>',
+
+				'must_log_in' => '',
+
+				'logged_in_as' => '',
+
+				'comment_notes_before' => '',
+
+				'comment_notes_after' => '',
+
+				'fields' => array()
+			);
 			
 			comment_form();
 

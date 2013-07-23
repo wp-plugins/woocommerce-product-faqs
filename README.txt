@@ -4,7 +4,7 @@ Donate link: http://redactweb.com
 Tags: woocommerce, faq, frequently asked questions, faqs, woocommerce faqs, woocommerce frequently asked questions
 Requires at least: 3.5.1
 Tested up to: 3.6
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,7 +32,9 @@ so in the case of numerous questions, the user does not have to hunt for his que
 
 As of 1.0.0, admins can 'quick approve' questions from the front end after clicking the 'Preview' link from the Dashboard (see screenshots).
 
-Available filters: (filter ; filtered variable ; available variables: var1 (explanation [var type]), var2, var3, ...)
+= Available filters: =
+
+Format: (filter ; filtered variable ; available variables: var1 (explanation [var type]), var2, var3, ...)
 
 *All filters are prefixed/begin with `woocommerce_faqs_`*
 
@@ -57,16 +59,27 @@ Available filters: (filter ; filtered variable ; available variables: var1 (expl
 * answer_caps; Capability of answering questions
 
 
-TODO:
+= To Do: =
 * Consider adding inline registration option to FAQ form
+
 * Transition answerer capability to product author
+
 * Localize everything
+
 * Add more filters
+
 * Complete documentation
+
 * Consider what (if any) actions need to be added
+
 * Make the 'pending approval' front-end status only show if a faq is indeed pending approval - DONE @ 1.0.0
+
 * Allow approval of FAQ from front-end - DONE @ 1.0.0
+
 * Consider a settings field for admin notification email
+
+= Incompatibilities =
+*Disqus - interferes with the `comment_form` function. Will hopefully rectify this soon.
 
 == Installation ==
 
@@ -77,9 +90,9 @@ TODO:
 
 == Frequently Asked Questions ==
 
-= Why don't you have any Frequently Asked Questions on the plugin page for a Frequently Asked Questions plugin? =
+= The answer/reply form never shows up for me! =
 
-Because no one has asked any yet! :)
+This plugin is currently incompatible with Disqus. For now, you will have to pick between these two plugins.
 
 == Screenshots ==
 
@@ -90,6 +103,7 @@ Because no one has asked any yet! :)
 5. Administrator previewing question on front-end (with quick approve)
 
 == Changelog ==
-
+= 1.0.1 =
+* Added `$args` to the `comment_form` function to disclude everything but the textarea.
 = 1.0.0 =
 * Initial release *
