@@ -12,7 +12,7 @@
  * Description: Enables your WooComerce powered site to utilize a FAQ
  * (Frequently Asked Questions) product-specific section that enables
  * customers to ask questions, get responeses, and see other question threads
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      Josh Levinson
  * Author URI:  http://joshlevinson.me
  * Text Domain: woocommerce-faqs
