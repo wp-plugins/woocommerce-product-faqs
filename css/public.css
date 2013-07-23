@@ -1,0 +1,66 @@
+.comments-h,#reply-title,.faq-title a{
+	cursor:pointer;
+}
+#tab-faqs #comment{
+	min-height:0;
+	min-width:0;
+	height:100px;
+	width:500px;
+}
+.single-woo-faq{
+	padding:10px;
+}
+.single-woo-faq .commentmetadata{
+	display:none;
+}
+.single-woo-faq .comment-list{
+	list-style-type: none;
+}
+.single-woo-faq .comment .comment-body{
+	background:white;
+	padding:0px 10px;
+}
+.faq-author{
+	display:none;
+}
+.faq-result.faq-error{
+	display:inline-block;
+	margin:10px auto;
+}
+.faq-result.faq-error li{
+	list-style-type:none;
+}
+.comment-author{
+	display:none;
+}
+.comments-h{
+	padding:0;
+}
+.single-woo-faq.even{
+	background:#F1F1F1;
+}
+#tab-faqs .logged-in-as,#tab-faqs .form-allowed-tags{
+	display:none;
+}
+.single-woo-faq .faq-content{
+	display: none;
+}
+.single-woo-faq.odd{
+	background:#F1ECE8;
+}
+.single-woo-faq.preview{
+	background:#C5E5E8;
+}
+.single-woo-faq.view{
+	background:#9ED1D6;
+}
+.single-woo-faq .faq-question:hover{
+	cursor: pointer;
+	color: #5F8A8E;
+}
+input.error,textarea.error{
+	background-color:pink;
+}
+input#poohbear{
+	display: none !important;
+}
