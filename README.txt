@@ -20,6 +20,8 @@ It extends WooCommerce to allow visitors to ask questions about specific product
 
 View the "Installation" tab of this page for detailed usage instructions.
 
+[Click here](http://redactweb.com/shop/flying-ninja/#tab-faqs) for a sample WooCommerce product page with some FAQs.
+
 The submission of FAQs fights spam in one of two ways, with the admin being able to pick between:
 
 1. AYAH (Are you a human?) anti-spam. Google it.
