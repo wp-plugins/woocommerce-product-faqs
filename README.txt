@@ -18,6 +18,8 @@ This plugin requires WooCommerce (and will not activate until WooCommerce is act
 
 It extends WooCommerce to allow visitors to ask questions about specific products, get answers, and view other threads.
 
+View the "Installation" tab of this page for detailed usage instructions.
+
 The submission of FAQs fights spam in one of two ways, with the admin being able to pick between:
 
 1. AYAH (Are you a human?) anti-spam. Google it.
@@ -79,7 +81,7 @@ Format: (filter ; filtered variable ; available variables: var1 (explanation [va
 * Consider a settings field for admin notification email
 
 = Incompatibilities =
-*Disqus - interferes with the `comment_form` function. Will hopefully rectify this soon.
+* Disqus - interferes with the `comment_form` function. Will hopefully rectify this soon.
 
 == Installation ==
 
@@ -87,6 +89,16 @@ Format: (filter ; filtered variable ; available variables: var1 (explanation [va
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Visit WooCommerce -> Settings -> FAQs to manage the settings of the plugin
 4. Upon *uninstallation (deletion)* of this plugin, this plugin will delete its settings, but not the questions in the database
+
+= The process is as follows: =
+1. A user will visit the single product page.
+2. They can click the "FAQs" tab, and view other questions, along with a question form.
+3. They may submit the form, pending all required information is submitted.
+4. You will receive an email with the product, question, and a link to administer the question.
+5. If you desire, you can click the 'Approve' link for that question (which just publishes it).
+6. After approving it, you can click 'View', to view it on the front-end.
+7. From the front-end, you may click that question to expand it and reply to it.
+8. Once you have replied to a question, the asker will receive an email with a link to that product's page/faq tab.
 
 == Frequently Asked Questions ==
 
