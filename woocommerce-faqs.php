@@ -1,10 +1,10 @@
 <?php
 /*
- * @package   PluginName
- * @author    Your Name <email@example.com>
+ * @package   WooCommerce Product FAQs
+ * @author    Josh Levinson <josh@joshlevinson.me>
  * @license   GPL-2.0+
- * @link      http://example.com
- * @copyright 2013 Your Name or Company Name
+ * @link      http://redactweb.com
+ * @copyright 2013 Josh Levinson
  *
  * @wordpress-plugin
  * Plugin Name: WooCommerce Product FAQs
@@ -12,7 +12,7 @@
  * Description: Enables your WooComerce powered site to utilize a FAQ
  * (Frequently Asked Questions) product-specific section that enables
  * customers to ask questions, get responeses, and see other question threads
- * Version:     1.0.0
+ * Version:     1.0.4
  * Author:      Josh Levinson
  * Author URI:  http://joshlevinson.me
  * Text Domain: woocommerce-faqs

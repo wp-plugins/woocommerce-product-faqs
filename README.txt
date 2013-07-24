@@ -4,7 +4,7 @@ Donate link: http://redactweb.com
 Tags: woocommerce, faq, frequently asked questions, faqs, woocommerce faqs, woocommerce frequently asked questions
 Requires at least: 3.5.1
 Tested up to: 3.6
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,6 +19,8 @@ This plugin requires WooCommerce (and will not activate until WooCommerce is act
 It extends WooCommerce to allow visitors to ask questions about specific products, get answers, and view other threads.
 
 View the "Installation" tab of this page for detailed usage instructions.
+
+[Click here](http://redactweb.com/shop/flying-ninja/#tab-faqs) for a sample WooCommerce product page with some FAQs.
 
 The submission of FAQs fights spam in one of two ways, with the admin being able to pick between:
 
@@ -83,6 +85,8 @@ Format: (filter ; filtered variable ; available variables: var1 (explanation [va
 = Incompatibilities =
 * Disqus - interferes with the `comment_form` function. Will hopefully rectify this soon.
 
+* 404 Redirected - strips $_GET parameters from URL, removing 'View' and 'Preview' functionality
+
 == Installation ==
 
 1. Upload this plugin to the `/wp-content/plugins/` directory
@@ -106,6 +110,10 @@ Format: (filter ; filtered variable ; available variables: var1 (explanation [va
 
 This plugin is currently incompatible with Disqus. For now, you will have to pick between these two plugins.
 
+= When I click "View" or "Preview", the FAQ never shows up/is highlighted! =
+
+This plugin is currently incompatible with the 404 Redirected plugin. This plugin causes $_GET parameters to be stripped from the url.
+
 == Screenshots ==
 
 1. Upon submission of a question
@@ -115,7 +123,12 @@ This plugin is currently incompatible with Disqus. For now, you will have to pic
 5. Administrator previewing question on front-end (with quick approve)
 
 == Changelog ==
-= 1.0.2 =
+= 1.0.4 =
+* Fixed fatal error with theme_locals *
+* Removed unnecessary comment filter *
+* Reverted to $_GET paramaters and discovered incompatibility with 404 Redirected plugin
+
+= 1.0.2 & 1.0.3 =
 * Better email support *
 
 = 1.0.1 =
@@ -124,3 +137,7 @@ This plugin is currently incompatible with Disqus. For now, you will have to pic
 
 = 1.0.0 =
 * Initial release *
+
+== Upgrade Path ==
+Coming from 1.0.0 to 1.0.2, any FAQs that were posted will not support notifications to the question author.
+All releases 1.0.1 and up include this feature.

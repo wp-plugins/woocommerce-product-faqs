@@ -46,7 +46,7 @@ class WooCommerce_FAQs {
 	 *
 	 * @var      string
 	 */
-	protected $path = 'woocommerce-faqs/woocommerce-faqs.php';
+	protected $path = 'woocommerce-product-faqs/woocommerce-faqs.php';
 
 	/**
 	 * Prefix for this plugin's options
@@ -110,7 +110,7 @@ class WooCommerce_FAQs {
 	 * @var      object
 	 */
 	protected $antispam_class = null;
-
+	
 
 
 	/**
@@ -146,9 +146,6 @@ class WooCommerce_FAQs {
 
 		//filter the redirect to take us back to the product after an admin has replied to a FAQ
 		add_filter('comment_post_redirect', array( $this, 'redirect_comment_form' ), 10, 2);
-
-		//filter the comment form template
-		add_filter( 'comments_template', array( $this, 'comments_template_loader' ) );
 
 		//filter post row actions to add reply tab
 		add_filter( 'post_row_actions', array( $this,'action_row'), 10, 2);
@@ -359,7 +356,7 @@ class WooCommerce_FAQs {
 		}	
 
 	}
-
+	
 	/**
 	 * Returns the url of the plugin's root folder
 	 * Stole this from Gravity Forms
@@ -689,9 +686,9 @@ class WooCommerce_FAQs {
 			//add post meta
 			update_post_meta($post_id,'_'.$this->post_type.'_product',$post->ID);
 
-			update_post_meta($post_id,'_'.$this->post_type.'_faq_author_name',$input['faq_author_name']);
+			update_post_meta($post_id,'_'.$this->post_type.'_author_name',$input['faq_author_name']);
 
-			update_post_meta($post_id,'_'.$this->post_type.'_faq_author_email',$input['faq_author_email']);
+			update_post_meta($post_id,'_'.$this->post_type.'_author_email',$input['faq_author_email']);
 
 			//data for elsewhere (like the notifications)
 			$input['product_title'] = $post->post_title;
@@ -1079,6 +1076,8 @@ class WooCommerce_FAQs {
 				'product_title' => get_the_title( $product_id ),
 
 				'product_id'=> $product_id,
+
+				'faq_author_email'=>get_post_meta($post_id, '_' . $this->post_type . '_author_email', true )
 
 				);
 
