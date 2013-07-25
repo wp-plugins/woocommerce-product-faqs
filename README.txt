@@ -64,6 +64,8 @@ Format: (filter ; filtered variable ; available variables: var1 (explanation [va
 
 
 = To Do: =
+* Add ajax loaders where ajax is used so the user knows that their request is being processed *
+
 * Consider adding inline registration option to FAQ form
 
 * Transition answerer capability to product author
