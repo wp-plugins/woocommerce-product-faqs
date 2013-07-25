@@ -12,7 +12,7 @@
  * Description: Enables your WooComerce powered site to utilize a FAQ
  * (Frequently Asked Questions) product-specific section that enables
  * customers to ask questions, get responeses, and see other question threads
- * Version:     1.0.4
+ * Version:     1.0.5
  * Author:      Josh Levinson
  * Author URI:  http://joshlevinson.me
  * Text Domain: woocommerce-faqs
@@ -25,6 +25,9 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+//include common functions
+require_once( plugin_dir_path( __FILE__ ) . 'functions.php' );
 
 //include main plugin class
 require_once( plugin_dir_path( __FILE__ ) . 'class-woocommerce-faqs.php' );

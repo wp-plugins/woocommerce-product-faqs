@@ -4,7 +4,7 @@ Donate link: http://redactweb.com
 Tags: woocommerce, faq, frequently asked questions, faqs, woocommerce faqs, woocommerce frequently asked questions
 Requires at least: 3.5.1
 Tested up to: 3.6
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Extends WooCommerce to allow for the asking, answering, and viewing of FAQs in a
 
 If you have ever used eBay's 'Ask Buyer' system before, you will know how this plugin behaves.
 
-This plugin requires WooCommerce (and will not activate until WooCommerce is active).
+This plugin requires WooCommerce 1.6.6 or higher (and will not activate until WooCommerce is active).
 
 It extends WooCommerce to allow visitors to ask questions about specific products, get answers, and view other threads.
 
@@ -123,6 +123,9 @@ This plugin is currently incompatible with the 404 Redirected plugin. This plugi
 5. Administrator previewing question on front-end (with quick approve)
 
 == Changelog ==
+= 1.0.5 =
+Compatibility with 1.6.6
+
 = 1.0.4 =
 * Fixed fatal error with theme_locals *
 * Removed unnecessary comment filter *

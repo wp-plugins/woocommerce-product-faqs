@@ -1,7 +1,16 @@
 <?php
 
+$wc_version = get_woocommerce_version();
+
+if($wc_version < 2.0){
+
+	echo '<div class="panel" id="tab-faqs">';
+
+}
+
 //$post is the product
 global $post;
+
 
 //these $args are for retrieving the faqs
 //todo: think about making these flexible

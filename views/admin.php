@@ -6,9 +6,18 @@ global $woocommerce_settings;
 //$recaptcha_options = $this->get_default_recaptchas();
 
 //get this plugin's recaptcha keys
-$private = woocommerce_settings_get_option( $this->option_prefix . 'publisher_key' );
-$public = woocommerce_settings_get_option( $this->option_prefix . 'scoring_key' );
+$wc_version = get_woocommerce_version();
 
+if($wc_version < 2.0){
+	$title = 'name';
+	$publisher = get_option('woocommerce_faqs_publisher_key');
+	$scoring = get_option('woocommerce_faqs_publisher_key');
+}
+else{
+	$title = 'title';
+	$publisher = woocommerce_settings_get_option( $this->option_prefix . 'publisher_key' );
+	$scoring = woocommerce_settings_get_option( $this->option_prefix . 'scoring_key' );
+}
 //if we have some defaults, but none from this plugin, update the db to use the defaults
 /*
 if($recaptcha_options && (!$private && !$public)){
@@ -20,7 +29,7 @@ if($recaptcha_options && (!$private && !$public)){
 
 //create the settings fields
 $settings[] = array(
-	'title'=>'Anti-Spam Settings',
+	$title=>'Anti-Spam Settings',
 	'type'=>'title',
 	'id'=>$this->option_prefix . 'antispam',
 	'desc'=>'Please choose your Anti-Spam settings.' .
@@ -28,22 +37,22 @@ $settings[] = array(
 	sprintf(' Get your API keys %shere%s','<a target="_blank" href="http://portal.areyouahuman.com/signup/basic">', '</a>.')
 	);
 $settings[]=array(
-	'title'=>'Use Are You A Human antispam?',
+	$title=>'Use Are You A Human antispam?',
 	'id'=>$this->option_prefix . 'use_antispam',
 	'type'=>'checkbox',
 	'default'=>'yes'
 	);
 $settings[]=array(
-	'title'=>'Publisher Key',
+	$title=>'Publisher Key',
 	'id'=>$this->option_prefix . 'publisher_key',
 	'type'=>'text',
-	'default'=>$private
+	'default'=>$publisher
 	);
 $settings[]=array(
-	'title'=>'Public Key',
+	$title=>'Public Key',
 	'id'=>$this->option_prefix . 'scoring_key',
 	'type'=>'text',
-	'default'=>$public
+	'default'=>$scoring
 	);
 $settings[]=array(
 	'type'=>'sectionend',

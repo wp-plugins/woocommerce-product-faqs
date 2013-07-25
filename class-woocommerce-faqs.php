@@ -25,7 +25,7 @@ class WooCommerce_FAQs {
 	 *
 	 * @var     string
 	 */
-	protected $version = '1.0.0';
+	protected $version = '1.0.4';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -126,7 +126,8 @@ class WooCommerce_FAQs {
 		// Add the options page and menu item.
 		add_filter( 'woocommerce_settings_tabs_array', array( $this, 'admin_menu' ) );
 		add_action( 'woocommerce_settings_tabs_faqs', array( $this, 'display_settings' ) );
-		add_action( 'woocommerce_settings_start', array( $this, 'admin_options' ) );
+
+		$this->woocommerce_actions();
 
 		// Load admin JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
@@ -140,9 +141,6 @@ class WooCommerce_FAQs {
 
 		//register faq post type
 		add_action( 'init', array($this, 'register_pt' ) );
-
-		//filter woo's tabs to add FAQs
-		add_filter( 'woocommerce_product_tabs', array( $this, 'faq_tab' ) );
 
 		//filter the redirect to take us back to the product after an admin has replied to a FAQ
 		add_filter('comment_post_redirect', array( $this, 'redirect_comment_form' ), 10, 2);
@@ -193,12 +191,14 @@ class WooCommerce_FAQs {
 	public static function activate( $network_wide ) {
 		//dependencies
 		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-		 
-		if (!is_plugin_active( 'woocommerce/woocommerce.php' ) )
-		{
-			deactivate_plugins('woocommerce-faqs/woocommerce-faqs.php');
 
-			exit( 'Hey there! This plugin requires <a target="_blank" href="'. admin_url( 'plugin-install.php?tab=search&s=woocommerce' ) . '">WooCommerce</a>. Please install and/or active it first!' );
+		$wc_version = get_woocommerce_version();
+		 
+		if (!is_plugin_active( 'woocommerce/woocommerce.php' ) || !meets_min_wc_version()  )
+		{
+			deactivate_plugins('woocommerce-product-faqs/woocommerce-faqs.php');
+
+			exit( 'Hey there! This plugin requires <a target="_blank" href="'. admin_url( 'plugin-install.php?tab=search&s=woocommerce' ) . '">WooCommerce</a> 1.6.6 or greater (and prefers the latest version - 2.x!). Please install and/or active it first!' );
 
 		}
 	}
@@ -548,13 +548,14 @@ class WooCommerce_FAQs {
 	 * @since    1.0.0
 	 */
 	function faq_tab_content() {
+		$html = '';
 
 		//the faqs loop
 		include($this->get_base_path().'/views/loop-faqs.php');
 
 		//the faq form
 		include($this->get_base_path().'/views/faq-form.php');
-
+		
 	}
 
 	/**
@@ -1151,6 +1152,73 @@ class WooCommerce_FAQs {
 	    echo json_encode($result);
 
 		die();
+
+	}
+
+	/**
+	 * Add actions to WC settings based on WC version
+	 *
+	 * @since     1.0.4
+	 *
+	 * @return    null
+	 */
+	function woocommerce_actions(){
+
+		$wc_version = get_woocommerce_version();
+
+		if( $wc_version < 2.0 ){
+
+			add_action( 'woocommerce_settings_tabs', array( $this, 'admin_options' ) );
+
+			//we have to manually update settings
+			add_action('woocommerce_update_options_faqs', array( $this, 'update_old_wc_options' ) );
+
+			add_action( 'woocommerce_product_tabs', array( $this, 'woocommerce_faqs_tab' ), 40 );
+
+			add_action( 'woocommerce_product_tab_panels', array($this, 'faq_tab_content' ), 40 );
+
+		}
+
+		else{
+
+			//filter woo's tabs to add FAQs
+			add_filter( 'woocommerce_product_tabs', array( $this, 'faq_tab' ) );
+
+			//action for settings tab content
+			add_action( 'woocommerce_settings_start', array( $this, 'admin_options' ) );
+
+		}
+
+	}
+
+	/**
+	 * Title tab for WC < 2.0
+	 *
+	 * @since     1.0.5
+	 *
+	 * @return    null
+	 */
+	function woocommerce_faqs_tab(){ ?>
+		<li class="faqs_tab"><a href="#tab-faqs">FAQs</a></li>
+		<?php
+	}
+
+	/**
+	 * Manually save WC options for old versions
+	 *
+	 * @since     1.0.5
+	 *
+	 * @return    null
+	 */
+	function update_old_wc_options(){
+
+		update_option('woocommerce_faqs_publisher_key',sanitize_text_field($_POST[$this->option_prefix . 'publisher_key']));
+
+		update_option('woocommerce_faqs_scoring_key',sanitize_text_field($_POST[$this->option_prefix . 'scoring_key']));
+
+		$use_antispam = (sanitize_text_field($_POST[$this->option_prefix . 'use_antispam']) == 1 ? 'yes' : 'no');
+
+		update_option('woocommerce_faqs_use_antispam',$use_antispam);
 
 	}
 

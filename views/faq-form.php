@@ -116,3 +116,9 @@ $html .= '</form>';
 
 //output the html
 echo $html;
+
+if($wc_version < 2.0){
+
+	echo '</div>';
+	
+}
