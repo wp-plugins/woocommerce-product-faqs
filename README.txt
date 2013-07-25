@@ -28,7 +28,7 @@ The submission of FAQs fights spam in one of two ways, with the admin being able
 
 2. "Honeypot" input field. This adds an extra field to the form, hidden with css, that will cause submissions to fail if it is filled out.
 
-Notifications are in place that will notify the admin of new questions, with links to administer each question
+Notifications are in place that will notify the admin of new questions, with links to administer each question.  
 Notifications are in place that will notify the asker when their question has been answered, with links to view the product
 
 Each notification email has a system to highlight the question specified in the email,
@@ -124,7 +124,7 @@ This plugin is currently incompatible with the 404 Redirected plugin. This plugi
 
 == Changelog ==
 = 1.0.5 =
-Compatibility with 1.6.6
+Compatibility with WooCommerce 1.6.6
 
 = 1.0.4 =
 * Fixed fatal error with theme_locals *
