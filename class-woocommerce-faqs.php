@@ -157,7 +157,14 @@ class WooCommerce_FAQs {
 		//add ajax for approving faqs quickly from the post row
 		add_action('wp_ajax_approve_woo_faq', array( $this, 'approve_woo_faq' ) );
 
+		//post type icons
 		add_action( 'admin_head', array( $this, 'post_type_icons' ) );
+
+		//custom post table columns
+		add_filter( 'manage_edit-'.$this->post_type.'_columns', array( $this, 'set_custom_edit_columns' ) );
+		
+		//custom post table columns content
+		add_action( 'manage_'.$this->post_type.'_posts_custom_column' , array( $this, 'custom_column' ), 1, 2 );
 
 	}
 
@@ -1220,6 +1227,55 @@ class WooCommerce_FAQs {
 
 		update_option('woocommerce_faqs_use_antispam',$use_antispam);
 
+	}
+
+	/**
+	 * Return columns for the post table of this post type
+	 *
+	 * @since     1.0.6
+	 *
+	 * @return    array    Array of the columns
+	 */
+	function set_custom_edit_columns($columns) {
+
+	    $columns = array(
+
+		'cb' => '<input type="checkbox" />',
+
+		'title' => __( 'Question', $this->plugin_slug ),
+
+		'asker' => __( 'Asker', $this->plugin_slug ),
+
+		'asker_email' => __( 'Asker Email', $this->plugin_slug ),
+
+		'comments' => __( 'Answers', $this->plugin_slug ),
+
+		'date' => __( 'Date Asked', $this->plugin_slug )
+
+		);
+
+	    return $columns;
+	}
+
+	/**
+	 * Echo the columns' content
+	 *
+	 * @since     1.0.6
+	 *
+	 * @return    null
+	 */
+	function custom_column( $column, $post_id ) {
+	    switch ( $column ) {
+
+	        case 'asker' :
+	        	echo get_post_meta( $post_id, '_' . $this->post_type . '_author_name', true );
+	            break;
+
+	        case 'asker_email' :
+	            echo get_post_meta( $post_id, '_' . $this->post_type . '_author_email', true );
+	            break;
+
+	    }
 	}
 
 }//end class
