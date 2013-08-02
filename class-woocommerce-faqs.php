@@ -1307,7 +1307,7 @@ class WooCommerce_FAQs {
 	 */
 	function meta_boxes(){
 
-		add_meta_box( $this->post_type . '_product', _( 'FAQ Details', $this->plugin_slug ), array( $this, 'metabox' ), $this->post_type, 'normal', 'high' );
+		add_meta_box( $this->post_type . '_product', __( 'FAQ Details', $this->plugin_slug ), array( $this, 'metabox' ), $this->post_type, 'normal', 'high' );
 
 		remove_meta_box( 'commentstatusdiv', $this->post_type, 'normal' );
 
