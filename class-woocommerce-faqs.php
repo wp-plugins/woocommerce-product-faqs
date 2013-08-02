@@ -166,6 +166,17 @@ class WooCommerce_FAQs {
 		//custom post table columns content
 		add_action( 'manage_'.$this->post_type.'_posts_custom_column' , array( $this, 'custom_column' ), 1, 2 );
 
+		//meta boxes
+		add_action( 'add_meta_boxes', array( $this, 'meta_boxes' ) );
+
+		//save meta
+		add_action( 'save_post', array( $this, 'save_meta' ) );
+
+		//filter for meta boxes' text
+		add_filter( 'gettext', array( $this, 'filter_gettext' ), 10, 3 );
+
+		add_action('edit_form_after_title', array( $this, 'view_link') );
+
 	}
 
 
@@ -303,6 +314,8 @@ class WooCommerce_FAQs {
 
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery' ), $this->version );
 
+			wp_localize_script( $this->plugin_slug . '-admin-script', 'spinner', admin_url('images/wpspin_light.gif') );
+
 			//if we are administering a faq, localize that so it is available to our javascript
 			if(isset($_GET['highlight'])){
 
@@ -345,6 +358,8 @@ class WooCommerce_FAQs {
 			wp_enqueue_script( $this->plugin_slug . '-plugin-script', plugins_url( 'js/public.js', __FILE__ ), array( 'jquery' ), $this->version, true );
 
 			wp_localize_script( $this->plugin_slug . '-plugin-script', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
+
+			wp_localize_script( $this->plugin_slug . '-plugin-script', 'spinner', admin_url('images/wpspin_light.gif') );
 
 			//if we are view/previewing a faq, localize that so it is available to our javascript
 
@@ -470,9 +485,9 @@ class WooCommerce_FAQs {
 
 	    'labels' => $labels,
 
-	    'public' => true,
+	    'public' => false,
 
-	    'publicly_queryable' => true,
+	    'publicly_queryable' => false,
 
 	    'show_ui' => true, 
 
@@ -490,7 +505,7 @@ class WooCommerce_FAQs {
 
 	    'menu_position' => null,
 
-	    'supports' => array( 'title', 'editor', 'author', 'custom-fields','comments','page-attributes')
+	    'supports' => array( 'title', 'editor', 'comments', 'page-attributes')
 
 	  );
 
@@ -507,7 +522,7 @@ class WooCommerce_FAQs {
 
 		$tabs['faqs'] = array(
 
-			'title' => __( 'FAQ\'s', 'woocommerce' ),
+			'title' => __( 'FAQs', 'woocommerce' ),
 
 			'priority' => 100,
 
@@ -873,8 +888,11 @@ class WooCommerce_FAQs {
 					break;
 
 			}
+			if(!empty($to)){
+				
+				$success = wp_mail( $to, $subject, $message);
 
-			$success = wp_mail( $to, $subject, $message);
+			}
 
 			remove_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
 
@@ -1004,6 +1022,8 @@ class WooCommerce_FAQs {
 			$post_type_label = $post_type_object->labels->singular_name;
 
 			if($post->post_status == 'draft' || $post->post_status == 'pending'){
+
+				$actions['pre_view'] = "<a title='" . esc_attr( __( 'Preview this' ) ) . $post_type_label . "' href='" . $this->preview_link() . "'>" . __( 'Preview' ) . "</a>";
 
 				$actions['publish'] = "<a href='#' class='submitpublish' data-id='".$post->ID."' title='" . esc_attr( __( 'Approve this ' ) ) .
 
@@ -1276,6 +1296,220 @@ class WooCommerce_FAQs {
 	            break;
 
 	    }
+	}
+
+	/**
+	 * Add meta boxes for this post type
+	 *
+	 * @since     1.0.6
+	 *
+	 * @return    null
+	 */
+	function meta_boxes(){
+
+		add_meta_box( $this->post_type . '_product', _( 'FAQ Details', $this->plugin_slug ), array( $this, 'metabox' ), $this->post_type, 'normal', 'high' );
+
+		remove_meta_box( 'commentstatusdiv', $this->post_type, 'normal' );
+
+	}
+
+	/**
+	 * Meta box content
+	 *
+	 * @since     1.0.6
+	 *
+	 * @return    null
+	 */
+	function metabox($post){
+		//get current value
+		$current_product = (int)get_post_meta( $post->ID, '_' . $this->post_type . '_product', true );
+
+		$author_name = get_post_meta( $post->ID, '_' . $this->post_type . '_author_name', true );
+
+		$author_email = get_post_meta( $post->ID, '_' . $this->post_type . '_author_email', true );
+
+		//get all products
+		$args = array(
+
+			'post_type'=>'product',
+
+			);
+
+		$products = get_posts($args);
+
+		if($products){
+
+			//nonce
+			wp_nonce_field( plugin_basename( __FILE__ ), $this->post_type . 'meta_nonce' );
+
+			//Product relationship label
+			echo '<p><label for="_' . '_' . $this->post_type . '_product">';
+
+			_e('Product this question is shown on: ', $this->plugin_slug );
+
+			echo '</label>';
+
+			//Product relationship select
+			echo '<select name="' . '_' . $this->post_type . '_product">';
+
+			foreach($products as $product){
+
+				echo '<option '. selected( $current_product, $product->ID, false ) .' value="' . $product->ID . '">' . $product->post_title . '</option>';
+
+			}
+
+			echo '</select></p>';
+
+		}
+
+		//otherwise, just say there are no products
+		else{
+
+			echo '<p>';
+
+			_e( 'No Products Found', $this->plugin_slug );
+
+			echo '</p>';
+
+		}
+
+		//question author info
+		echo '<p>';
+
+		_e( 'It is best to leave the fields below blank if you are adding a FAQ manually.', $this->plugin_slug );
+
+		echo '</p>';
+
+		//author's name
+		echo '<p><label for="_' . $this->post_type . '_author_name">';
+
+		_e('Author: ', $this->plugin_slug );
+
+		echo '</label>';
+
+		echo '<input type="text" name="_' . $this->post_type . '_author_name" value="' . $author_name . '"/></p>';
+
+		//author's email
+		echo '<p><label for="_' . $this->post_type . '_author_email">';
+
+		_e('Author Email: ', $this->plugin_slug );
+
+		echo '</label>';
+
+		echo '<input type="email" name="_' . $this->post_type . '_author_email" value="' . $author_email . '"/></p>';
+
+	}
+
+	/**
+	 * Save meta info
+	 *
+	 * @since     1.0.6
+	 *
+	 * @return    null
+	 */
+	function save_meta($post_id){
+
+		// First we need to check if the current user is authorised to do this action. 
+		if ( ! current_user_can( 'edit_post', $post_id ) ){
+
+			return;
+
+		}
+
+		// Secondly we need to check if the user intended to change this value.
+		if ( ! isset( $_POST[$this->post_type . 'meta_nonce'] ) || ! wp_verify_nonce( $_POST[$this->post_type . 'meta_nonce'], plugin_basename( __FILE__ ) ) ){
+
+      		return;
+
+      	}
+
+      	$author_name = sanitize_text_field($_POST['_'.$this->post_type.'_author_name']);
+
+      	$author_email = sanitize_text_field($_POST['_'.$this->post_type.'_author_email']);
+
+      	$product = sanitize_text_field( $_POST['_' . $this->post_type . '_product'] );
+
+      	update_post_meta($post_id,'_'.$this->post_type.'_author_name', $author_name);
+
+      	update_post_meta($post_id,'_'.$this->post_type.'_author_email',$author_email);
+
+		update_post_meta( $post_id, '_' . $this->post_type . '_product', $product );
+
+	}
+
+	/**
+	 * Filter the comment text on the edit screen
+	 * to be more sensible
+	 *
+	 * @since     1.0.6
+	 *
+	 * @return    object full translations object
+	 */
+	function filter_gettext( $translated, $original, $domain ) {
+
+		if( ( isset( $_REQUEST['post_type'] ) && $_REQUEST['post_type'] == $this->post_type ) || ( isset($_REQUEST['post']) && get_post_type( $_REQUEST['post'] ) == $this->post_type ) ){
+
+			$strings = array(
+
+			'Comments' => 'Answers',
+
+			'Add comment' => 'Add answer',
+
+			'Add Comment' => 'Add Answer',
+
+			'Add new Comment' => 'Add new Answer',
+
+			'No comments yet.' => 'No answers yet.',
+
+			'Show comments' => 'Show answers',
+
+			'No more comments found.' => 'No more answers found.',
+
+			);
+
+			if ( isset( $strings[$original] ) ) {
+
+			$translations = &get_translations_for_domain( $domain );
+
+			$translated = $translations->translate( $strings[$original] );
+
+			}
+
+		}
+
+		return $translated;
+	}
+
+	/**
+	 * Create a link to view the FAQ
+	 * from the edit screen
+	 *
+	 * @since     1.0.6
+	 *
+	 * @return    null
+	 */
+	function view_link(){
+
+		global $post;
+
+		if($post->post_status == 'publish'){
+
+			$link = $this->preview_link();
+
+			?>
+
+			<div class="inside">
+				<div id="edit-slug-box" class="hide-if-no-js">
+					<strong><?php _e( 'FAQ Link:', $this->plugin_slug ); ?></strong>
+			<span id="sample-permalink" tabindex="-1"><?php echo $link; ?></span>
+			<span id="view-post-btn"><a target="_blank" href="<?php echo $link; ?>" class="button button-small"><?php _e( 'View', $this->plugin_slug ); ?></a></span>
+				</div>
+			</div>
+
+			<?php
+
+		}
+
 	}
 
 }//end class
