@@ -25,7 +25,7 @@ class WooCommerce_FAQs {
 	 *
 	 * @var     string
 	 */
-	protected $version = '1.0.4';
+	protected $version = '1.0.6';
 
 	/**
 	 * Unique identifier for your plugin.
