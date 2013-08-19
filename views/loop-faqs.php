@@ -26,6 +26,8 @@ $args = array(
 
 	'post_status'     => 'publish',
 
+	'orderby'		  => 'menu_order',
+
 	//this is the true association between product and faq
 	'meta_query' 	  => array(
 
@@ -97,7 +99,7 @@ if( $faqs->have_posts() ){
 	echo '<div class="woo-faqs">';
 
 	//wrapper title, with title of product
-	echo '<h3>FAQ\'s for ' . $post->post_title . '</h3>';
+	echo '<h3>FAQs for ' . $post->post_title . '</h3>';
 
 	//counter for even/odd class
 	$c = 0;
@@ -178,10 +180,11 @@ if( $faqs->have_posts() ){
 		//we don't want to allow answers on an unpublished
 		//faq, or allow unauthorized users to answer
 		if( current_user_can( $answer_caps ) && $preview != 'preview' ) {
-			
-			comment_form();
 
+			comment_form();
+			
 		}
+
 		elseif( current_user_can( $answer_caps ) ) {
 
 			echo '<form id="quick-approve-faq" action="" method="post">';
