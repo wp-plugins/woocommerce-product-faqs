@@ -1332,6 +1332,8 @@ class WooCommerce_FAQs {
 		$args = array(
 
 			'post_type'=>'product',
+			
+			'numberposts'=>-1
 
 			);
 
