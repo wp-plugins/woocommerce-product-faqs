@@ -99,7 +99,7 @@ if( $faqs->have_posts() ){
 	echo '<div class="woo-faqs">';
 
 	//wrapper title, with title of product
-	echo '<h3>FAQs for ' . $post->post_title . '</h3>';
+	echo '<h3>' . __( 'FAQs for ', $this->plugin_slug) . $post->post_title . '</h3>';
 
 	//counter for even/odd class
 	$c = 0;
@@ -143,11 +143,11 @@ if( $faqs->have_posts() ){
 		echo '">';
 
 		//the content is the question, which is the title
-		echo '<h4 title="Click to view the answer!" class="faq-question">Q: ' . get_the_content();
+		echo '<h4 title="' . __('Click to view the answer!', $this->plugin_slug ) . '" class="faq-question">' . __( 'Q:', $this->plugin_slug ) . ' ' . get_the_content();
 
 		//if we are TRULY previewing a faq,
 		//echo that fact so the admin knows
-		if( $preview == 'preview' ) echo ' (Pending Approval)';
+		if( $preview == 'preview' ) echo ' (' . __( 'Pending Approval', $this->plugin_slug ) . ') ';
 
 		//close the single faq title
 		echo '</h4>';
@@ -157,7 +157,7 @@ if( $faqs->have_posts() ){
 		echo '<div class="faq-content">';
 
 		//get the name of the asker
-		echo '<p class="faq-author">— '.get_post_meta( $faq_id, '_woo_faq_author', true) . '</p>';
+		echo '<p class="faq-author">— ' . get_post_meta( $faq_id, '_woo_faq_author', true ) . '</p>';
 
 		//global $withcomments;
 
@@ -169,7 +169,7 @@ if( $faqs->have_posts() ){
 		if( $comments ) wp_list_comments( array( 'type' => 'all', 'callback' => array( $this, 'comment_callback' ) ), $comments );
 
 		//otherwise echo a message stating that no answers exist yet
-		else echo '<p class="comment-list awaiting-response">This question has not yet been responded to.</p>';
+		else echo '<p class="comment-list awaiting-response">' . __( 'This question has not yet been responded to.', $this->plugin_slug) . '</p>';
 
 		//wrapper for answer form
 		echo '<div class="faq-comment">';
@@ -189,11 +189,11 @@ if( $faqs->have_posts() ){
 
 			echo '<form id="quick-approve-faq" action="" method="post">';
 
-			echo '<input id="qaf_post_id" type="hidden" name="post_id" value="'.$faq_id.'" />';
+			echo '<input id="qaf_post_id" type="hidden" name="post_id" value="' . $faq_id . '" />';
 
-			echo '<input id="qaf_nonce" type="hidden" name="nonce" value="'. wp_create_nonce('publish-post_' . $faq_id ) .'" />';
+			echo '<input id="qaf_nonce" type="hidden" name="nonce" value="'. wp_create_nonce( 'publish-post_' . $faq_id ) . '" />';
 
-			echo '<input type="submit" name="approve_faq" value="Approve this FAQ" />';
+			echo '<input type="submit" name="approve_faq" value="' . __( 'Approve this FAQ', $this->plugin_slug ) . '" />';
 
 			echo '</form>';
 

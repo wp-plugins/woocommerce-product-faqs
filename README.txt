@@ -39,13 +39,13 @@ so in the case of numerous questions, the user does not have to hunt for his que
 
 == Other Notes ==
 = To Do: =
-* Add ajax loaders where ajax is used so the user knows that their request is being processed *
+* Add ajax loaders where ajax is used so the user knows that their request is being processed DONE *
 
 * Consider adding inline registration option to FAQ form
 
 * Transition answerer capability to product author
 
-* Localize everything
+* Localize everything DONE
 
 * Add more filters
 
@@ -74,7 +74,45 @@ so in the case of numerous questions, the user does not have to hunt for his que
 3. Visit WooCommerce -> Settings -> FAQs to manage the settings of the plugin
 4. Upon *uninstallation (deletion)* of this plugin, this plugin will delete its settings, but not the questions in the database
 
+= Usage =
+User Submitted FAQs
+1. A user will visit the single product page.
+2. They can click the "FAQs" tab, and view other questions, along with a question form.
+3. They may submit the form, pending all required information is submitted.
+4. You will receive an email with the product, question, and a link to administer the question.
+5. If you desire, you can click the 'Approve' link for that question (which just publishes it).
+6. After approving it, you can click 'View', to view it on the front-end.
+7. From the front-end, you may click that question to expand it and reply to it.
+8. Once you have replied to a question, the asker will receive an email with a link to that product's page/faq tab.
+
+= Manual FAQ Entry =
+1. Go to WooFAQs -> Add New
+2. Type a title (for reference, not display)
+3. Enter the question in the content area
+4. Choose the product to add the question to.
+5. Click Publish
+6. Immediately after publishing, you may click "Add Answer" in the "Answers" metabox to answer the question.
+
 == Frequently Asked Questions ==
+
+= Usage =
+User Submitted FAQs
+1. A user will visit the single product page.
+2. They can click the "FAQs" tab, and view other questions, along with a question form.
+3. They may submit the form, pending all required information is submitted.
+4. You will receive an email with the product, question, and a link to administer the question.
+5. If you desire, you can click the 'Approve' link for that question (which just publishes it).
+6. After approving it, you can click 'View', to view it on the front-end.
+7. From the front-end, you may click that question to expand it and reply to it.
+8. Once you have replied to a question, the asker will receive an email with a link to that product's page/faq tab.
+
+= Manual FAQ Entry =
+1. Go to WooFAQs -> Add New
+2. Type a title (for reference, not display)
+3. Enter the question in the content area
+4. Choose the product to add the question to.
+5. Click Publish
+6. Immediately after publishing, you may click "Add Answer" in the "Answers" metabox to answer the question.
 
 = The answer/reply form never shows up for me! =
 
@@ -94,8 +132,12 @@ This plugin is currently incompatible with the 404 Redirected plugin. This plugi
 6. Adding a FAQ Manually
 
 == Changelog ==
+= 1.0.8 =
+* Full localization
+* Thanks to @OniX777 for partial localization and for Russian translation!
+
 = 1.0.7 =
-Hotfix to increase number of available products in FAQ editor to unlimited.
+* Hotfix to increase number of available products in FAQ editor to unlimited.
 
 = 1.0.6 =
 * Filtered the post type columns to only include relevant information
@@ -150,22 +192,3 @@ Format: (filter ; filtered variable ; available variables: var1 (explanation [va
 * asker_email_message; Final asker message; same as asker_email vars
 
 * answer_caps; Capability of answering questions
-
-== Usage ==
-= User Submitted FAQs =
-1. A user will visit the single product page.
-2. They can click the "FAQs" tab, and view other questions, along with a question form.
-3. They may submit the form, pending all required information is submitted.
-4. You will receive an email with the product, question, and a link to administer the question.
-5. If you desire, you can click the 'Approve' link for that question (which just publishes it).
-6. After approving it, you can click 'View', to view it on the front-end.
-7. From the front-end, you may click that question to expand it and reply to it.
-8. Once you have replied to a question, the asker will receive an email with a link to that product's page/faq tab.
-
-= Manual FAQ Entry =
-1. Go to WooFAQs -> Add New
-2. Type a title (for reference, not display)
-3. Enter the question in the content area
-4. Choose the product to add the question to.
-5. Click Publish
-6. Immediately after publishing, you may click "Add Answer" in the "Answers" metabox to answer the question.
