@@ -881,7 +881,7 @@ class WooCommerce_FAQs {
 
 					$product_link = get_permalink( $post_data['product_id'] );
 
-					$message .= '<p>' . __('View the answer', $this->plugin_slug) . ' <a href="' . $product_link . $this->andor($product_link) . 'faq-view=' . $post_data['post_id'] . '#tab-faqs">'. __('here', $this->plugin_slug) . '</a></p>';
+					$message .= '<p>' . __('View the answer', $this->plugin_slug) . ' <a href="' . add_query_arg( 'faq-view', $post_data['post_id'] . '#tab-faqs', $product_link ) . '">'. __('here', $this->plugin_slug) . '</a></p>';
 
 					//allow the final message to be filtered
 					$message = apply_filters( $this->option_prefix . 'asker_email_message', $message, $post_data );
@@ -1075,27 +1075,11 @@ class WooCommerce_FAQs {
 
     		$publish = ( $post->post_status == 'publish' ? 'view' : 'preview' );
 
-    		$andor = $this->andor($preview_link);
-
-    		$preview_link .= $andor . 'faq-' . $publish . '=' . $post->ID . '#tab-faqs';
+    		$preview_link = add_query_arg( 'faq-' . $publish, $post->ID . '#tab-faqs', $preview_link);
 
     	}
 
     	return $preview_link;
-
-	}
-
-	/**
-	 * Returns the correct url addition based on 
-	 * if there is a query string present already
-	 *
-	 * @since    1.0.0
-	 */
-	function andor($link){
-
-		$test = '?';
-
-		return (!(substr_count($test) ) ? '?' : '&' );
 
 	}
 
@@ -1472,6 +1456,8 @@ class WooCommerce_FAQs {
 	 */
 	function filter_gettext( $translated, $original, $domain ) {
 
+		remove_filter( 'gettext', array( $this, 'filter_gettext' ), 10, 3 );
+
 		if( ( isset( $_REQUEST['post_type'] ) && $_REQUEST['post_type'] == $this->post_type ) || ( isset($_REQUEST['post']) && get_post_type( $_REQUEST['post'] ) == $this->post_type ) ){
 
 			$strings = array(
@@ -1501,6 +1487,8 @@ class WooCommerce_FAQs {
 			}
 
 		}
+
+		add_filter( 'gettext', array( $this, 'filter_gettext' ), 10, 3 );
 
 		return $translated;
 	}
