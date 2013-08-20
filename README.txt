@@ -4,7 +4,7 @@ Donate link: http://redactweb.com
 Tags: woocommerce, faq, frequently asked questions, faqs, woocommerce faqs, woocommerce frequently asked questions
 Requires at least: 3.5.1
 Tested up to: 3.6
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -135,6 +135,8 @@ This plugin is currently incompatible with the 404 Redirected plugin. This plugi
 = 1.0.8 =
 * Full localization
 * Thanks to @OniX777 for partial localization and for Russian translation!
+* Replaced custom query arg function with add_query_arg
+* Lifted limit on faqs displayed per product (was using incorrect WP_Query param)
 
 = 1.0.7 =
 * Hotfix to increase number of available products in FAQ editor to unlimited.

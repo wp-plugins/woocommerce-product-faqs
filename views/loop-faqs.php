@@ -16,9 +16,9 @@ global $post;
 //todo: think about making these flexible
 $args = array(
 
-	'numberposts'     => -1,
+	'nopaging'		=> true,
 
-	'orderby'         => 'post_date',
+	'posts_per_page'=> -1,
 
 	'order'           => 'DESC',
 
