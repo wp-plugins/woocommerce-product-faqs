@@ -24,6 +24,8 @@
 
 		$('#quick-approve-faq').submit(function(event){
 
+			$(this).children('input[type="submit"]').replaceWith('<img src="'+spinner+'" />');
+
 			event.preventDefault();
 
 			var data = {

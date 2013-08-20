@@ -3,6 +3,7 @@
 	$(function () {
 		$('a.submitpublish').click(function(event){
 			event.preventDefault();
+			$(this).css({'color':'transparent','background':'url('+spinner+') no-repeat'});
 			var data = {
 				action: 'approve_woo_faq',
 				post_id: $(this).attr('data-id'),
