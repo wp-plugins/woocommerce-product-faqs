@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce theme v1.0.0\n"
+"Project-Id-Version: WooCommerce Product FAQs v1.0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-08-19 18:07+0200\n"
+"PO-Revision-Date: 2013-08-21 20:29+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,8 +21,8 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 # faq-form.php 21
-msgid "<h2 class=\"faq-title\">Have a Question? Submit it here!</h2>"
-msgstr "<h2 class=\"faq-title\">Есть вопросы? Задавайте их здесь!</h2>"
+msgid "Have a Question? Submit it here!"
+msgstr "Есть вопросы? Задавайте их здесь!"
 
 # faq-form.php 91
 msgid "Your Name"
@@ -40,6 +40,46 @@ msgstr "Ваш вопрос"
 msgid "Submit"
 msgstr "Отправить"
 
+# class-woocommerce-faqs.php 454
+msgid "WooFAQs"
+msgstr ""
+
+# class-woocommerce-faqs.php 458
+msgid "Add New"
+msgstr "Добавить новый"
+
+# class-woocommerce-faqs.php 460
+msgid "Add New WooFAQ"
+msgstr "Добавить новый WooFAQ"
+
+# class-woocommerce-faqs.php 460
+msgid "Edit WooFAQ"
+msgstr "Редактировать WooFAQ"
+
+# class-woocommerce-faqs.php 466
+msgid "New WooFAQ"
+msgstr "Новый WooFAQ"
+
+# class-woocommerce-faqs.php 468
+msgid "All WooFAQs"
+msgstr "Все вопросы"
+
+# class-woocommerce-faqs.php 470
+msgid "View WooFAQ"
+msgstr "Показать WooFAQ"
+
+# class-woocommerce-faqs.php 472
+msgid "Search WooFAQs"
+msgstr "Искать WooFAQ"
+
+# class-woocommerce-faqs.php 474
+msgid "No WooFAQs found"
+msgstr "Вопросы по товарам не найдены"
+
+# class-woocommerce-faqs.php 476
+msgid "No WooFAQs found in Trash"
+msgstr "Вопросы по товарам в корзине не найдены"
+
 # class-woocommerce-faqs.php 663
 msgid "Please enter a question!"
 msgstr "Пожалуйста введите вопрос!"
@@ -55,6 +95,18 @@ msgstr "Пожалуйста введите правильный email!"
 # class-woocommerce-faqs.php 694
 msgid "Question for "
 msgstr "вопрос для "
+
+# class-woocommerce-faqs.php 694
+msgid "The antispam wasn't entered correctly. Go back and try it again."
+msgstr "Анти-спам защита не пройдена Вами. Вернитесь назад и попробуйте снова."
+
+# class-woocommerce-faqs.php 694
+msgid ""
+"You've triggered our anti-spam filter. If you have a form-filling "
+"application/extension, please disable it temporarily."
+msgstr ""
+"Вы вызвали подозрение в нашей анти-спам защиты. Если у вас есть форма авто-"
+"заполнения полей в  браузере/проводнике, пожалуйста, временно отключить."
 
 # class-woocommerce-faqs.php 854
 msgid " asked the following question about "
@@ -100,10 +152,139 @@ msgstr "Автор вопроса: "
 msgid "Answerer: "
 msgstr "Отвечающий: "
 
+# class-woocommerce-faqs.php 1044
+msgid "Preview this"
+msgstr "Предварительно его просмотреть"
+
+# class-woocommerce-faqs.php 1044
+msgid "Preview"
+msgstr "Предварительный просмотр"
+
+# class-woocommerce-faqs.php 1046
+msgid "Approve this "
+msgstr "Одобрить его"
+
+# class-woocommerce-faqs.php 1048
+msgid "Approve"
+msgstr "Одобрить"
+
+# class-woocommerce-faqs.php 1048
+msgid "View this "
+msgstr "Посмотреть его"
+
+# class-woocommerce-faqs.php 1054
+msgid "View"
+msgstr "Посмотреть"
+
+# class-woocommerce-faqs.php 1151
+msgid "Current user does not have permissions over this post"
+msgstr "Текущий пользователь не имеет прав на управление данной записью"
+
+# class-woocommerce-faqs.php 1164
+msgid "Cheatin, eh?"
+msgstr "Хакер, а?"
+
+# class-woocommerce-faqs.php 1177
+msgid "Approved...reloading now."
+msgstr "Одобрено ... Теперь перезагружаемся."
+
+# class-woocommerce-faqs.php 1177
+msgid "Question"
+msgstr "Вопрос"
+
+# class-woocommerce-faqs.php 1177
+msgid "Asker"
+msgstr "Спрашивающий"
+
+# class-woocommerce-faqs.php 1177
+msgid "Asker Email"
+msgstr "Email спрашивающего"
+
+# class-woocommerce-faqs.php 1177
+msgid "Answers"
+msgstr "Ответы"
+
+# class-woocommerce-faqs.php 1177
+msgid "Date Asked"
+msgstr "Дата вопроса"
+
+# class-woocommerce-faqs.php 1317
+msgid "FAQ Details"
+msgstr "Подробнее о FAQ"
+
+# class-woocommerce-faqs.php 1357
+msgid "Product this question is shown on: "
+msgstr "Этот вопрос по товару показан на: "
+
+# class-woocommerce-faqs.php 1379
+msgid "No Products Found"
+msgstr "Товары не найдены"
+
+# class-woocommerce-faqs.php 1379
+msgid ""
+"It is best to leave the fields below blank if you are adding a FAQ manually."
+msgstr "Лучше оставьте эти поля пустыми, если добавляете FAQ вручную."
+
 # class-woocommerce-faqs.php 728
 msgid ""
 "FAQ Successfully Posted. Your question will be reviewed and answered soon!"
 msgstr "Ваш вопрос успешно отправлен. Вскоре он будет рассмотрен и отвечен!"
+
+# class-woocommerce-faqs.php 1395
+msgid "Author: "
+msgstr "Автор: "
+
+# class-woocommerce-faqs.php 1404
+msgid "Author Email: "
+msgstr "Email автора: "
+
+# class-woocommerce-faqs.php 1465
+msgid "Comments"
+msgstr "Комментарии"
+
+# class-woocommerce-faqs.php 1467
+msgid "Add comment"
+msgstr "Добавить комментарий"
+
+# class-woocommerce-faqs.php 1467
+msgid "Add Comment"
+msgstr "Добавить комментарий"
+
+# class-woocommerce-faqs.php 1467
+msgid "Add answer"
+msgstr "Добавить ответ"
+
+# class-woocommerce-faqs.php 1467
+msgid "Add Answer"
+msgstr "Добавить ответ"
+
+# class-woocommerce-faqs.php 1467
+msgid "Add new Comment"
+msgstr "Добавить новый комментарий"
+
+# class-woocommerce-faqs.php 1467
+msgid "Add new Answer"
+msgstr "Добавить новый ответ"
+
+# class-woocommerce-faqs.php 1467
+msgid "No comments yet."
+msgstr "Пока комментариев нет."
+
+# class-woocommerce-faqs.php 1467
+msgid "No answers yet."
+msgstr "Пока ответов нет."
+
+# class-woocommerce-faqs.php 1467
+msgid "Show comments"
+msgstr "Показать комментарии"
+
+# class-woocommerce-faqs.php 1467
+msgid "Show answers"
+msgstr "Показать ответы"
+
+# class-woocommerce-faqs.php 1467
+msgid "FAQ Link"
+msgstr ""
 
 # loop-faqs.php 102
 msgid "FAQs for "
