@@ -89,11 +89,49 @@ $settings[] = array(
 
 	);
 
-$settings[]=array(
+$settings[] = array(
 
 	'type'		=> 'sectionend',
 
 	'id'		=> $this->option_prefix . 'antispam'
+
+	);
+
+$settings[] = array(
+
+	$title 		=> __('Tab Settings', $this->plugin_slug ),
+
+	'type' 		=> 'title',
+
+	'id' 		=> $this->option_prefix . 'tab_settings'
+
+	);
+
+$settings[] = array(
+
+	$title		=> __('Tab Title', $this->plugin_slug ),
+
+	'id'		=> $this->option_prefix . 'tab_title',
+
+	'type'		=> 'text'
+
+	);
+
+$settings[] = array(
+
+	$title		=> __('Tab Priority', $this->plugin_slug ),
+
+	'id'		=> $this->option_prefix . 'tab_priority',
+
+	'type'		=> 'text'
+
+	);
+
+$settings[] = array(
+
+	'type'		=> 'sectionend',
+
+	'id'		=> $this->option_prefix . 'tab_settings'
 
 	);
 

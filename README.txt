@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: joshlevinson
 Donate link: http://redactweb.com
-Tags: woocommerce, faq, frequently asked questions, faqs, woocommerce faqs, woocommerce frequently asked questions
+Tags: woocommerce, faq, frequently asked questions, faqs, woocommerce faqs, woocommerce frequently asked questions, woocommerce product questions
 Requires at least: 3.5.1
 Tested up to: 3.6
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -132,6 +132,9 @@ This plugin is currently incompatible with the 404 Redirected plugin. This plugi
 6. Adding a FAQ Manually
 
 == Changelog ==
+= 1.0.9 =
+* Admin settings for tab title and priority
+
 = 1.0.8 =
 * Full localization
 * Thanks to @OniX777 for partial localization and for Russian translation!

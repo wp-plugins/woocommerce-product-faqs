@@ -25,7 +25,7 @@ class WooCommerce_FAQs {
 	 *
 	 * @var     string
 	 */
-	protected $version = '1.0.6';
+	protected $version = '1.0.9';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -176,6 +176,10 @@ class WooCommerce_FAQs {
 		add_filter( 'gettext', array( $this, 'filter_gettext' ), 10, 3 );
 
 		add_action('edit_form_after_title', array( $this, 'view_link') );
+
+		add_filter( $this->option_prefix . 'tab_title', array( $this, 'tab_title' ) );
+
+		add_filter( $this->option_prefix . 'tab_priority', array( $this, 'tab_priority' ) );
 
 	}
 
@@ -387,9 +391,9 @@ class WooCommerce_FAQs {
 	 */
     public static function get_base_url(){
 
-        $folder = basename(dirname(__FILE__));
+        $folder = basename( dirname( __FILE__ ) );
 
-        return plugins_url($folder);
+        return plugins_url( $folder );
 
     }
 
@@ -401,7 +405,7 @@ class WooCommerce_FAQs {
 	 */
     public static function get_base_path(){
 
-        $folder = basename(dirname(__FILE__));
+        $folder = basename( dirname( __FILE__ ) );
 
         return WP_PLUGIN_DIR . "/" . $folder;
 
@@ -414,7 +418,7 @@ class WooCommerce_FAQs {
 	 */
 	public function admin_menu($tabs) {
 
-		$tabs['faqs']=__( 'FAQs', 'woocommerce' );
+		$tabs['faqs'] = __( 'FAQs', 'woocommerce' );
 
 		return $tabs;
 
@@ -427,7 +431,7 @@ class WooCommerce_FAQs {
 	 */
 	function admin_options() {
 
-		include($this->get_base_path().'/views/admin.php');
+		include( $this->get_base_path() . '/views/admin.php' );
 
 	}
 	/**
@@ -437,7 +441,7 @@ class WooCommerce_FAQs {
 	 */
 	function display_settings(){
 
-		woocommerce_admin_fields($this->settings);
+		woocommerce_admin_fields( $this->settings );
 
 	}
 
@@ -451,33 +455,33 @@ class WooCommerce_FAQs {
 
 		$labels = array(
 
-	    'name' => __('WooFAQs', $this->plugin_slug ),
+	    'name' => __( 'WooFAQs', $this->plugin_slug ),
 
-	    'singular_name' => __('WooFAQ', $this->plugin_slug ),
+	    'singular_name' => __( 'WooFAQ', $this->plugin_slug ),
 
-	    'add_new' => __('Add New', $this->plugin_slug ),
+	    'add_new' => __( 'Add New', $this->plugin_slug ),
 
-	    'add_new_item' => __('Add New WooFAQ', $this->plugin_slug ),
+	    'add_new_item' => __( 'Add New WooFAQ', $this->plugin_slug ),
 
-	    'edit_item' => __('Edit WooFAQ', $this->plugin_slug ),
+	    'edit_item' => __( 'Edit WooFAQ', $this->plugin_slug ),
 	    
-	    'edit_item' => __('Edit WooFAQ', $this->plugin_slug ),
+	    'edit_item' => __( 'Edit WooFAQ', $this->plugin_slug ),
 
-	    'new_item' => __('New WooFAQ', $this->plugin_slug ),
+	    'new_item' => __( 'New WooFAQ', $this->plugin_slug ),
 
-	    'all_items' => __('All WooFAQs', $this->plugin_slug ),
+	    'all_items' => __( 'All WooFAQs', $this->plugin_slug ),
 
-	    'view_item' => __('View WooFAQ', $this->plugin_slug ),
+	    'view_item' => __( 'View WooFAQ', $this->plugin_slug ),
 
-	    'search_items' => __('Search WooFAQs', $this->plugin_slug ),
+	    'search_items' => __( 'Search WooFAQs', $this->plugin_slug ),
 
-	    'not_found' =>  __('No WooFAQs found', $this->plugin_slug ),
+	    'not_found' =>  __( 'No WooFAQs found', $this->plugin_slug ),
 
-	    'not_found_in_trash' => __('No WooFAQs found in Trash', $this->plugin_slug ),
+	    'not_found_in_trash' => __( 'No WooFAQs found in Trash', $this->plugin_slug ),
 
 	    'parent_item_colon' => '',
 
-	    'menu_name' => __('WooFAQs', $this->plugin_slug )
+	    'menu_name' => __( 'WooFAQs', $this->plugin_slug )
 
 	  );
 
@@ -522,11 +526,11 @@ class WooCommerce_FAQs {
 
 		$tabs['faqs'] = array(
 
-			'title' => __( 'FAQs', $this->plugin_slug ),
+			'title' => __( apply_filters( $this->option_prefix . 'tab_title', 'FAQs' ), $this->plugin_slug ),
 
-			'priority' => 100,
+			'priority' => apply_filters( $this->option_prefix . 'tab_priority', 100 ),
 
-			'callback' => array($this,'faq_tab_content')
+			'callback' => array( $this, 'faq_tab_content' )
 
 		);
 
@@ -544,7 +548,7 @@ class WooCommerce_FAQs {
 	function require_antispam(){
 
 		//include the AYAH library
-		require_once($this->antispam_lib);
+		require_once( $this->antispam_lib );
 
 		// Instantiate the AYAH object.
 		$this->ayah = new AYAH(
@@ -553,9 +557,9 @@ class WooCommerce_FAQs {
 			//and instantiating the object with them
 			array(
 
-				'publisher_key'=>get_option($this->option_prefix.'publisher_key'),
+				'publisher_key' => get_option( $this->option_prefix . 'publisher_key' ),
 
-				'scoring_key'=>get_option($this->option_prefix.'scoring_key')
+				'scoring_key'	=> get_option( $this->option_prefix . 'scoring_key' )
 
 				)
 
@@ -573,10 +577,10 @@ class WooCommerce_FAQs {
 		$html = '';
 
 		//the faqs loop
-		include($this->get_base_path().'/views/loop-faqs.php');
+		include( $this->get_base_path().'/views/loop-faqs.php' );
 
 		//the faq form
-		include($this->get_base_path().'/views/faq-form.php');
+		include( $this->get_base_path().'/views/faq-form.php' );
 		
 	}
 
@@ -587,11 +591,11 @@ class WooCommerce_FAQs {
 	 *
 	 * @since    1.0.0
 	 */
-	function should_display_error($result,$key){
+	function should_display_error( $result, $key ) {
 
-		if(isset($result['errors']) && is_array($result['errors'])){
+		if( isset( $result['errors'] ) && is_array( $result['errors'] ) ) {
 
-			if(array_key_exists($key, $result['errors'])){
+			if( array_key_exists( $key, $result['errors'] ) ) {
 
 				return 'error';
 
@@ -612,13 +616,13 @@ class WooCommerce_FAQs {
 
 		$file = '/comments.php';
 
-		if (file_exists($this->get_base_path() . '/includes' . $file))
+		if ( file_exists( $this->get_base_path() . '/includes' . $file ) )
 
-			return($this->get_base_path() . '/includes' . $file);
+			return( $this->get_base_path() . '/includes' . $file );
 
-		elseif (file_exists(STYLESHEETPATH . $file))
+		elseif ( file_exists( STYLESHEETPATH . $file ) )
 
-			return(STYLESHEETPATH . $file );
+			return( STYLESHEETPATH . $file );
 
 		elseif ( file_exists( TEMPLATEPATH . $file ) )
 
@@ -626,7 +630,7 @@ class WooCommerce_FAQs {
 
 		else // Backward compat code will be removed in a future release
 
-			return( ABSPATH . WPINC . '/theme-compat/comments.php');
+			return( ABSPATH . WPINC . '/theme-compat/comments.php' );
 
 	}
 
@@ -1202,9 +1206,9 @@ class WooCommerce_FAQs {
 			//we have to manually update settings
 			add_action('woocommerce_update_options_faqs', array( $this, 'update_old_wc_options' ) );
 
-			add_action( 'woocommerce_product_tabs', array( $this, 'woocommerce_faqs_tab' ), 40 );
+			add_action( 'woocommerce_product_tabs', array( $this, 'woocommerce_faqs_tab' ), apply_filters( $this->option_prefix . 'tab_priority', 40 ) );
 
-			add_action( 'woocommerce_product_tab_panels', array($this, 'faq_tab_content' ), 40 );
+			add_action( 'woocommerce_product_tab_panels', array($this, 'faq_tab_content' ), apply_filters( $this->option_prefix . 'tab_priority', 40 ) );
 
 		}
 
@@ -1228,7 +1232,7 @@ class WooCommerce_FAQs {
 	 * @return    null
 	 */
 	function woocommerce_faqs_tab(){ ?>
-		<li class="faqs_tab"><a href="#tab-faqs"><?php _e( 'FAQs', $this->plugin_slug ); ?></a></li>
+		<li class="faqs_tab"><a href="#tab-faqs"><?php _e( apply_filters( $this->option_prefix . 'tab_title', 'FAQs' ), $this->plugin_slug ); ?></a></li>
 		<?php
 	}
 
@@ -1248,6 +1252,10 @@ class WooCommerce_FAQs {
 		$use_antispam = ( sanitize_text_field( $_POST[$this->option_prefix . 'use_antispam'] ) == 1 ? 'yes' : 'no');
 
 		update_option( 'woocommerce_faqs_use_antispam', $use_antispam );
+
+		update_option( 'woocommerce_faqs_tab_title', sanitize_text_field( $_POST[$this->option_prefix . 'tab_title'] ) );
+
+		update_option( 'woocommerce_faqs_tab_priority', sanitize_text_field( $_POST[$this->option_prefix . 'tab_priority'] ) );
 
 	}
 
@@ -1414,6 +1422,8 @@ class WooCommerce_FAQs {
 	 *
 	 * @since     1.0.6
 	 *
+	 * @param    int    $post_id    the post id of the currently saving post
+	 *
 	 * @return    null
 	 */
 	function save_meta($post_id){
@@ -1520,6 +1530,60 @@ class WooCommerce_FAQs {
 			</div>
 
 			<?php
+
+		}
+
+	}
+
+	/**
+	 * Filters the tab title if the setting is set in the Dashboard.
+	 *
+	 * @since    1.0.9
+	 *
+	 * @param    string    $title    the title before this filter
+	 *
+	 * @return    string    $title    the title after this filter
+	 */
+	function tab_title($title){
+
+		$user_title = get_option( $this->option_prefix . 'tab_title' );
+
+		if( $user_title ) {
+
+			return $user_title;
+
+		}
+
+		else{
+
+			return $title;
+
+		}
+
+	}
+
+	/**
+	 * Filters the tab priority if the setting is set in the Dashboard.
+	 *
+	 * @since    1.0.9
+	 *
+	 * @param    string    $priority    the priority before this filter
+	 *
+	 * @return    string    $priority    the priority after this filter
+	 */
+	function tab_priority($priority){
+
+		$user_priority = get_option( $this->option_prefix . 'tab_priority' );
+
+		if( $user_priority ) {
+
+			return $user_priority;
+
+		}
+
+		else{
+
+			return $priority;
 
 		}
 
