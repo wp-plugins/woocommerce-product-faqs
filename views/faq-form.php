@@ -18,7 +18,7 @@ if( isset( $_POST['submit_faq'] ) && $_POST['submit_faq'] ) {
 }
 
 //the title of the section
-$html .= '<h2 class="faq-title">Have a Question? Submit it here!</h2>';
+$html .= '<h2 class="faq-title">' . __('Have a Question? Submit it here!', $this->plugin_slug ) . '</h2>';
 
 //set these up so we don't have to check if they are empty in the echo's
 $author_name = '';
@@ -88,21 +88,21 @@ $result = '';
 $html .='<form method="POST" action="#tab-faqs" class="faq-form">';
 
 //and the inputs
-$html .= '<p><label for="faq_author_name">Your Name:</label> <abbr class="required" title="required">*</abbr><br />';
+$html .= '<p><label for="faq_author_name">' . __('Your Name', 'woocommerce-faqs') . ':</label> <abbr class="required" title="required">*</abbr><br />';
 
 //each input goes through should_display_error, 
 //which checks if the current input's name exists in the result variable.
 //should_display_errors checks if $result['errors'] is an array, 
 //so we don't need to worry about that here.
-$html .= '<input class="' . $this->should_display_error($result,'faq_author_name') . '" id="faq-author-name-input" value="' . $author_name . '" required="required" type="text" name="faq_author_name" placeholder="Your Name:" /></p>';
+$html .= '<input class="' . $this->should_display_error($result,'faq_author_name') . '" id="faq-author-name-input" value="' . $author_name . '" required="required" type="text" name="faq_author_name" placeholder="' . __('Your Name', 'woocommerce-faqs') . '" /></p>';
 
-$html .= '<p><label for="faq_author_email">Your Email:</label> <abbr class="required" title="required">*</abbr><br />';
+$html .= '<p><label for="faq_author_email">' . __('Your Email', 'woocommerce-faqs') . ':</label> <abbr class="required" title="required">*</abbr><br />';
 
-$html .= '<input class="' . $this->should_display_error($result,'faq_author_email') . '"  id="faq-author-email-input" value="' . $author_email . '" required="required" type="email" name="faq_author_email" placeholder="Your Email:" /></p>';
+$html .= '<input class="' . $this->should_display_error($result,'faq_author_email') . '"  id="faq-author-email-input" value="' . $author_email . '" required="required" type="email" name="faq_author_email" placeholder="' . __('Your Email', 'woocommerce-faqs') . '" /></p>';
 
-$html .= '<p><label for="faq_content">Your Question:</label> <abbr class="required" title="required">*</abbr><br />';
+$html .= '<p><label for="faq_content">' . __('Your Question', 'woocommerce-faqs') . ':</label> <abbr class="required" title="required">*</abbr><br />';
 
-$html .= '<textarea class="' . $this->should_display_error($result,'faq_content') . '"  placeholder="Your Question:" required="required" id="faq-content-input" name="faq_content" />'.$faq_content.'</textarea></p>';
+$html .= '<textarea class="' . $this->should_display_error($result,'faq_content') . '"  placeholder="' . __('Your Question', 'woocommerce-faqs') . '" required="required" id="faq-content-input" name="faq_content" />'.$faq_content.'</textarea></p>';
 
 //if we are using antispam, call the AYAH class' html getter and add it to our html
 if($this->use_antispam()) $html .= $this->ayah->getPublisherHTML();
@@ -110,7 +110,7 @@ if($this->use_antispam()) $html .= $this->ayah->getPublisherHTML();
 //otherwise, use honeypot (hidden with css)
 else $html .= '<input type="text" name="primary_email" id="poohbear" />';
 
-$html .= '<input type="submit" name="submit_faq" value="Submit" />';
+$html .= '<input type="submit" name="submit_faq" value="' . __('Submit', 'woocommerce-faqs') . '" />';
 
 $html .= '</form>';
 

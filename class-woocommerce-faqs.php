@@ -25,7 +25,7 @@ class WooCommerce_FAQs {
 	 *
 	 * @var     string
 	 */
-	protected $version = '1.0.4';
+	protected $version = '1.0.9';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -166,6 +166,21 @@ class WooCommerce_FAQs {
 		//custom post table columns content
 		add_action( 'manage_'.$this->post_type.'_posts_custom_column' , array( $this, 'custom_column' ), 1, 2 );
 
+		//meta boxes
+		add_action( 'add_meta_boxes', array( $this, 'meta_boxes' ) );
+
+		//save meta
+		add_action( 'save_post', array( $this, 'save_meta' ) );
+
+		//filter for meta boxes' text
+		add_filter( 'gettext', array( $this, 'filter_gettext' ), 10, 3 );
+
+		add_action('edit_form_after_title', array( $this, 'view_link') );
+
+		add_filter( $this->option_prefix . 'tab_title', array( $this, 'tab_title' ) );
+
+		add_filter( $this->option_prefix . 'tab_priority', array( $this, 'tab_priority' ) );
+
 	}
 
 
@@ -303,6 +318,8 @@ class WooCommerce_FAQs {
 
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery' ), $this->version );
 
+			wp_localize_script( $this->plugin_slug . '-admin-script', 'spinner', admin_url('images/wpspin_light.gif') );
+
 			//if we are administering a faq, localize that so it is available to our javascript
 			if(isset($_GET['highlight'])){
 
@@ -346,6 +363,8 @@ class WooCommerce_FAQs {
 
 			wp_localize_script( $this->plugin_slug . '-plugin-script', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 
+			wp_localize_script( $this->plugin_slug . '-plugin-script', 'spinner', admin_url('images/wpspin_light.gif') );
+
 			//if we are view/previewing a faq, localize that so it is available to our javascript
 
 			if(isset($_GET['faq-view']) || isset($_GET['faq-preview'])){
@@ -372,9 +391,9 @@ class WooCommerce_FAQs {
 	 */
     public static function get_base_url(){
 
-        $folder = basename(dirname(__FILE__));
+        $folder = basename( dirname( __FILE__ ) );
 
-        return plugins_url($folder);
+        return plugins_url( $folder );
 
     }
 
@@ -386,7 +405,7 @@ class WooCommerce_FAQs {
 	 */
     public static function get_base_path(){
 
-        $folder = basename(dirname(__FILE__));
+        $folder = basename( dirname( __FILE__ ) );
 
         return WP_PLUGIN_DIR . "/" . $folder;
 
@@ -399,7 +418,7 @@ class WooCommerce_FAQs {
 	 */
 	public function admin_menu($tabs) {
 
-		$tabs['faqs']=__( 'FAQs', 'woocommerce' );
+		$tabs['faqs'] = __( 'FAQs', 'woocommerce' );
 
 		return $tabs;
 
@@ -412,7 +431,7 @@ class WooCommerce_FAQs {
 	 */
 	function admin_options() {
 
-		include($this->get_base_path().'/views/admin.php');
+		include( $this->get_base_path() . '/views/admin.php' );
 
 	}
 	/**
@@ -422,7 +441,7 @@ class WooCommerce_FAQs {
 	 */
 	function display_settings(){
 
-		woocommerce_admin_fields($this->settings);
+		woocommerce_admin_fields( $this->settings );
 
 	}
 
@@ -436,33 +455,33 @@ class WooCommerce_FAQs {
 
 		$labels = array(
 
-	    'name' => 'WooFAQs',
+	    'name' => __( 'WooFAQs', $this->plugin_slug ),
 
-	    'singular_name' => 'WooFAQ',
+	    'singular_name' => __( 'WooFAQ', $this->plugin_slug ),
 
-	    'add_new' => 'Add New',
+	    'add_new' => __( 'Add New', $this->plugin_slug ),
 
-	    'add_new_item' => 'Add New WooFAQ',
+	    'add_new_item' => __( 'Add New WooFAQ', $this->plugin_slug ),
 
-	    'edit_item' => 'Edit WooFAQ',
+	    'edit_item' => __( 'Edit WooFAQ', $this->plugin_slug ),
 	    
-	    'edit_item' => 'Edit WooFAQ',
+	    'edit_item' => __( 'Edit WooFAQ', $this->plugin_slug ),
 
-	    'new_item' => 'New WooFAQ',
+	    'new_item' => __( 'New WooFAQ', $this->plugin_slug ),
 
-	    'all_items' => 'All WooFAQs',
+	    'all_items' => __( 'All WooFAQs', $this->plugin_slug ),
 
-	    'view_item' => 'View WooFAQ',
+	    'view_item' => __( 'View WooFAQ', $this->plugin_slug ),
 
-	    'search_items' => 'Search WooFAQs',
+	    'search_items' => __( 'Search WooFAQs', $this->plugin_slug ),
 
-	    'not_found' =>  'No WooFAQs found',
+	    'not_found' =>  __( 'No WooFAQs found', $this->plugin_slug ),
 
-	    'not_found_in_trash' => 'No WooFAQs found in Trash', 
+	    'not_found_in_trash' => __( 'No WooFAQs found in Trash', $this->plugin_slug ),
 
 	    'parent_item_colon' => '',
 
-	    'menu_name' => 'WooFAQs'
+	    'menu_name' => __( 'WooFAQs', $this->plugin_slug )
 
 	  );
 
@@ -470,9 +489,9 @@ class WooCommerce_FAQs {
 
 	    'labels' => $labels,
 
-	    'public' => true,
+	    'public' => false,
 
-	    'publicly_queryable' => true,
+	    'publicly_queryable' => false,
 
 	    'show_ui' => true, 
 
@@ -490,7 +509,7 @@ class WooCommerce_FAQs {
 
 	    'menu_position' => null,
 
-	    'supports' => array( 'title', 'editor', 'author', 'custom-fields','comments','page-attributes')
+	    'supports' => array( 'title', 'editor', 'comments', 'page-attributes')
 
 	  );
 
@@ -507,11 +526,11 @@ class WooCommerce_FAQs {
 
 		$tabs['faqs'] = array(
 
-			'title' => __( 'FAQ\'s', 'woocommerce' ),
+			'title' => __( apply_filters( $this->option_prefix . 'tab_title', 'FAQs' ), $this->plugin_slug ),
 
-			'priority' => 100,
+			'priority' => apply_filters( $this->option_prefix . 'tab_priority', 100 ),
 
-			'callback' => array($this,'faq_tab_content')
+			'callback' => array( $this, 'faq_tab_content' )
 
 		);
 
@@ -529,7 +548,7 @@ class WooCommerce_FAQs {
 	function require_antispam(){
 
 		//include the AYAH library
-		require_once($this->antispam_lib);
+		require_once( $this->antispam_lib );
 
 		// Instantiate the AYAH object.
 		$this->ayah = new AYAH(
@@ -538,9 +557,9 @@ class WooCommerce_FAQs {
 			//and instantiating the object with them
 			array(
 
-				'publisher_key'=>get_option($this->option_prefix.'publisher_key'),
+				'publisher_key' => get_option( $this->option_prefix . 'publisher_key' ),
 
-				'scoring_key'=>get_option($this->option_prefix.'scoring_key')
+				'scoring_key'	=> get_option( $this->option_prefix . 'scoring_key' )
 
 				)
 
@@ -558,10 +577,10 @@ class WooCommerce_FAQs {
 		$html = '';
 
 		//the faqs loop
-		include($this->get_base_path().'/views/loop-faqs.php');
+		include( $this->get_base_path().'/views/loop-faqs.php' );
 
 		//the faq form
-		include($this->get_base_path().'/views/faq-form.php');
+		include( $this->get_base_path().'/views/faq-form.php' );
 		
 	}
 
@@ -572,11 +591,11 @@ class WooCommerce_FAQs {
 	 *
 	 * @since    1.0.0
 	 */
-	function should_display_error($result,$key){
+	function should_display_error( $result, $key ) {
 
-		if(isset($result['errors']) && is_array($result['errors'])){
+		if( isset( $result['errors'] ) && is_array( $result['errors'] ) ) {
 
-			if(array_key_exists($key, $result['errors'])){
+			if( array_key_exists( $key, $result['errors'] ) ) {
 
 				return 'error';
 
@@ -597,13 +616,13 @@ class WooCommerce_FAQs {
 
 		$file = '/comments.php';
 
-		if (file_exists($this->get_base_path() . '/includes' . $file))
+		if ( file_exists( $this->get_base_path() . '/includes' . $file ) )
 
-			return($this->get_base_path() . '/includes' . $file);
+			return( $this->get_base_path() . '/includes' . $file );
 
-		elseif (file_exists(STYLESHEETPATH . $file))
+		elseif ( file_exists( STYLESHEETPATH . $file ) )
 
-			return(STYLESHEETPATH . $file );
+			return( STYLESHEETPATH . $file );
 
 		elseif ( file_exists( TEMPLATEPATH . $file ) )
 
@@ -611,7 +630,7 @@ class WooCommerce_FAQs {
 
 		else // Backward compat code will be removed in a future release
 
-			return( ABSPATH . WPINC . '/theme-compat/comments.php');
+			return( ABSPATH . WPINC . '/theme-compat/comments.php' );
 
 	}
 
@@ -620,44 +639,44 @@ class WooCommerce_FAQs {
 	 *
 	 * @since    1.0.0
 	 */
-	function handle_submission($use_antispam=null){
+	function handle_submission( $use_antispam = null ) {
 
 		//this $post variable is for the PRODUCT
 		global $post;
 
 		//if this function was called without specifiying whether or not to
 		//use antispam, we get that value here
-		if(empty($use_antispam)) $use_antispam = $this->use_antispam();
+		if( empty( $use_antispam ) ) $use_antispam = $this->use_antispam();
 
 		//create errors and result arrays
 		$errors = array();
 
-		$result=array();
+		$result = array();
 
 		//put post data into an array
-		if(isset($_POST['faq_author_name'])) $input['faq_author_name'] =$_POST['faq_author_name'];
+		if( isset( $_POST['faq_author_name'] ) ) $input['faq_author_name'] = $_POST['faq_author_name'];
 
-		if(isset($_POST['faq_author_email'])) $input['faq_author_email'] = $_POST['faq_author_email'];
+		if( isset( $_POST['faq_author_email'] ) ) $input['faq_author_email'] = $_POST['faq_author_email'];
 
-		if(isset($_POST['faq_content'])) $input['faq_content']=$_POST['faq_content'];
+		if( isset( $_POST['faq_content'] ) ) $input['faq_content'] = $_POST['faq_content'];
 
 		//very simple validation for content, name, and email
 		//TODO - make this validation more stringent
-		if(empty($input['faq_content'])) {
+		if( empty( $input['faq_content'] ) ) {
 
-			$errors['faq_content']='Please enter a question!';
-
-		}
-
-		if(empty($input['faq_author_name'])){
-
-			$errors['faq_author_name']='Please enter your name!';
+			$errors['faq_content'] = __('Please enter a question!', $this->plugin_slug);
 
 		}
 
-		if(empty($input['faq_author_email']) || (!empty($input['faq_author_email']) && !filter_var($input['faq_author_email'], FILTER_VALIDATE_EMAIL))){
+		if( empty($input['faq_author_name'] ) ) {
 
-			$errors['faq_author_email']='Please enter a valid email!';
+			$errors['faq_author_name'] = __('Please enter your name!', $this->plugin_slug);
+
+		}
+
+		if( empty( $input['faq_author_email'] ) || ( !empty($input['faq_author_email'] ) && !filter_var( $input['faq_author_email'], FILTER_VALIDATE_EMAIL ) ) ){
+
+			$errors['faq_author_email'] = __('Please enter a valid email!', $this->plugin_slug);
 
 		}
 
@@ -665,20 +684,20 @@ class WooCommerce_FAQs {
 		$result = $this->handle_antispam();
 
 		//if antispam returned a error type result, asker failed antispam check
-		if($result['type'] == 'error'){
+		if( $result['type'] == 'error' ) {
 
 			$errors[] = $result['message'];
 
 		}
 
 		//passed all checks
-		if(empty($errors)) {
+		if( empty( $errors ) ) {
 
 			$post_info = array(
 
-				'post_title' => 'Question for '.$post->post_title,
+				'post_title' => __('Question for ', $this->plugin_slug) . $post->post_title,
 
-				'post_content' => wp_strip_all_tags($input['faq_content']),
+				'post_content' => wp_strip_all_tags( $input['faq_content'] ),
 
 				'post_type' => $this->post_type,
 
@@ -689,14 +708,14 @@ class WooCommerce_FAQs {
 			);
 
 			//create the post
-			$post_id = wp_insert_post($post_info);
+			$post_id = wp_insert_post( $post_info );
 
 			//add post meta
-			update_post_meta($post_id,'_'.$this->post_type.'_product',$post->ID);
+			update_post_meta( $post_id, '_' . $this->post_type . '_product', $post->ID );
 
-			update_post_meta($post_id,'_'.$this->post_type.'_author_name',$input['faq_author_name']);
+			update_post_meta( $post_id, '_' . $this->post_type . '_author_name', $input['faq_author_name'] );
 
-			update_post_meta($post_id,'_'.$this->post_type.'_author_email',$input['faq_author_email']);
+			update_post_meta( $post_id, '_' . $this->post_type . '_author_email', $input['faq_author_email'] );
 
 			//data for elsewhere (like the notifications)
 			$input['product_title'] = $post->post_title;
@@ -708,17 +727,17 @@ class WooCommerce_FAQs {
 			$input['post_id'] = $post_id;
 
 			//result for the form (success)
-			$result['type']='success';
+			$result['type'] = 'success';
 
-			$result['message']='FAQ Successfully Posted. Your question will be reviewed and answered soon!';
+			$result['message']= __( 'FAQ Successfully Posted. Your question will be reviewed and answered soon!', $this->plugin_slug );
 
 			//send the notification to the answerer
-			$this->send_notifications('answerer',$input);
+			$this->send_notifications( 'answerer', $input );
 
-		} else{
+		} else {
 
 			//result for the form (error)
-			$result['type']='error';
+			$result['type'] = 'error';
 
 			$result['errors'] = $errors;
 
@@ -733,13 +752,13 @@ class WooCommerce_FAQs {
 	 *
 	 * @since    1.0.0
 	 */
-	function handle_antispam(){
+	function handle_antispam() {
 
 		//we need the result array one way or the other
-		$result=array();
+		$result = array();
 
 		//check if we are using 'antispam'
-		if($this->use_antispam()){
+		if( $this->use_antispam() ) {
 
 			$this->require_antispam();
 
@@ -748,35 +767,36 @@ class WooCommerce_FAQs {
 
 	        // Check the score to determine what to do.
 	        //if score is boolean true, the user passed
-	        if ($score){
+	        if ( $score ) {
 
-                $result['type']='success';
+                $result['type'] = 'success';
 
 	        }
 
 	        //otherwise, they failed
-	        else{
+	        else {
 
-                $result['type']='error';
+                $result['type'] = 'error';
 
-				$result['message']='The antispam wasn\'t entered correctly. Go back and try it again.';
+				$result['message'] = __('The antispam wasn\'t entered correctly. Go back and try it again.', $this->plugin_slug );
 
 	        }
+
 		}
 
 		//if we aren't, still use honeypot to check
-		else{
+		else {
 
 			//this is a honeypot!!!
 			//if primary_email is set/not empty, we've failed the honeypot
-			if( isset( $_POST['primary_email'] ) && $_POST['primary_email'] != ''){
+			if( isset( $_POST['primary_email'] ) && $_POST['primary_email'] != '' ) {
 				
 				$result['type'] = 'error';
 				
-				$result['message'] = 'You\'ve triggered our anti-spam filter. If you have a form-filling application/extension, please disable it temporarily.';
+				$result['message'] = __('You\'ve triggered our anti-spam filter. If you have a form-filling application/extension, please disable it temporarily.', $this->plugin_slug );
 			}
 
-			else{
+			else {
 
 				$result['type'] = 'success';
 
@@ -784,7 +804,7 @@ class WooCommerce_FAQs {
 
 		}
 
-		if($result['type'] == 'error'){
+		if( $result['type'] == 'error' ) {
 
 			//allow the error message to be filtered
 			apply_filters( $this->option_prefix . 'antispam_error_message', $result['message'], $_POST );
@@ -830,22 +850,22 @@ class WooCommerce_FAQs {
 			//filter wp mail to html
 			add_filter( 'wp_mail_content_type' , array( $this, 'set_html_content_type' ) );
 
-			switch($to_whom){
+			switch( $to_whom ) {
 
 				case 'answerer':
 
 					$to = $answerer_email;
 
-					$subject = 'New ' . $post_data['question_title'];
+					$subject = __('New ', $this->plugin_slug) . $post_data['question_title'];
 
 					//allow the subject to be filtered
 					$subject = apply_filters( $this->option_prefix . 'answerer_email_subject', $subject, $post_data );
 
-					$message = '<p>' . $post_data['faq_author_name'] . ' asked the following question about ' . $post_data['product_title'] . ':</p>';
+					$message = '<p>' . $post_data['faq_author_name'] . __(' asked the following question about ', $this->plugin_slug) . $post_data['product_title'] . ':</p>';
 
 					$message .= '<p>"' . $post_data['question_content'] . '"</p>';
 
-					$message .= '<p>The question can be administered <a href="' . admin_url('/edit.php?post_type=') . $this->post_type . '&highlight='.$post_data['post_id'].'">here.</a>';
+					$message .= '<p>' . __('The question can be administered ', $this->plugin_slug) . '<a href="' . admin_url('/edit.php?post_type=') . $this->post_type . '&highlight='.$post_data['post_id'].'">'. __('here', $this->plugin_slug) . '.</a>';
 
 					//allow the final message to be filtered
 					$message = apply_filters( $this->option_prefix . 'answerer_email_message', $message, $post_data );
@@ -856,16 +876,16 @@ class WooCommerce_FAQs {
 
 					$to = $asker_email;
 
-					$subject = 'Response to ' . $post_data['question_title'];
+					$subject = __('Response to ', $this->plugin_slug) . $post_data['question_title'];
 
 					//allow the subject to be filtered
 					$subject = apply_filters( $this->option_prefix . 'asker_email_subject', $subject, $post_data );
 
-					$message = '<p>A reply to your question about ' . $post_data['product_title'] . ' has been posted!</p>';
+					$message = '<p>' . __('A reply to your question about ', $this->plugin_slug) . $post_data['product_title'] . __(' has been posted!', $this->plugin_slug) . '</p>';
 
 					$product_link = get_permalink( $post_data['product_id'] );
 
-					$message .= '<p>View the answer <a href="' . $product_link . $this->andor($product_link) . 'faq-view=' . $post_data['post_id'] . '#tab-faqs">here</a></p>';
+					$message .= '<p>' . __('View the answer', $this->plugin_slug) . ' <a href="' . add_query_arg( 'faq-view', $post_data['post_id'] . '#tab-faqs', $product_link ) . '">'. __('here', $this->plugin_slug) . '</a></p>';
 
 					//allow the final message to be filtered
 					$message = apply_filters( $this->option_prefix . 'asker_email_message', $message, $post_data );
@@ -873,14 +893,17 @@ class WooCommerce_FAQs {
 					break;
 
 			}
+			if( !empty( $to ) ) {
+				
+				$success = wp_mail( $to, $subject, $message);
 
-			$success = wp_mail( $to, $subject, $message);
+			}
 
 			remove_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
 
 		}
 
-		//we may check on this later
+		//we may want to check on this later
 		return $success;
 
 	}
@@ -890,7 +913,7 @@ class WooCommerce_FAQs {
 	 *
 	 * @since    1.0.0
 	 */
-	function set_html_content_type(){
+	function set_html_content_type() {
 
 		return 'text/html';
 
@@ -902,13 +925,13 @@ class WooCommerce_FAQs {
 	 *
 	 * @since    1.0.0
 	 */
-	function redirect_comment_form($location,$comment){
+	function redirect_comment_form( $location, $comment ) {
 
 		$faq = $comment->comment_post_ID;
 
-		if($product = get_post_meta($faq,'_woo_faq_product',true)){
+		if( $product = get_post_meta( $faq,'_woo_faq_product',true ) ) {
 
-			$link = get_permalink($product).'#tab-faqs';
+			$link = get_permalink($product) . '#tab-faqs';
 
 		}
 
@@ -921,7 +944,7 @@ class WooCommerce_FAQs {
 	 *
 	 * @since    1.0.0
 	 */
-	function comment_callback($comment, $args, $depth) {
+	function comment_callback( $comment, $args, $depth ) {
 
 		$GLOBALS['comment'] = $comment;
 
@@ -935,31 +958,47 @@ class WooCommerce_FAQs {
 
 				<div class="wrapper">
 
-					<?php if ($comment->comment_approved == '0') : ?>
+					<?php if ( $comment->comment_approved == '0' ) : ?>
 
-					<em><?php echo theme_locals("your_comment") ?></em>
+					<em><?php echo theme_locals( "your_comment" ) ?></em>
 
 					<?php endif; ?>
 
 					<div class="extra-wrap">
 
-					<h4><?php if ($comment_count <= 1) {
+					<h4>
 
-					echo 'A: ';
+					<?php
 
-					}else{
+					if ( $comment_count <= 1 ) {
 
-					$comment_author = (int)$comment->user_id;
+						_e( 'A: ', $this->plugin_slug );
 
-					$question_author = (int)get_post_field('post_author',(int)$comment->comment_post_ID);
+					}
 
-					if($comment_author == $question_author){
+					else {
 
-					echo 'Asker: ';
+						$comment_author = (int)$comment->user_id;
 
-					}else echo 'Answerer: ';
+						$question_author = (int)get_post_field( 'post_author', (int)$comment->comment_post_ID );
 
-					} ?><?php echo get_comment_text() ?></h4>     	
+						if( $comment_author == $question_author ) {
+
+							_e( 'Asker: ', $this->plugin_slug );
+
+						}
+
+						else {
+							
+							_e( 'Answerer: ', $this->plugin_slug );
+
+						}
+
+					}
+
+					?>
+
+					<?php echo get_comment_text(); ?></h4>     	
 
 					</div>
 
@@ -967,7 +1006,7 @@ class WooCommerce_FAQs {
 
 					<?php echo get_avatar( $comment->comment_faq_author_email, 65 ); ?>
 
-					<?php printf('<span class="author">— %1$s</span>', get_comment_author_link()) ?>
+					<?php printf( '<span class="author">— %1$s</span>', get_comment_author_link() ); ?>
 
 					</div>
 
@@ -979,7 +1018,7 @@ class WooCommerce_FAQs {
 
 				</div>
 
-				<div class="comment-meta commentmetadata"><?php printf('%1$s', get_comment_date('F j, Y')) ?></div>
+				<div class="comment-meta commentmetadata"><?php printf( '%1$s', get_comment_date( 'F j, Y' ) ); ?></div>
 
 				</div>
 
@@ -987,33 +1026,36 @@ class WooCommerce_FAQs {
 
 		</div>
 
-		<?php }
+		<?php
+	}
 
 	/**
 	 * Changes up the action row for custom behavior
 	 *
 	 * @since    1.0.0
 	 */
-	function action_row($actions, $post){
+	function action_row( $actions, $post ) {
 
 		//check for our post type
-		if ($post->post_type == $this->post_type){
+		if ( $post->post_type == $this->post_type ) {
 
 			$post_type_object = get_post_type_object( $post->post_type );
 
 			$post_type_label = $post_type_object->labels->singular_name;
 
-			if($post->post_status == 'draft' || $post->post_status == 'pending'){
+			if( $post->post_status == 'draft' || $post->post_status == 'pending' ) {
 
-				$actions['publish'] = "<a href='#' class='submitpublish' data-id='".$post->ID."' title='" . esc_attr( __( 'Approve this ' ) ) .
+				$actions['pre_view'] = "<a title='" . esc_attr( __( 'Preview this', $this->plugin_slug ) ) . $post_type_label . "' href='" . $this->preview_link() . "'>" . __( 'Preview', $this->plugin_slug ) . "</a>";
 
-				$post_type_label . "' data-nonce='" . wp_create_nonce( 'publish-post_' . $post->ID ) . "'>" . __( 'Approve' ) . "</a>";
+				$actions['publish'] = "<a href='#' class='submitpublish' data-id='".$post->ID."' title='" . esc_attr( __( 'Approve this ' , $this->plugin_slug ) ) .
+
+				$post_type_label . "' data-nonce='" . wp_create_nonce( 'publish-post_' . $post->ID ) . "'>" . __( 'Approve', $this->plugin_slug) . "</a>";
 
 			}
 
 			else{
 				
-				$actions['view'] = "<a title='" . esc_attr( __( 'View this ' ) ) . $post_type_label . "' href='" . $this->preview_link() . "'>" . __( 'View' ) . "</a>";
+				$actions['view'] = "<a title='" . esc_attr( __( 'View this ', $this->plugin_slug ) ) . $post_type_label . "' href='" . $this->preview_link() . "'>" . __( 'View', $this->plugin_slug ) . "</a>";
 
 			}
 
@@ -1027,37 +1069,21 @@ class WooCommerce_FAQs {
 	 *
 	 * @since    1.0.0
 	 */
-	function preview_link($preview_link='') {
+	function preview_link( $preview_link = '' ) {
 
     	global $post;
 
-    	if($post->post_type == $this->post_type){
+    	if( $post->post_type == $this->post_type ) {
 
     		$preview_link = get_permalink( (int)get_post_meta( $post->ID, '_' . $this->post_type . '_product', true) );
 
     		$publish = ( $post->post_status == 'publish' ? 'view' : 'preview' );
 
-    		$andor = $this->andor($preview_link);
-
-    		$preview_link .= $andor . 'faq-' . $publish . '=' . $post->ID . '#tab-faqs';
+    		$preview_link = add_query_arg( 'faq-' . $publish, $post->ID . '#tab-faqs', $preview_link);
 
     	}
 
     	return $preview_link;
-
-	}
-
-	/**
-	 * Returns the correct url addition based on 
-	 * if there is a query string present already
-	 *
-	 * @since    1.0.0
-	 */
-	function andor($link){
-
-		$test = '/';
-
-		return (substr($link, -strlen($test)) === $test ? '?' : '&' );
 
 	}
 
@@ -1069,9 +1095,9 @@ class WooCommerce_FAQs {
 	 */
 	function answer_posted( $comment_id, $comment_object ) {
 
-		$post_id = (int) $comment_object->comment_post_ID;
+		$post_id = (int)$comment_object->comment_post_ID;
 
-		if( get_post_type( $post_id ) == $this->post_type ){
+		if( get_post_type( $post_id ) == $this->post_type ) {
 
 			$product_id = get_post_meta( $post_id, '_' . $this->post_type . '_product', true );
 
@@ -1126,7 +1152,7 @@ class WooCommerce_FAQs {
 
 			$result['type'] = 'error';
 
-			$result['message'] = 'Current user does not have permissions over this post';
+			$result['message'] = __('Current user does not have permissions over this post', $this->plugin_slug );
 
 			echo json_encode($result);
 
@@ -1139,7 +1165,7 @@ class WooCommerce_FAQs {
 
 	        $result['type'] = 'error';
 
-			$result['message'] = 'Cheatin, eh?';
+			$result['message'] = __( 'Cheatin, eh?', $this->plugin_slug );
 
 			echo json_encode($result);
 
@@ -1152,7 +1178,7 @@ class WooCommerce_FAQs {
 
 	    $result['type'] = 'success';
 
-	    $result['message'] = 'Approved...reloading now.';
+	    $result['message'] = __('Approved...reloading now.', $this->plugin_slug );
 
 	    $result['redirect'] = admin_url('edit.php?post_type=' . $this->post_type);
 
@@ -1180,9 +1206,9 @@ class WooCommerce_FAQs {
 			//we have to manually update settings
 			add_action('woocommerce_update_options_faqs', array( $this, 'update_old_wc_options' ) );
 
-			add_action( 'woocommerce_product_tabs', array( $this, 'woocommerce_faqs_tab' ), 40 );
+			add_action( 'woocommerce_product_tabs', array( $this, 'woocommerce_faqs_tab' ), apply_filters( $this->option_prefix . 'tab_priority', 40 ) );
 
-			add_action( 'woocommerce_product_tab_panels', array($this, 'faq_tab_content' ), 40 );
+			add_action( 'woocommerce_product_tab_panels', array($this, 'faq_tab_content' ), apply_filters( $this->option_prefix . 'tab_priority', 40 ) );
 
 		}
 
@@ -1206,7 +1232,7 @@ class WooCommerce_FAQs {
 	 * @return    null
 	 */
 	function woocommerce_faqs_tab(){ ?>
-		<li class="faqs_tab"><a href="#tab-faqs">FAQs</a></li>
+		<li class="faqs_tab"><a href="#tab-faqs"><?php _e( apply_filters( $this->option_prefix . 'tab_title', 'FAQs' ), $this->plugin_slug ); ?></a></li>
 		<?php
 	}
 
@@ -1219,13 +1245,17 @@ class WooCommerce_FAQs {
 	 */
 	function update_old_wc_options(){
 
-		update_option('woocommerce_faqs_publisher_key',sanitize_text_field($_POST[$this->option_prefix . 'publisher_key']));
+		update_option( 'woocommerce_faqs_publisher_key', sanitize_text_field( $_POST[$this->option_prefix . 'publisher_key'] ) );
 
-		update_option('woocommerce_faqs_scoring_key',sanitize_text_field($_POST[$this->option_prefix . 'scoring_key']));
+		update_option( 'woocommerce_faqs_scoring_key', sanitize_text_field( $_POST[$this->option_prefix . 'scoring_key'] ) );
 
-		$use_antispam = (sanitize_text_field($_POST[$this->option_prefix . 'use_antispam']) == 1 ? 'yes' : 'no');
+		$use_antispam = ( sanitize_text_field( $_POST[$this->option_prefix . 'use_antispam'] ) == 1 ? 'yes' : 'no');
 
-		update_option('woocommerce_faqs_use_antispam',$use_antispam);
+		update_option( 'woocommerce_faqs_use_antispam', $use_antispam );
+
+		update_option( 'woocommerce_faqs_tab_title', sanitize_text_field( $_POST[$this->option_prefix . 'tab_title'] ) );
+
+		update_option( 'woocommerce_faqs_tab_priority', sanitize_text_field( $_POST[$this->option_prefix . 'tab_priority'] ) );
 
 	}
 
@@ -1268,14 +1298,295 @@ class WooCommerce_FAQs {
 	    switch ( $column ) {
 
 	        case 'asker' :
+
 	        	echo get_post_meta( $post_id, '_' . $this->post_type . '_author_name', true );
+
 	            break;
 
 	        case 'asker_email' :
+
 	            echo get_post_meta( $post_id, '_' . $this->post_type . '_author_email', true );
+
 	            break;
 
 	    }
+
+	}
+
+	/**
+	 * Add meta boxes for this post type
+	 *
+	 * @since     1.0.6
+	 *
+	 * @return    null
+	 */
+	function meta_boxes(){
+
+		add_meta_box( $this->post_type . '_product', __( 'FAQ Details', $this->plugin_slug ), array( $this, 'metabox' ), $this->post_type, 'normal', 'high' );
+
+		remove_meta_box( 'commentstatusdiv', $this->post_type, 'normal' );
+
+	}
+
+	/**
+	 * Meta box content
+	 *
+	 * @since     1.0.6
+	 *
+	 * @return    null
+	 */
+	function metabox($post){
+		//get current value
+		$current_product = (int)get_post_meta( $post->ID, '_' . $this->post_type . '_product', true );
+
+		$author_name = get_post_meta( $post->ID, '_' . $this->post_type . '_author_name', true );
+
+		$author_email = get_post_meta( $post->ID, '_' . $this->post_type . '_author_email', true );
+
+		//get all products
+		$args = array(
+
+			'post_type' => 'product',
+
+			'numberposts' => -1
+
+			);
+
+		$products = get_posts( $args );
+
+		if( $products ) {
+
+			//nonce
+			wp_nonce_field( plugin_basename( __FILE__ ), $this->post_type . 'meta_nonce' );
+
+			//Product relationship label
+			echo '<p><label for="_' . '_' . $this->post_type . '_product">';
+
+			_e('Product this question is shown on: ', $this->plugin_slug );
+
+			echo '</label>';
+
+			//Product relationship select
+			echo '<select name="' . '_' . $this->post_type . '_product">';
+
+			foreach($products as $product){
+
+				echo '<option '. selected( $current_product, $product->ID, false ) .' value="' . $product->ID . '">' . $product->post_title . '</option>';
+
+			}
+
+			echo '</select></p>';
+
+		}
+
+		//otherwise, just say there are no products
+		else{
+
+			echo '<p>';
+
+			_e( 'No Products Found', $this->plugin_slug );
+
+			echo '</p>';
+
+		}
+
+		//question author info
+		echo '<p>';
+
+		_e( 'It is best to leave the fields below blank if you are adding a FAQ manually.', $this->plugin_slug );
+
+		echo '</p>';
+
+		//author's name
+		echo '<p><label for="_' . $this->post_type . '_author_name">';
+
+		_e('Author: ', $this->plugin_slug );
+
+		echo '</label>';
+
+		echo '<input type="text" name="_' . $this->post_type . '_author_name" value="' . $author_name . '"/></p>';
+
+		//author's email
+		echo '<p><label for="_' . $this->post_type . '_author_email">';
+
+		_e('Author Email: ', $this->plugin_slug );
+
+		echo '</label>';
+
+		echo '<input type="email" name="_' . $this->post_type . '_author_email" value="' . $author_email . '"/></p>';
+
+	}
+
+	/**
+	 * Save meta info
+	 *
+	 * @since     1.0.6
+	 *
+	 * @param    int    $post_id    the post id of the currently saving post
+	 *
+	 * @return    null
+	 */
+	function save_meta($post_id){
+
+		// First we need to check if the current user is authorised to do this action. 
+		if ( ! current_user_can( 'edit_post', $post_id ) ){
+
+			return;
+
+		}
+
+		// Secondly we need to check if the user intended to change this value.
+		if ( ! isset( $_POST[$this->post_type . 'meta_nonce'] ) || ! wp_verify_nonce( $_POST[$this->post_type . 'meta_nonce'], plugin_basename( __FILE__ ) ) ){
+
+      		return;
+
+      	}
+
+      	$author_name = sanitize_text_field($_POST['_'.$this->post_type.'_author_name']);
+
+      	$author_email = sanitize_text_field($_POST['_'.$this->post_type.'_author_email']);
+
+      	$product = sanitize_text_field( $_POST['_' . $this->post_type . '_product'] );
+
+      	update_post_meta($post_id,'_'.$this->post_type.'_author_name', $author_name);
+
+      	update_post_meta($post_id,'_'.$this->post_type.'_author_email',$author_email);
+
+		update_post_meta( $post_id, '_' . $this->post_type . '_product', $product );
+
+	}
+
+	/**
+	 * Filter the comment text on the edit screen
+	 * to be more sensible
+	 *
+	 * @since     1.0.6
+	 *
+	 * @return    object full translations object
+	 */
+	function filter_gettext( $translated, $original, $domain ) {
+
+		remove_filter( 'gettext', array( $this, 'filter_gettext' ), 10, 3 );
+
+		if( ( isset( $_REQUEST['post_type'] ) && $_REQUEST['post_type'] == $this->post_type ) || ( isset($_REQUEST['post']) && get_post_type( $_REQUEST['post'] ) == $this->post_type ) ){
+
+			$strings = array(
+
+			__('Comments', $this->plugin_slug ) => __('Answers', $this->plugin_slug ),
+
+			__('Add comment', $this->plugin_slug ) => __('Add answer', $this->plugin_slug ),
+
+			__('Add Comment', $this->plugin_slug ) => __('Add Answer', $this->plugin_slug ),
+
+			__('Add new Comment', $this->plugin_slug ) => __('Add new Answer', $this->plugin_slug ),
+
+			__('No comments yet.', $this->plugin_slug ) => __('No answers yet.', $this->plugin_slug ),
+
+			__('Show comments', $this->plugin_slug ) => __('Show answers', $this->plugin_slug ),
+
+			__('No more comments found.', $this->plugin_slug ) => __('No more answers found.', $this->plugin_slug )
+
+			);
+
+			if ( isset( $strings[$original] ) ) {
+
+			$translations = &get_translations_for_domain( $domain );
+
+			$translated = $translations->translate( $strings[$original] );
+
+			}
+
+		}
+
+		add_filter( 'gettext', array( $this, 'filter_gettext' ), 10, 3 );
+
+		return $translated;
+	}
+
+	/**
+	 * Create a link to view the FAQ
+	 * from the edit screen
+	 *
+	 * @since     1.0.6
+	 *
+	 * @return    null
+	 */
+	function view_link(){
+
+		global $post;
+
+		if($post->post_status == 'publish'){
+
+			$link = $this->preview_link();
+
+			?>
+
+			<div class="inside">
+				<div id="edit-slug-box" class="hide-if-no-js">
+					<strong><?php _e( 'FAQ Link:', $this->plugin_slug ); ?></strong>
+			<span id="sample-permalink" tabindex="-1"><?php echo $link; ?></span>
+			<span id="view-post-btn"><a target="_blank" href="<?php echo $link; ?>" class="button button-small"><?php _e( 'View', $this->plugin_slug ); ?></a></span>
+				</div>
+			</div>
+
+			<?php
+
+		}
+
+	}
+
+	/**
+	 * Filters the tab title if the setting is set in the Dashboard.
+	 *
+	 * @since    1.0.9
+	 *
+	 * @param    string    $title    the title before this filter
+	 *
+	 * @return    string    $title    the title after this filter
+	 */
+	function tab_title($title){
+
+		$user_title = get_option( $this->option_prefix . 'tab_title' );
+
+		if( $user_title ) {
+
+			return $user_title;
+
+		}
+
+		else{
+
+			return $title;
+
+		}
+
+	}
+
+	/**
+	 * Filters the tab priority if the setting is set in the Dashboard.
+	 *
+	 * @since    1.0.9
+	 *
+	 * @param    string    $priority    the priority before this filter
+	 *
+	 * @return    string    $priority    the priority after this filter
+	 */
+	function tab_priority($priority){
+
+		$user_priority = get_option( $this->option_prefix . 'tab_priority' );
+
+		if( $user_priority ) {
+
+			return $user_priority;
+
+		}
+
+		else{
+
+			return $priority;
+
+		}
+
 	}
 
 }//end class
