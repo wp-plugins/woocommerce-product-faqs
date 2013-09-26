@@ -25,7 +25,7 @@ class WooCommerce_FAQs {
 	 *
 	 * @var     string
 	 */
-	protected $version = '1.0.9';
+	protected $version = '1.1.0';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -122,6 +122,9 @@ class WooCommerce_FAQs {
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+
+		//load upgrade functions
+		add_action('init', array( $this, 'upgrade_actions' ) );
 
 		// Add the options page and menu item.
 		add_filter( 'woocommerce_settings_tabs_array', array( $this, 'admin_menu' ) );
@@ -234,6 +237,37 @@ class WooCommerce_FAQs {
 	 */
 	public static function deactivate( $network_wide ) {
 		// TODO: Define deactivation functionality here
+	}
+
+	/**
+	 * Run upgrade options
+	 *
+	 * @since    1.1.0
+	 *
+	 */
+	function upgrade_actions(){
+
+		$current_version = get_option( $this->option_prefix . 'plugin_version', '1.0.9' );
+
+		if($current_version != $this->version){
+
+			switch ($current_version) {
+
+				case '1.0.9':
+
+					//update comment statuses
+					global $wpdb;
+
+					$wpdb->update($table = $wpdb->posts, $data = array('comment_status'=>'open'), $where = array('post_type'=>$this->post_type), $format = array('%s'), $where_format = array('%s') );
+
+					break;
+
+			}
+
+			update_option( $this->option_prefix . 'plugin_version', $this->version );
+
+		}
+
 	}
 
 	/**
@@ -1324,7 +1358,8 @@ class WooCommerce_FAQs {
 
 		add_meta_box( $this->post_type . '_product', __( 'FAQ Details', $this->plugin_slug ), array( $this, 'metabox' ), $this->post_type, 'normal', 'high' );
 
-		remove_meta_box( 'commentstatusdiv', $this->post_type, 'normal' );
+		//this causes comments to become disabled!
+		//remove_meta_box( 'commentstatusdiv', $this->post_type, 'normal' );
 
 	}
 

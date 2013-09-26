@@ -180,8 +180,30 @@ if( $faqs->have_posts() ){
 		//we don't want to allow answers on an unpublished
 		//faq, or allow unauthorized users to answer
 		if( current_user_can( $answer_caps ) && $preview != 'preview' ) {
+			$args = array(
+			  'id_form'           => 'commentform',
+			  'id_submit'         => 'submit',
+			  'title_reply'       => __( 'Leave an Answer', $this->plugin_slug ),
+			  'title_reply_to'    => __( 'Leave an Answer to %s', $this->plugin_slug ),
+			  'cancel_reply_link' => __( 'Cancel Answer', $this->plugin_slug ),
+			  'label_submit'      => __( 'Post Answer', $this->plugin_slug ),
 
-			comment_form();
+			  'comment_field' =>  '<p class="comment-form-comment"><label for="comment">' . _x( 'Answer', 'noun', $this->plugin_slug ) .
+			    '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true">' .
+			    '</textarea></p>',
+
+			  'must_log_in' => '',
+
+			  'logged_in_as' => '',
+
+			  'comment_notes_before' => '',
+
+			  'comment_notes_after' => '',
+
+			  'fields' => apply_filters( 'comment_form_default_fields', array()
+			  ),
+			);
+			comment_form($args);
 			
 		}
 
