@@ -1,0 +1,370 @@
+# Copyright (C) 2013 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version:  \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/woocommerce-product-faqs\n"
+"POT-Creation-Date: 2013-10-18 15:08:25+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2013-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: class-woocommerce-faqs.php:455
+msgid "FAQs"
+msgstr ""
+
+#: class-woocommerce-faqs.php:492 class-woocommerce-faqs.php:518
+msgid "WooFAQs"
+msgstr ""
+
+#: class-woocommerce-faqs.php:494
+msgid "WooFAQ"
+msgstr ""
+
+#: class-woocommerce-faqs.php:496
+msgid "Add New"
+msgstr ""
+
+#: class-woocommerce-faqs.php:498
+msgid "Add New WooFAQ"
+msgstr ""
+
+#: class-woocommerce-faqs.php:500 class-woocommerce-faqs.php:502
+msgid "Edit WooFAQ"
+msgstr ""
+
+#: class-woocommerce-faqs.php:504
+msgid "New WooFAQ"
+msgstr ""
+
+#: class-woocommerce-faqs.php:506
+msgid "All WooFAQs"
+msgstr ""
+
+#: class-woocommerce-faqs.php:508
+msgid "View WooFAQ"
+msgstr ""
+
+#: class-woocommerce-faqs.php:510
+msgid "Search WooFAQs"
+msgstr ""
+
+#: class-woocommerce-faqs.php:512
+msgid "No WooFAQs found"
+msgstr ""
+
+#: class-woocommerce-faqs.php:514
+msgid "No WooFAQs found in Trash"
+msgstr ""
+
+#: class-woocommerce-faqs.php:701
+msgid "Please enter a question!"
+msgstr ""
+
+#: class-woocommerce-faqs.php:707
+msgid "Please enter your name!"
+msgstr ""
+
+#: class-woocommerce-faqs.php:713
+msgid "Please enter a valid email!"
+msgstr ""
+
+#: class-woocommerce-faqs.php:732
+msgid "Question for "
+msgstr ""
+
+#: class-woocommerce-faqs.php:766
+msgid ""
+"FAQ Successfully Posted. Your question will be reviewed and answered soon!"
+msgstr ""
+
+#: class-woocommerce-faqs.php:815
+msgid "The antispam wasn't entered correctly. Go back and try it again."
+msgstr ""
+
+#: class-woocommerce-faqs.php:830
+msgid ""
+"You've triggered our anti-spam filter. If you have a form-filling "
+"application/extension, please disable it temporarily."
+msgstr ""
+
+#: class-woocommerce-faqs.php:893
+msgid "New "
+msgstr ""
+
+#: class-woocommerce-faqs.php:898
+msgid " asked the following question about "
+msgstr ""
+
+#: class-woocommerce-faqs.php:902
+msgid "The question can be administered "
+msgstr ""
+
+#: class-woocommerce-faqs.php:902 class-woocommerce-faqs.php:922
+msgid "here"
+msgstr ""
+
+#: class-woocommerce-faqs.php:913
+msgid "Response to "
+msgstr ""
+
+#: class-woocommerce-faqs.php:918
+msgid "A reply to your question about "
+msgstr ""
+
+#: class-woocommerce-faqs.php:918
+msgid " has been posted!"
+msgstr ""
+
+#: class-woocommerce-faqs.php:922
+msgid "View the answer"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1009
+msgid "A: "
+msgstr ""
+
+#: class-woocommerce-faqs.php:1021
+msgid "Asker: "
+msgstr ""
+
+#: class-woocommerce-faqs.php:1027
+msgid "Answerer: "
+msgstr ""
+
+#: class-woocommerce-faqs.php:1082
+msgid "Preview this"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1082
+msgid "Preview"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1084
+msgid "Approve this "
+msgstr ""
+
+#: class-woocommerce-faqs.php:1086
+msgid "Approve"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1092
+msgid "View this "
+msgstr ""
+
+#: class-woocommerce-faqs.php:1092 class-woocommerce-faqs.php:1563
+msgid "View"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1189
+msgid "Current user does not have permissions over this post"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1202
+msgid "Cheatin, eh?"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1215
+msgid "Approved...reloading now."
+msgstr ""
+
+#: class-woocommerce-faqs.php:1309
+msgid "Question"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1311
+msgid "Asker"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1313
+msgid "Asker Email"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1315 class-woocommerce-faqs.php:1510
+msgid "Answers"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1317
+msgid "Date Asked"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1359
+msgid "FAQ Details"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1400
+msgid "Product this question is shown on: "
+msgstr ""
+
+#: class-woocommerce-faqs.php:1422
+msgid "No Products Found"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1431
+msgid ""
+"It is best to leave the fields below blank if you are adding a FAQ manually."
+msgstr ""
+
+#: class-woocommerce-faqs.php:1438
+msgid "Author: "
+msgstr ""
+
+#: class-woocommerce-faqs.php:1447
+msgid "Author Email: "
+msgstr ""
+
+#: class-woocommerce-faqs.php:1510
+msgid "Comments"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1512
+msgid "Add comment"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1512
+msgid "Add answer"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1514
+msgid "Add Comment"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1514
+msgid "Add Answer"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1516
+msgid "Add new Comment"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1516
+msgid "Add new Answer"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1518
+msgid "No comments yet."
+msgstr ""
+
+#: class-woocommerce-faqs.php:1518
+msgid "No answers yet."
+msgstr ""
+
+#: class-woocommerce-faqs.php:1520
+msgid "Show comments"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1520
+msgid "Show answers"
+msgstr ""
+
+#: class-woocommerce-faqs.php:1522
+msgid "No more comments found."
+msgstr ""
+
+#: class-woocommerce-faqs.php:1522
+msgid "No more answers found."
+msgstr ""
+
+#: class-woocommerce-faqs.php:1561
+msgid "FAQ Link:"
+msgstr ""
+
+#: views/admin.php:42
+msgid "Anti-Spam Settings"
+msgstr ""
+
+#: views/admin.php:52
+msgid " Get your API keys %shere%s"
+msgstr ""
+
+#: views/admin.php:58
+msgid "Use Are You A Human antispam?"
+msgstr ""
+
+#: views/admin.php:70
+msgid "Publisher Key"
+msgstr ""
+
+#: views/admin.php:82
+msgid "Public Key"
+msgstr ""
+
+#: views/admin.php:102
+msgid "Tab Settings"
+msgstr ""
+
+#: views/admin.php:112
+msgid "Tab Title"
+msgstr ""
+
+#: views/admin.php:122
+msgid "Tab Priority"
+msgstr ""
+
+#: views/faq-form.php:21
+msgid "Have a Question? Submit it here!"
+msgstr ""
+
+#: views/faq-form.php:91 views/faq-form.php:97
+msgid "Your Name"
+msgstr ""
+
+#: views/faq-form.php:99 views/faq-form.php:101
+msgid "Your Email"
+msgstr ""
+
+#: views/faq-form.php:103 views/faq-form.php:105
+msgid "Your Question"
+msgstr ""
+
+#: views/faq-form.php:113
+msgid "Submit"
+msgstr ""
+
+#: views/loop-faqs.php:102
+msgid "FAQs for "
+msgstr ""
+
+#: views/loop-faqs.php:146
+msgid "Click to view the answer!"
+msgstr ""
+
+#: views/loop-faqs.php:146
+msgid "Q:"
+msgstr ""
+
+#: views/loop-faqs.php:150
+msgid "Pending Approval"
+msgstr ""
+
+#: views/loop-faqs.php:172
+msgid "This question has not yet been responded to."
+msgstr ""
+
+#: views/loop-faqs.php:186
+msgid "Leave an Answer"
+msgstr ""
+
+#: views/loop-faqs.php:187
+msgid "Leave an Answer to %s"
+msgstr ""
+
+#: views/loop-faqs.php:188
+msgid "Cancel Answer"
+msgstr ""
+
+#: views/loop-faqs.php:189
+msgid "Post Answer"
+msgstr ""
+
+#: views/loop-faqs.php:191
+msgctxt "noun"
+msgid "Answer"
+msgstr ""
+
+#: views/loop-faqs.php:218
+msgid "Approve this FAQ"
+msgstr ""
