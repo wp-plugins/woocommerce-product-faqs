@@ -10,21 +10,23 @@
 
 		}
 
-		$('.faq-question').click(function(){
+		$('.faq-question').click(function(event){
+
+			event.stopPropagation();
 
 			$(this).siblings('.faq-content').toggle();
 
 		});
 
-		if(typeof faq_highlight !== 'undefined'){
+		if(typeof woocommerce_faqs_data.faq_highlight !== 'undefined'){
 
-			$('.faq-'+faq_highlight+' .faq-content').toggle();
+			$('.faq-'+woocommerce_faqs_data.faq_highlight+':not(.show) .faq-content').toggle();
 
 		}
 
 		$('#quick-approve-faq').submit(function(event){
 
-			$(this).children('input[type="submit"]').replaceWith('<img src="'+spinner+'" />');
+			$(this).children('input[type="submit"]').replaceWith('<img src="'+woocommerce_faqs_data.spinner+'" />');
 
 			event.preventDefault();
 
@@ -38,12 +40,13 @@
 
 			};
 
-			// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
-			$.post(ajaxurl, data, function(response) {
+			$.post(woocommerce_faqs_data.ajaxurl, data, function(response) {
+
+				console.log(response);
 
 				if(response.type != 'success'){
 
-					alert(response.message);
+					alert( response.message );
 
 					return false;
 

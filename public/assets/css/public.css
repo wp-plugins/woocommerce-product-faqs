@@ -18,10 +18,7 @@
 }
 .single-woo-faq .comment .comment-body{
 	background:white;
-	padding:0px 10px;
-}
-.faq-author{
-	display:none;
+	padding:2px 10px;
 }
 .faq-result.faq-error{
 	display:inline-block;
@@ -29,9 +26,6 @@
 }
 .faq-result.faq-error li{
 	list-style-type:none;
-}
-.comment-author{
-	display:none;
 }
 .comments-h{
 	padding:0;
@@ -43,7 +37,17 @@
 	display:none;
 }
 .single-woo-faq .faq-content{
+	padding: 10px;
 	display: none;
+}
+.single-woo-faq .faq-content > div{
+	margin: 20px 0;
+}
+.single-woo-faq .faq-content > div:first-of-type{
+	margin-top: 0;
+}
+.single-woo-faq.show .faq-content{
+	display: block;
 }
 .single-woo-faq.odd{
 	background:#F1ECE8;
@@ -63,4 +67,19 @@ input.error,textarea.error{
 }
 input#poohbear{
 	display: none !important;
+}
+#tab-faqs input[readonly]{
+	background-color: rgb(235, 235, 228);
+}
+.single-woo-faq .comment-author.vcard{
+	float: none;
+	max-width: none;
+	padding-left: 0;
+}
+.single-woo-faq .comment-author.vcard .avatar{
+	position: static;
+	top: auto;
+	left: auto;
+	right: auto;
+	bottom: auto;
 }
