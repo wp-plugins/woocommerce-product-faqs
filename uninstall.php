@@ -13,7 +13,18 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
-
+//delete options and trash posts
 delete_option('woocommerce_faqs_use_antispam');
 delete_option('woocommerce_faqs_publisher_key');
 delete_option('woocommerce_faqs_scoring_key');
+$posts = get_posts(
+	array(
+		'post_type'=>'woo_faq',
+		'numberposts'=>-1
+	)
+);
+foreach($posts as $post){
+
+	wp_delete_post( $post->ID );
+
+}
