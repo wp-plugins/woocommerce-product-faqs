@@ -30,7 +30,7 @@ class WooCommerce_FAQs {
 	 *
 	 * @var     string
 	 */
-	const VERSION = '2.0';
+	const VERSION = '2.0.1';
 
 	/**
 	 * 
