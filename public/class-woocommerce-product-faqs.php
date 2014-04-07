@@ -891,7 +891,7 @@ class WooCommerce_FAQs {
 
 		$answerer_email = apply_filters( self::$option_prefix . 'answerer_email', get_the_author_meta( 'user_email', $author ), $post_data );
 
-		$from_name = apply_filters( self::$option_prefix . 'from_name', get_option( $this::$option_prefix . 'from_name', false ), $post_data );		
+		$from_name = apply_filters( self::$option_prefix . 'from_name', get_option( self::$option_prefix . 'from_name', false ), $post_data );		
 
 		$asker_email = apply_filters( self::$option_prefix . 'asker_email', $post_data['faq_author_email'], $post_data );
 
