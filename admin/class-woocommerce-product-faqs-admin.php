@@ -68,9 +68,9 @@ class WooCommerce_FAQs_Admin {
 
 		*/
 
-		$this::$plugin = WooCommerce_FAQs::get_instance();
+		self::$plugin = WooCommerce_FAQs::get_instance();
 
-		$this->plugin_slug = $this::$plugin->p('plugin_slug');
+		$this->plugin_slug = self::$plugin->p('plugin_slug');
 
 		//load upgrade functions
 
@@ -96,13 +96,13 @@ class WooCommerce_FAQs_Admin {
 
 		//custom post table columns
 
-		add_filter( 'manage_edit-'.$this::$plugin->p('post_type').'_columns', array( $this, 'set_custom_edit_columns' ) );
+		add_filter( 'manage_edit-'.self::$plugin->p('post_type').'_columns', array( $this, 'set_custom_edit_columns' ) );
 
 		
 
 		//custom post table columns content
 
-		add_action( 'manage_'.$this::$plugin->p('post_type').'_posts_custom_column' , array( $this, 'custom_column' ), 1, 2 );
+		add_action( 'manage_'.self::$plugin->p('post_type').'_posts_custom_column' , array( $this, 'custom_column' ), 1, 2 );
 
 		//meta boxes
 
@@ -174,9 +174,9 @@ class WooCommerce_FAQs_Admin {
 
 	function upgrade_actions() {
 
-		$current_version = get_option( $this::$plugin->p('option_prefix') . 'plugin_version', '1.0.9' );
+		$current_version = get_option( self::$plugin->p('option_prefix') . 'plugin_version', '1.0.9' );
 
-		if($current_version != $this::$plugin->get_version() ) {
+		if($current_version != self::$plugin->get_version() ) {
 
 			switch ($current_version) {
 
@@ -186,13 +186,13 @@ class WooCommerce_FAQs_Admin {
 
 					global $wpdb;
 
-					$wpdb->update($table = $wpdb->posts, $data = array('comment_status'=>'open'), $where = array( 'post_type'=>$this::$plugin->p('post_type') ), $format = array('%s'), $where_format = array('%s') );
+					$wpdb->update($table = $wpdb->posts, $data = array('comment_status'=>'open'), $where = array( 'post_type'=>self::$plugin->p('post_type') ), $format = array('%s'), $where_format = array('%s') );
 
 					break;
 
 			}
 
-			update_option( $this::$plugin->p('option_prefix') . 'plugin_version', $this::$plugin->get_version() );
+			update_option( self::$plugin->p('option_prefix') . 'plugin_version', self::$plugin->get_version() );
 
 		}
 
@@ -211,9 +211,9 @@ class WooCommerce_FAQs_Admin {
 
 		$screen = get_current_screen();
 
-		if ( $screen->id == $this::$plugin->p('plugin_screen_hook_suffix') ) {
+		if ( $screen->id == self::$plugin->p('plugin_screen_hook_suffix') ) {
 
-			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( '/assets/css/admin.css', __FILE__ ), array(), $this::$plugin->get_version() );
+			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( '/assets/css/admin.css', __FILE__ ), array(), self::$plugin->get_version() );
 
 		}
 
@@ -229,19 +229,19 @@ class WooCommerce_FAQs_Admin {
 
 	    echo '<style type="text/css" media="screen">
 
-	        #menu-posts-' . $this::$plugin->p('post_type') . ' .wp-menu-image {
+	        #menu-posts-' . self::$plugin->p('post_type') . ' .wp-menu-image {
 
 	            background: url(' . plugins_url( '/assets/images/icon.png', __FILE__ ) . ') no-repeat 0 -32px !important;
 
 	        }
 
-		#menu-posts-' . $this::$plugin->p('post_type') . ':hover .wp-menu-image, #menu-posts-' . $this::$plugin->p('post_type') . '.wp-has-current-submenu .wp-menu-image {
+		#menu-posts-' . self::$plugin->p('post_type') . ':hover .wp-menu-image, #menu-posts-' . self::$plugin->p('post_type') . '.wp-has-current-submenu .wp-menu-image {
 
 	            background-position:0 0 !important;
 
 	        }
 
-		#icon-edit.icon32-posts-' . $this::$plugin->p('post_type') . ' {background: url(' . plugins_url( '/assets/images/full-32x32.png', __FILE__ ) . ') no-repeat 0px 0px !important;}
+		#icon-edit.icon32-posts-' . self::$plugin->p('post_type') . ' {background: url(' . plugins_url( '/assets/images/full-32x32.png', __FILE__ ) . ') no-repeat 0px 0px !important;}
 
 	    </style>';
 
@@ -259,9 +259,9 @@ class WooCommerce_FAQs_Admin {
 
 		//we need to load this script on the edit page for our post type
 
-		if ( $screen->id == 'edit-' . $this::$plugin->p('post_type') ) {
+		if ( $screen->id == 'edit-' . self::$plugin->p('post_type') ) {
 
-			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( '/assets/js/admin.js', __FILE__ ), array( 'jquery' ), $this::$plugin->get_version() );
+			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( '/assets/js/admin.js', __FILE__ ), array( 'jquery' ), self::$plugin->get_version() );
 
 			$localize = array(
 
@@ -279,11 +279,11 @@ class WooCommerce_FAQs_Admin {
 
 				//and localize the color with a filter, so it can be changed either by user or maybe later as a settings option
 
-				$localize['faq_highlight_color'] = apply_filters( $this::$plugin->p('option_prefix') . 'admin_faq_highlight_color', '#9ED1D6' );
+				$localize['faq_highlight_color'] = apply_filters( self::$plugin->p('option_prefix') . 'admin_faq_highlight_color', '#9ED1D6' );
 
 			}
 
-			wp_localize_script( $this->plugin_slug . '-admin-script', $this::$plugin->p('option_prefix') . 'data', $localize );
+			wp_localize_script( $this->plugin_slug . '-admin-script', self::$plugin->p('option_prefix') . 'data', $localize );
 
 		}
 
@@ -322,7 +322,7 @@ class WooCommerce_FAQs_Admin {
 
 		//check for our post type
 
-		if ( $post->post_type == $this::$plugin->p('post_type') ) {
+		if ( $post->post_type == self::$plugin->p('post_type') ) {
 
 			$post_type_object = get_post_type_object( $post->post_type );
 
@@ -363,9 +363,9 @@ class WooCommerce_FAQs_Admin {
 
     	global $post;
 
-    	if( $post->post_type == $this::$plugin->p('post_type') ) {
+    	if( $post->post_type == self::$plugin->p('post_type') ) {
 
-    		$preview_link = get_permalink( (int)get_post_meta( $post->ID, '_' . $this::$plugin->p('post_type') . '_product', true ) );
+    		$preview_link = get_permalink( (int)get_post_meta( $post->ID, '_' . self::$plugin->p('post_type') . '_product', true ) );
 
     		$publish = ( $post->post_status == 'publish' ? 'view' : 'preview' );
 
@@ -451,9 +451,9 @@ class WooCommerce_FAQs_Admin {
 
 		}
 
-		$publisher = get_option( $this::$plugin->p('option_prefix') . 'publisher_key' );
+		$publisher = get_option( self::$plugin->p('option_prefix') . 'publisher_key' );
 
-		$scoring = get_option( $this::$plugin->p('option_prefix') . 'scoring_key' );
+		$scoring = get_option( self::$plugin->p('option_prefix') . 'scoring_key' );
 
 		return array(
 
@@ -463,7 +463,7 @@ class WooCommerce_FAQs_Admin {
 
 					'type' 		=> 'title',
 
-					'id' 		=> $this::$plugin->p('option_prefix') . 'general',
+					'id' 		=> self::$plugin->p('option_prefix') . 'general',
 
 					'desc'		=> ''
 
@@ -473,7 +473,7 @@ class WooCommerce_FAQs_Admin {
 
 					$title		=> __('Expand FAQ content by default', $this->plugin_slug ),
 
-					'id'		=> $this::$plugin->p('option_prefix') . 'expand_faqs',
+					'id'		=> self::$plugin->p('option_prefix') . 'expand_faqs',
 
 					'type'		=> 'checkbox',
 
@@ -489,7 +489,7 @@ class WooCommerce_FAQs_Admin {
 
 					$title		=> __('Disable asking functionality', $this->plugin_slug ),
 
-					'id'		=> $this::$plugin->p('option_prefix') . 'disable_ask',
+					'id'		=> self::$plugin->p('option_prefix') . 'disable_ask',
 
 					'type'		=> 'checkbox',
 
@@ -505,7 +505,7 @@ class WooCommerce_FAQs_Admin {
 
 					$title		=> __('FAQ notification email address', $this->plugin_slug ),
 
-					'id'		=> $this::$plugin->p('option_prefix') . 'answerer_email',
+					'id'		=> self::$plugin->p('option_prefix') . 'answerer_email',
 
 					'type'		=> 'text',
 
@@ -519,7 +519,7 @@ class WooCommerce_FAQs_Admin {
 
 					$title		=> __('FAQ notification from name', $this->plugin_slug ),
 
-					'id'		=> $this::$plugin->p('option_prefix') . 'from_name',
+					'id'		=> self::$plugin->p('option_prefix') . 'from_name',
 
 					'type'		=> 'text',
 
@@ -533,7 +533,7 @@ class WooCommerce_FAQs_Admin {
 
 					'type'		=> 'sectionend',
 
-					'id'		=> $this::$plugin->p('option_prefix') . 'general'
+					'id'		=> self::$plugin->p('option_prefix') . 'general'
 
 				),
 
@@ -543,7 +543,7 @@ class WooCommerce_FAQs_Admin {
 
 					'type' 		=> 'title',
 
-					'id' 		=> $this::$plugin->p('option_prefix') . 'antispam',
+					'id' 		=> self::$plugin->p('option_prefix') . 'antispam',
 
 					'desc'		=> __('Please choose your Anti-Spam settings.' .
 
@@ -559,7 +559,7 @@ class WooCommerce_FAQs_Admin {
 
 					$title		=> __('Use Are You A Human antispam?', $this->plugin_slug ),
 
-					'id'		=> $this::$plugin->p('option_prefix') . 'use_antispam',
+					'id'		=> self::$plugin->p('option_prefix') . 'use_antispam',
 
 					'type'		=> 'checkbox',
 
@@ -571,7 +571,7 @@ class WooCommerce_FAQs_Admin {
 
 					$title		=> __('Publisher Key', $this->plugin_slug ),
 
-					'id'		=> $this::$plugin->p('option_prefix') . 'publisher_key',
+					'id'		=> self::$plugin->p('option_prefix') . 'publisher_key',
 
 					'type'		=> 'text',
 
@@ -583,7 +583,7 @@ class WooCommerce_FAQs_Admin {
 
 					$title		=> __('Public/Scoring Key', $this->plugin_slug ),
 
-					'id'		=> $this::$plugin->p('option_prefix') . 'scoring_key',
+					'id'		=> self::$plugin->p('option_prefix') . 'scoring_key',
 
 					'type'		=> 'text',
 
@@ -595,7 +595,7 @@ class WooCommerce_FAQs_Admin {
 
 					'type'		=> 'sectionend',
 
-					'id'		=> $this::$plugin->p('option_prefix') . 'antispam'
+					'id'		=> self::$plugin->p('option_prefix') . 'antispam'
 
 				),
 
@@ -605,7 +605,7 @@ class WooCommerce_FAQs_Admin {
 
 					'type' 		=> 'title',
 
-					'id' 		=> $this::$plugin->p('option_prefix') . 'tab_settings'
+					'id' 		=> self::$plugin->p('option_prefix') . 'tab_settings'
 
 				),
 
@@ -613,7 +613,7 @@ class WooCommerce_FAQs_Admin {
 
 					$title		=> __('Tab Title', $this->plugin_slug ),
 
-					'id'		=> $this::$plugin->p('option_prefix') . 'tab_title',
+					'id'		=> self::$plugin->p('option_prefix') . 'tab_title',
 
 					'type'		=> 'text'
 
@@ -623,7 +623,7 @@ class WooCommerce_FAQs_Admin {
 
 					$title		=> __('Tab Priority', $this->plugin_slug ),
 
-					'id'		=> $this::$plugin->p('option_prefix') . 'tab_priority',
+					'id'		=> self::$plugin->p('option_prefix') . 'tab_priority',
 
 					'type'		=> 'text'
 
@@ -633,7 +633,7 @@ class WooCommerce_FAQs_Admin {
 
 					'type'		=> 'sectionend',
 
-					'id'		=> $this::$plugin->p('option_prefix') . 'tab_settings'
+					'id'		=> self::$plugin->p('option_prefix') . 'tab_settings'
 
 				),
 
@@ -649,17 +649,17 @@ class WooCommerce_FAQs_Admin {
 
 	function update_old_wc_options() {
 
-		update_option( $this::$plugin->p('option_prefix') . 'publisher_key', sanitize_text_field( $_POST[$this::$plugin->p('option_prefix') . 'publisher_key'] ) );
+		update_option( self::$plugin->p('option_prefix') . 'publisher_key', sanitize_text_field( $_POST[self::$plugin->p('option_prefix') . 'publisher_key'] ) );
 
-		update_option( $this::$plugin->p('option_prefix') . 'faqs_scoring_key', sanitize_text_field( $_POST[$this::$plugin->p('option_prefix') . 'scoring_key'] ) );
+		update_option( self::$plugin->p('option_prefix') . 'faqs_scoring_key', sanitize_text_field( $_POST[self::$plugin->p('option_prefix') . 'scoring_key'] ) );
 
-		$use_antispam = ( sanitize_text_field( $_POST[$this::$plugin->p('option_prefix') . 'use_antispam'] ) == 1 ? 'yes' : 'no');
+		$use_antispam = ( sanitize_text_field( $_POST[self::$plugin->p('option_prefix') . 'use_antispam'] ) == 1 ? 'yes' : 'no');
 
-		update_option( $this::$plugin->p('option_prefix') . 'use_antispam', $use_antispam );
+		update_option( self::$plugin->p('option_prefix') . 'use_antispam', $use_antispam );
 
-		update_option( $this::$plugin->p('option_prefix') . 'tab_title', sanitize_text_field( $_POST[$this::$plugin->p('option_prefix') . 'tab_title'] ) );
+		update_option( self::$plugin->p('option_prefix') . 'tab_title', sanitize_text_field( $_POST[self::$plugin->p('option_prefix') . 'tab_title'] ) );
 
-		update_option( $this::$plugin->p('option_prefix') . 'tab_priority', sanitize_text_field( $_POST[$this::$plugin->p('option_prefix') . 'tab_priority'] ) );
+		update_option( self::$plugin->p('option_prefix') . 'tab_priority', sanitize_text_field( $_POST[self::$plugin->p('option_prefix') . 'tab_priority'] ) );
 
 	}
 
@@ -703,13 +703,13 @@ class WooCommerce_FAQs_Admin {
 
 	        case 'asker' :
 
-	        	echo get_post_meta( $post_id, '_' . $this::$plugin->p('post_type') . '_author_name', true );
+	        	echo get_post_meta( $post_id, '_' . self::$plugin->p('post_type') . '_author_name', true );
 
 	            break;
 
 	        case 'asker_email' :
 
-	            echo get_post_meta( $post_id, '_' . $this::$plugin->p('post_type') . '_author_email', true );
+	            echo get_post_meta( $post_id, '_' . self::$plugin->p('post_type') . '_author_email', true );
 
 	            break;
 
@@ -725,7 +725,7 @@ class WooCommerce_FAQs_Admin {
 
 	function meta_boxes() {
 
-		add_meta_box( $this::$plugin->p('post_type') . '_product', __( 'FAQ Details', $this->plugin_slug ), array( $this, 'metabox' ), $this::$plugin->p('post_type'), 'normal', 'high' );
+		add_meta_box( self::$plugin->p('post_type') . '_product', __( 'FAQ Details', $this->plugin_slug ), array( $this, 'metabox' ), self::$plugin->p('post_type'), 'normal', 'high' );
 
 	}
 
@@ -739,19 +739,19 @@ class WooCommerce_FAQs_Admin {
 
 		//get current value
 
-		$current_product = get_post_meta( $post->ID, '_' . $this::$plugin->p('post_type') . '_product', true );
+		$current_product = get_post_meta( $post->ID, '_' . self::$plugin->p('post_type') . '_product', true );
 
 		//get current value
 
-		$category = get_post_meta( $post->ID, '_' . $this::$plugin->p('post_type') . '_categories', true );
+		$category = get_post_meta( $post->ID, '_' . self::$plugin->p('post_type') . '_categories', true );
 
-		$author_name = get_post_meta( $post->ID, '_' . $this::$plugin->p('post_type') . '_author_name', true );
+		$author_name = get_post_meta( $post->ID, '_' . self::$plugin->p('post_type') . '_author_name', true );
 
-		$author_email = get_post_meta( $post->ID, '_' . $this::$plugin->p('post_type') . '_author_email', true );
+		$author_email = get_post_meta( $post->ID, '_' . self::$plugin->p('post_type') . '_author_email', true );
 
 		//nonce
 
-		wp_nonce_field( plugin_basename( __FILE__ ), $this::$plugin->p('post_type') . 'meta_nonce' );
+		wp_nonce_field( plugin_basename( __FILE__ ), self::$plugin->p('post_type') . 'meta_nonce' );
 
 		//get all products
 
@@ -769,7 +769,7 @@ class WooCommerce_FAQs_Admin {
 
 			//Product relationship label
 
-			echo '<p><label for="_' . '_' . $this::$plugin->p('post_type') . '_product">';
+			echo '<p><label for="_' . '_' . self::$plugin->p('post_type') . '_product">';
 
 			_e( 'Product this question is shown on.', $this->plugin_slug );
 
@@ -777,7 +777,7 @@ class WooCommerce_FAQs_Admin {
 
 			//Product relationship select
 
-			echo '<p><select name="' . '_' . $this::$plugin->p('post_type') . '_product">';
+			echo '<p><select name="' . '_' . self::$plugin->p('post_type') . '_product">';
 
 			echo '<option ' . selected( $current_product, '0', false ) . ' value="0">' . __( 'No product selection (use category only)', $this->plugin_slug ) . '</option>';
 
@@ -807,7 +807,7 @@ class WooCommerce_FAQs_Admin {
 
 		//Product relationship label
 
-			echo '<p><label for="_' . '_' . $this::$plugin->p('post_type') . '_categories">';
+			echo '<p><label for="_' . '_' . self::$plugin->p('post_type') . '_categories">';
 
 			_e( 'Categories this question is shown on.', $this->plugin_slug );
 
@@ -837,9 +837,9 @@ class WooCommerce_FAQs_Admin {
 
 				'hierarchical'       => 0, 
 
-				'name'               => '_' . $this::$plugin->p('post_type') . '_categories',
+				'name'               => '_' . self::$plugin->p('post_type') . '_categories',
 
-				'id'                 => '_' . $this::$plugin->p('post_type') . '_categories',
+				'id'                 => '_' . self::$plugin->p('post_type') . '_categories',
 
 				'class'              => 'postform',
 
@@ -869,23 +869,23 @@ class WooCommerce_FAQs_Admin {
 
 		//author's name
 
-		echo '<p><label for="_' . $this::$plugin->p('post_type') . '_author_name">';
+		echo '<p><label for="_' . self::$plugin->p('post_type') . '_author_name">';
 
 		_e('Author: ', $this->plugin_slug );
 
 		echo '</label>';
 
-		echo '<input type="text" name="_' . $this::$plugin->p('post_type') . '_author_name" value="' . $author_name . '"/></p>';
+		echo '<input type="text" name="_' . self::$plugin->p('post_type') . '_author_name" value="' . $author_name . '"/></p>';
 
 		//author's email
 
-		echo '<p><label for="_' . $this::$plugin->p('post_type') . '_author_email">';
+		echo '<p><label for="_' . self::$plugin->p('post_type') . '_author_email">';
 
 		_e('Author Email: ', $this->plugin_slug );
 
 		echo '</label>';
 
-		echo '<input type="email" name="_' . $this::$plugin->p('post_type') . '_author_email" value="' . $author_email . '"/></p>';
+		echo '<input type="email" name="_' . self::$plugin->p('post_type') . '_author_email" value="' . $author_email . '"/></p>';
 
 	}
 
@@ -908,29 +908,29 @@ class WooCommerce_FAQs_Admin {
 
 		// Secondly we need to check if the user intended to change this value.
 
-		if ( ! isset( $_POST[$this::$plugin->p('post_type') . 'meta_nonce'] ) || ! wp_verify_nonce( $_POST[$this::$plugin->p('post_type') . 'meta_nonce'], plugin_basename( __FILE__ ) ) ) {
+		if ( ! isset( $_POST[self::$plugin->p('post_type') . 'meta_nonce'] ) || ! wp_verify_nonce( $_POST[self::$plugin->p('post_type') . 'meta_nonce'], plugin_basename( __FILE__ ) ) ) {
 
       		return;
 
       	}
 
-      	$author_name = sanitize_text_field( $_POST['_' . $this::$plugin->p('post_type') . '_author_name'] );
+      	$author_name = sanitize_text_field( $_POST['_' . self::$plugin->p('post_type') . '_author_name'] );
 
-      	$author_email = sanitize_text_field( $_POST['_' . $this::$plugin->p('post_type') . '_author_email'] );
+      	$author_email = sanitize_text_field( $_POST['_' . self::$plugin->p('post_type') . '_author_email'] );
 
-      	$product = sanitize_text_field( $_POST['_' . $this::$plugin->p('post_type') . '_product'] );
+      	$product = sanitize_text_field( $_POST['_' . self::$plugin->p('post_type') . '_product'] );
 
-      	$category = intval( $_POST['_' . $this::$plugin->p('post_type') . '_categories'] );
+      	$category = intval( $_POST['_' . self::$plugin->p('post_type') . '_categories'] );
 
-      	if($author_name) update_post_meta( $post_id, '_' . $this::$plugin->p('post_type') . '_author_name', $author_name );
+      	if($author_name) update_post_meta( $post_id, '_' . self::$plugin->p('post_type') . '_author_name', $author_name );
 
-      	if($author_email) update_post_meta( $post_id, '_' . $this::$plugin->p('post_type') . '_author_email', $author_email );
+      	if($author_email) update_post_meta( $post_id, '_' . self::$plugin->p('post_type') . '_author_email', $author_email );
 
 		if( isset( $product ) ) {
 
 			
 
-			update_post_meta( $post_id, '_' . $this::$plugin->p('post_type') . '_product', $product );
+			update_post_meta( $post_id, '_' . self::$plugin->p('post_type') . '_product', $product );
 
 		}
 
@@ -938,11 +938,11 @@ class WooCommerce_FAQs_Admin {
 
 			
 
-			delete_post_meta( $post_id, '_' . $this::$plugin->p('post_type') . '_product' );
+			delete_post_meta( $post_id, '_' . self::$plugin->p('post_type') . '_product' );
 
 		}
 
-		if( isset( $category ) && $category >= 0) update_post_meta( $post_id, '_' . $this::$plugin->p('post_type') . '_categories', $category );
+		if( isset( $category ) && $category >= 0) update_post_meta( $post_id, '_' . self::$plugin->p('post_type') . '_categories', $category );
 
 	}
 
@@ -957,7 +957,7 @@ class WooCommerce_FAQs_Admin {
 
 		remove_filter( 'gettext', array( $this, 'filter_gettext' ), 10, 3 );
 
-		if( ( isset( $_REQUEST['post_type'] ) && $_REQUEST['post_type'] == $this::$plugin->p('post_type') ) || ( isset($_REQUEST['post']) && get_post_type( $_REQUEST['post'] ) == $this::$plugin->p('post_type') ) ) {
+		if( ( isset( $_REQUEST['post_type'] ) && $_REQUEST['post_type'] == self::$plugin->p('post_type') ) || ( isset($_REQUEST['post']) && get_post_type( $_REQUEST['post'] ) == self::$plugin->p('post_type') ) ) {
 
 			$strings = array(
 
