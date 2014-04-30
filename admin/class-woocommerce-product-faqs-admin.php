@@ -833,7 +833,7 @@ class WooCommerce_FAQs_Admin {
 
 				'echo'               => 1,
 
-				'selected'           => $category !== FALSE ? $category : -1,
+				'selected'           => $category !== FALSE && $category !== '' ? $category : -1,
 
 				'hierarchical'       => 0, 
 
@@ -928,21 +928,21 @@ class WooCommerce_FAQs_Admin {
 
 		if( isset( $product ) ) {
 
-			
-
 			update_post_meta( $post_id, '_' . self::$plugin->p('post_type') . '_product', $product );
 
 		}
 
-		else { 
-
-			
+		else {
 
 			delete_post_meta( $post_id, '_' . self::$plugin->p('post_type') . '_product' );
 
 		}
 
-		if( isset( $category ) && $category >= 0) update_post_meta( $post_id, '_' . self::$plugin->p('post_type') . '_categories', $category );
+		if( isset( $category ) && $category >= 0){
+			update_post_meta( $post_id, '_' . self::$plugin->p('post_type') . '_categories', $category );
+		}else{
+			delete_post_meta( $post_id, '_' . self::$plugin->p('post_type') . '_categories' );
+		}
 
 	}
 
