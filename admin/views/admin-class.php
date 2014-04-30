@@ -45,7 +45,7 @@ class WC_Settings_FAQs extends WC_Settings_Page {
 	 */
 	public function __construct() {
 
-		$this::$plugin = WooCommerce_FAQs_Admin::get_instance();
+		self::$plugin = WooCommerce_FAQs_Admin::get_instance();
 
 		$this->id    = 'faqs';
 		$this->label = __( 'FAQs', 'woocommerce_faqs' );
@@ -62,7 +62,7 @@ class WC_Settings_FAQs extends WC_Settings_Page {
 	 */
 	public function get_settings() {
 
-		return $this::$plugin->get_settings();
+		return self::$plugin->get_settings();
 
 	}
 

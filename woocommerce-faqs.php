@@ -15,7 +15,7 @@
  * Plugin Name:       WooCommerce Product FAQs
  * Plugin URI:        http://redactweb.com/woocommerce-faqs
  * Description:       Enables your WooComerce powered site to utilize a FAQ
- * Version:           2.0
+ * Version:           2.0.3
  * Author:            Josh Levinson
  * Author URI:        http://joshlevinson.me
  * Text Domain:       woocommerce-faqs
