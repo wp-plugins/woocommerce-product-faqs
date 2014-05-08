@@ -3,8 +3,8 @@ Contributors: joshlevinson
 Donate link: http://redactweb.com
 Tags: woocommerce, faq, frequently asked questions, faqs, woocommerce faqs, woocommerce frequently asked questions, woocommerce product questions
 Requires at least: 3.5.1
-Tested up to: 3.7
-Stable tag: 2.0
+Tested up to: 3.9
+Stable tag: 2.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,6 +113,12 @@ This plugin is currently incompatible with the 404 Redirected plugin. This plugi
 6. Adding a FAQ Manually
 
 == Changelog ==
+
+= 2.0.4 =
+Resolved fatal error when Woo is deactivated
+
+= 2.0.3 =
+Resolved fatal error with PHP 5.2
 
 = 2.0 =
 = Major update! =

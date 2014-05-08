@@ -30,7 +30,7 @@ class WooCommerce_FAQs {
 	 *
 	 * @var     string
 	 */
-	const VERSION = '2.0';
+	const VERSION = '2.0.4';
 
 	/**
 	 * 
@@ -115,6 +115,9 @@ class WooCommerce_FAQs {
 	 * @since     1.0.0
 	 */
 	private function __construct() {
+
+		//deactivate if Woo's class doesn't exist
+		if( !class_exists( 'WooCommerce' ) ) { deactivate_plugins( 'woocommerce-product-faqs/woocommerce-faqs.php' ); }
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
