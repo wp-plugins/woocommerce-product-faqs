@@ -174,6 +174,8 @@ class WooCommerce_FAQs_Admin {
 
 	function upgrade_actions() {
 
+		if( !class_exists( 'WooCommerce' ) ) { deactivate_plugins( 'woocommerce-product-faqs/woocommerce-faqs.php' ); }
+
 		$current_version = get_option( self::$plugin->p('option_prefix') . 'plugin_version', '1.0.9' );
 
 		if($current_version != self::$plugin->get_version() ) {
