@@ -3,8 +3,8 @@ Contributors: joshlevinson
 Donate link: http://redactweb.com
 Tags: woocommerce, faq, frequently asked questions, faqs, woocommerce faqs, woocommerce frequently asked questions, woocommerce product questions
 Requires at least: 3.5.1
-Tested up to: 3.9
-Stable tag: 2.0.4
+Tested up to: 4.1
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,25 +12,18 @@ Extends WooCommerce to allow for the asking, answering, and viewing of FAQs in a
 
 == Description ==
 
+**UPDATE** As of 3.0.0, this plugin has the following requirements:
+- PHP 5.3+
+- WooCommerce 2.0.0+
+
 If you have ever used eBay's 'Ask Buyer' system before, you will know how this plugin behaves.
-
 It extends WooCommerce to allow visitors to ask questions about specific products, get answers, and view other threads.
-
 It also allows you, the store owner, to manually add questions to specific products.
 
-This plugin requires WooCommerce 1.6.6 or higher, though 2.x is preferred.
-
-[Click here](http://redactweb.com/shop/flying-ninja/#tab-faqs) for a sample WooCommerce product page with some FAQs.
-
-= FAQ Spam =
-The submission of FAQs fights spam in one of two ways, with the admin being able to pick between:
-
-1. AYAH (Are you a human?) anti-spam. Google it.
-
-2. "Honeypot" input field. This adds an extra field to the form, hidden with css, that will cause submissions to fail if it is filled out.
+[Click here](http://joshlevinson.me/shop/flying-ninja/#tab-faqs) for a sample WooCommerce product page with some FAQs.
 
 = FAQ Notifications =
-Notifications are in place that will notify the admin of new questions, with links to administer each question.  
+Notifications are in place that will notify the admin of new questions, with links to administer each question.
 
 Notifications are in place that will notify the asker when their question has been answered, with links to view the product.
 
@@ -42,24 +35,6 @@ so in the case of numerous questions, the user does not have to hunt for his que
 * Add ajax loaders where ajax is used so the user knows that their request is being processed DONE
 
 * Consider adding inline registration option to FAQ form
-
-* Transition answerer capability to product author DONE @ 2.0
-
-* Localize everything DONE
-
-* Add more filters
-
-* Complete documentation
-
-* Consider what (if any) actions need to be added
-
-* Make the 'pending approval' front-end status only show if a faq is indeed pending approval - DONE @ 1.0.0
-
-* Allow approval of FAQ from front-end - DONE @ 1.0.0
-
-* Consider a settings field for admin notification email DONE @ 2.0
-
-* Allow for creating FAQs from/by admin - DONE @ 1.0.6
 
 = Incompatibilities =
 
@@ -86,7 +61,7 @@ so in the case of numerous questions, the user does not have to hunt for his que
 8. Once you have replied to a question, the asker will receive an email with a link to that product's page/faq tab.
 
 = Manual FAQ Entry =
-1. Go to WooFAQs -> Add New
+1. Go to Products -> FAQs -> Add New
 2. Type a title (for reference, not display)
 3. Enter the question in the content area
 4. Choose the product to add the question to.
@@ -113,6 +88,12 @@ This plugin is currently incompatible with the 404 Redirected plugin. This plugi
 6. Adding a FAQ Manually
 
 == Changelog ==
+
+= 3.0.0 =
+- Complete rewrite using namespaces vs class wrappers
+- Requirement of PHP 5.3+ added
+- Requirement of WooCommere 2.0+ added
+- Removed plugin boilerplate code
 
 = 2.0.4 =
 Resolved fatal error when Woo is deactivated
