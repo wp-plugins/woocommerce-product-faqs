@@ -1,70 +1,90 @@
 <?php
+
 /**
- * The WordPress Plugin Boilerplate.
+ * The plugin bootstrap file
  *
- * A foundation off of which to build well-documented WordPress plugins that
- * also follow WordPress Coding Standards and PHP best practices.
+ * This file is read by WordPress to generate the plugin information in the plugin
+ * Dashboard. This file also includes all of the dependencies used by the plugin,
+ * registers the activation and deactivation functions, and defines a function
+ * that starts the plugin.
  *
- * @package   WooCommerce_FAQs
- * @author    Josh Levinson <joshalevinson@gmail.com>
- * @license   GPL-2.0+
- * @link      http://joshlevinson.me
- * @copyright 2014 Josh Levinson
+ * @link              http://joshlevinson.me/
+ * @since             3.0.0
+ * @package           Woocommerce_Product_Faqs
  *
  * @wordpress-plugin
  * Plugin Name:       WooCommerce Product FAQs
- * Plugin URI:        http://redactweb.com/woocommerce-faqs
- * Description:       Enables your WooComerce powered site to utilize a FAQ
- * Version:           2.0.4
+ * Plugin URI:        http://joshlevinson.me/
+ * Description:       WOOFAQS enables your WooCommerce powered site to utilize a FAQ system, allowing both users and site owners to add questions to products.
+ * Version:           3.0.0
  * Author:            Josh Levinson
- * Author URI:        http://joshlevinson.me
- * Text Domain:       woocommerce-faqs
+ * Author URI:        http://joshlevinson.me/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       woocommerce-product-faqs
  * Domain Path:       /languages
- * GitHub Plugin URI: https://github.com/<owner>/<repo>
- * WordPress-Plugin-Boilerplate: v2.6.1
  */
 
-// If this file is called directly, abort.
+/*
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+// If this file is called directly, or if WC isn't activated, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/*----------------------------------------------------------------------------*
- * Common Functions
- *----------------------------------------------------------------------------*/
-require_once( plugin_dir_path( __FILE__ ) . '/functions.php' );
+//versioning constants
+define( 'WOOFAQS_VERSION', '3.0.0' );
+define( 'WOOFAQS_MINIMUM_WP_VERSION', '3.5' );
+define( 'WOOFAQS_MINIMUM_WC_VERSION', '2.0' );
 
-/*----------------------------------------------------------------------------*
- * Public-Facing Functionality
- *----------------------------------------------------------------------------*/
+//paths and URLs for this plugin
+define( 'WOOFAQS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'WOOFAQS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
-require_once( plugin_dir_path( __FILE__ ) . 'public/class-woocommerce-product-faqs.php' );
+//commonly used strings
+define( 'WOOFAQS_POST_TYPE', 'woo_faq' );
+define( 'WOOFAQS_OPTIONS_PREFIX', 'woocommerce_faqs' );
 
-/*
- * Register hooks that are fired when the plugin is activated or deactivated.
- * When the plugin is deleted, the uninstall.php file is loaded.
- */
-register_activation_hook( __FILE__, array( 'WooCommerce_FAQs', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'WooCommerce_FAQs', 'deactivate' ) );
+//if WooCommerce isn't at least v2.0.0, abort.
 
-/*
- * Get the plugin instance
- */
-add_action( 'plugins_loaded', array( 'WooCommerce_FAQs', 'get_instance' ) );
 
-/*----------------------------------------------------------------------------*
- * Dashboard and Administrative Functionality
- *----------------------------------------------------------------------------*/
+add_action( 'woocommerce_loaded', function() {
 
-/*
- * Get the plugin admin instance
- */
-if ( is_admin() ) {
+	if ( ! version_compare( WC_VERSION, '2.0.0', '>' ) ) {
+		return;
+	}
 
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-woocommerce-product-faqs-admin.php' );
-	
-	add_action( 'plugins_loaded', array( 'WooCommerce_FAQs_Admin', 'get_instance' ) );
+	//include functionality shared between front and admin
+	include __DIR__ . '/shared/shared.php';
+	//include public facing functionality
+	include __DIR__ . '/public/public.php';
+	//include admin-only functionality
+	include __DIR__ . '/admin/admin.php';
 
-}
+	//bootstrap the shared functionality
+	Woo_Faqs\CoreShared\hooks();
+	//bootstrap the public functionality
+	Woo_Faqs\CorePublic\hooks();
+	//if in the admin, bootstrap the admin functionality
+	if ( is_admin() ) {
+		Woo_Faqs\CoreAdmin\hooks();
+	}
+
+} );
+
+//register the "shared" activation hook
+register_activation_hook( __DIR__ . '/shared/shared.php', 'Woo_Faqs\CoreShared\activate' );
