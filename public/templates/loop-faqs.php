@@ -154,7 +154,7 @@ if ( $faqs->have_posts() ) {
 		echo '<div class="faq-content">';
 
 		//get the name of the asker
-		echo '<div class="faq-author>';
+		echo '<div class="faq-author">';
 		$author_name = get_post_meta( $faq_id, '_' . WOOFAQS_POST_TYPE . '_author_name', true );
 		echo '<span class="asked-by-on">' . __( '— Asked', 'woocommerce-faqs' ) . ' ';
 		if ( $author_name ) {
