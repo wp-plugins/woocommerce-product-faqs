@@ -113,10 +113,10 @@ function upgrade() {
 				 * to "open" to allow commenting; otherwise, admins can't answer the questions.
 				 */
 				global $wpdb;
-				$table = $wpdb->posts;
-				$data = array( 'comment_status' => 'open' );
-				$where = array( 'post_type' => WOOFAQS_POST_TYPE );
-				$format = array( '%s' );
+				$table        = $wpdb->posts;
+				$data         = array( 'comment_status' => 'open' );
+				$where        = array( 'post_type' => WOOFAQS_POST_TYPE );
+				$format       = array( '%s' );
 				$where_format = array( '%s' );
 
 				$wpdb->update( $table, $data, $where, $format, $where_format );
@@ -125,6 +125,21 @@ function upgrade() {
 
 		update_option( WOOFAQS_OPTIONS_PREFIX . '_plugin_version', WOOFAQS_VERSION );
 
+	}
+}
+
+/**
+ * Check PHP version against requirement
+ *
+ * Self-deactivates if requirement isn't met
+ * Friendlier message than seeing an actual PHP compat error
+ *
+ * @since 3.0.0
+ */
+function php_version_check() {
+	if ( version_compare( phpversion(), '5.3', '<' ) ) {
+		deactivate_plugins( WOOFAQS_PLUGIN_FILE );
+		exit( 'This plugin requires PHP 5.3+' );
 	}
 }
 
@@ -143,4 +158,5 @@ function activate() {
 	init();
 	upgrade();
 	flush_rewrite_rules();
+	php_version_check();
 }

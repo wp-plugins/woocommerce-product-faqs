@@ -54,22 +54,22 @@ define( 'WOOFAQS_MINIMUM_WC_VERSION', '2.0' );
 //paths and URLs for this plugin
 define( 'WOOFAQS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WOOFAQS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'WOOFAQS_PLUGIN_FILE', plugin_basename( __FILE__ ) );
 
 //commonly used strings
 define( 'WOOFAQS_POST_TYPE', 'woo_faq' );
 define( 'WOOFAQS_OPTIONS_PREFIX', 'woocommerce_faqs' );
 
+//include functionality shared between front and admin
+include __DIR__ . '/shared/shared.php';
+
 //if WooCommerce isn't at least v2.0.0, abort.
-
-
-add_action( 'woocommerce_loaded', function() {
+add_action( 'woocommerce_loaded', function () {
 
 	if ( ! version_compare( WC_VERSION, '2.0.0', '>' ) ) {
 		return;
 	}
 
-	//include functionality shared between front and admin
-	include __DIR__ . '/shared/shared.php';
 	//include public facing functionality
 	include __DIR__ . '/public/public.php';
 	//include admin-only functionality
@@ -87,4 +87,4 @@ add_action( 'woocommerce_loaded', function() {
 } );
 
 //register the "shared" activation hook
-register_activation_hook( __DIR__ . '/shared/shared.php', 'Woo_Faqs\CoreShared\activate' );
+register_activation_hook( __FILE__, 'Woo_Faqs\CoreShared\activate' );
