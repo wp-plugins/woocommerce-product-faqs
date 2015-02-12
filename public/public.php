@@ -247,6 +247,7 @@ function handle_submission() {
 		$input['question_title']    = $post_info['post_title'];
 		$input['question_content']  = $post_info['post_content'];
 		$input['post_id']           = $post_id;
+		$input['product_id']        = $post->ID;
 		$input['product_author_id'] = $post->post_author;
 
 		//result for the form (success)
