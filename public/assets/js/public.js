@@ -21,6 +21,9 @@
 		if(typeof woocommerce_faqs_data.faq_highlight !== 'undefined'){
 
 			$('.faq-'+woocommerce_faqs_data.faq_highlight+':not(.show) .faq-content').toggle();
+			$('html, body').animate({
+				scrollTop: $('.faq-'+woocommerce_faqs_data.faq_highlight).offset().top - 50
+			}, 600);
 
 		}
 
@@ -42,9 +45,7 @@
 
 			$.post(woocommerce_faqs_data.ajaxurl, data, function(response) {
 
-				console.log(response);
-
-				if(response.type != 'success'){
+				if(!response.success){
 
 					alert( response.message );
 

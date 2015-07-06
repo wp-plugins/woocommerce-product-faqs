@@ -13,8 +13,8 @@ $terms = wp_get_post_terms( $post->ID, 'product_cat', array( 'fields' => 'ids' )
 $args = array(
 	'nopaging'       => true,
 	//todo: nix the unlimited posts per page, though it's not likely their will be tons of faqs
-	//todo: possibly considere pagination
-	'posts_per_page' => -1,
+	//todo: possibly consider pagination
+	'posts_per_page' => - 1,
 	'order'          => 'DESC',
 	'post_type'      => WOOFAQS_POST_TYPE,
 	'post_status'    => 'publish',
@@ -55,7 +55,6 @@ if ( isset( $_GET['faq-preview'] ) ) {
 		//if so, override our above args to only retrieve the
 		//preview faq
 		$args = array(
-
 			'post_type'   => WOOFAQS_POST_TYPE,
 			'post__in'    => array( absint( $_GET['faq-preview'] ) ),
 			'post_status' => 'any'
@@ -75,7 +74,7 @@ if ( isset( $_GET['faq-preview'] ) ) {
 		* for a faq that has already been approved
 		* or if we are just viewing a faq
 		*/
-		$preview = $_GET['faq-preview'];
+		$preview = absint( $_GET['faq-preview'] );
 	}
 } else if ( isset( $_GET['faq-view'] ) ) {
 
@@ -108,7 +107,7 @@ if ( $faqs->have_posts() ) {
 		$faq_id = get_the_ID();
 
 		//get the 'comments' (answers)
-		$args = array( 'post_id' => $faq_id, 'order' => 'ASC' );
+		$args     = array( 'post_id' => $faq_id, 'order' => 'ASC' );
 		$comments = get_comments( $args );
 
 		//single faq wrapper
@@ -140,11 +139,11 @@ if ( $faqs->have_posts() ) {
 
 		//the content is the question, which is the title
 		echo '<span class="faq-question"><a title="' . __( 'Click to view the answer!', 'woocommerce-faqs' ) . '">'
-		     . __( 'Q:', 'woocommerce-faqs' ) .
-		     ' ' . get_the_content();
+		     . esc_html_x( 'Q:', 'woocommerce-faqs' ) .
+		     ' ' . esc_html( get_the_content() );
 		//show the faq's status to an admin
 		if ( $preview == 'preview' ) {
-			echo ' (' . __( 'Pending Approval', 'woocommerce-faqs' ) . ') ';
+			echo ' (' . esc_html_x( 'Pending Approval', 'woocommerce-faqs' ) . ') ';
 		}
 		//close the single faq title
 		echo '</a></span>';
@@ -156,12 +155,15 @@ if ( $faqs->have_posts() ) {
 		//get the name of the asker
 		echo '<div class="faq-author">';
 		$author_name = get_post_meta( $faq_id, '_' . WOOFAQS_POST_TYPE . '_author_name', true );
-		echo '<span class="asked-by-on">' . __( '— Asked', 'woocommerce-faqs' ) . ' ';
+		echo '<span class="asked-by-on">' . esc_html_x( '— Asked', 'woocommerce-faqs' ) . ' ';
 		if ( $author_name ) {
-			echo __( 'by', 'woocommerce-faqs' ) . ' </span>';
-			echo '<span class="faq-author-name">' . $author_name . '</span>';
+			/* translators: Used like "Asked by John Doe" (if asker name is available) */
+			echo esc_html_x( 'by', 'woocommerce-faqs' ) . ' </span>';
+			echo '<span class="faq-author-name">' . esc_html( $author_name ) . '</span>';
 		}
-		echo ' ' . __( 'on', 'woocommerce-faqs' );
+
+		/* translators: Used like "Asked by John Doe on 1/2/2016" (date) */
+		echo ' ' . esc_html_x( 'on', 'woocommerce-faqs' );
 		if ( ! $author_name ) {
 			echo '</span>';
 		}
@@ -170,10 +172,10 @@ if ( $faqs->have_posts() ) {
 
 		//list the answers, if any
 		if ( $comments ) {
-			wp_list_comments(array('callback'=>'Woo_Faqs\CorePublic\comment_callback'), $comments);
+			wp_list_comments( array( 'callback' => 'Woo_Faqs\CorePublic\comment_callback' ), $comments );
 		} else {
 			echo '<p class="comment-list awaiting-response">' .
-			     __( 'This question has not yet been responded to.', 'woocommerce-faqs' ) .
+			     esc_html_x( 'This question has not been responded to yet.', 'woocommerce-faqs' ) .
 			     '</p>';
 		}
 
@@ -186,7 +188,7 @@ if ( $faqs->have_posts() ) {
 		//faq, or allow unauthorized users to answer
 		if (
 			is_user_logged_in()
-		    && current_user_can( $answer_caps, $product->ID )
+			&& current_user_can( $answer_caps, $product->ID )
 			&& get_post_status( $faq_id ) == 'publish'
 		) {
 
@@ -211,7 +213,7 @@ if ( $faqs->have_posts() ) {
 			echo '<form id="quick-approve-faq" action="" method="post">';
 			echo '<input id="qaf_post_id" type="hidden" name="post_id" value="' . $faq_id . '" />';
 			echo '<input id="qaf_nonce" type="hidden" name="nonce" value="' . wp_create_nonce( 'publish-post_' . $faq_id ) . '" />';
-			echo '<input type="submit" name="approve_faq" value="' . __( 'Approve this FAQ', 'woocommerce-faqs' ) . '" />';
+			echo '<input type="submit" name="approve_faq" value="' . esc_attr_x( 'Approve this FAQ', 'woocommerce-faqs' ) . '" />';
 			echo '</form>';
 		}
 
