@@ -48,7 +48,7 @@ function hooks() {
 
 	//filter the links so they show up on products instead of a single woo_faq-type permalink
 	add_filter( 'preview_post_link', $n( 'faq_link_filter' ), 10, 2 );
-	add_filter( 'post_type_link', $n('faq_link_filter' ), 1, 3 );
+	add_filter( 'post_type_link', $n( 'faq_link_filter' ), 1, 3 );
 }
 
 /**
@@ -87,62 +87,62 @@ function display_settings() {
 function get_settings() {
 	return array(
 		array(
-			'title' 		=> __('General Settings', 'woocommerce-faqs' ),
-			'type' 		=> 'title',
-			'id' 		=> WOOFAQS_OPTIONS_PREFIX . '_general',
+			'title' => __( 'General Settings', 'woocommerce-faqs' ),
+			'type'  => 'title',
+			'id'    => WOOFAQS_OPTIONS_PREFIX . '_general',
 		),
 		array(
-			'title'		=> __('Expand FAQ content by default', 'woocommerce-faqs' ),
-			'id'		=> WOOFAQS_OPTIONS_PREFIX . '_expand_faqs',
-			'type'		=> 'checkbox',
-			'default'	=> 'no',
-			'desc'		=> __('If this is checked, all FAQs will expand when the tab is visible to show the question and answer.',
+			'title'   => __( 'Expand FAQ content by default', 'woocommerce-faqs' ),
+			'id'      => WOOFAQS_OPTIONS_PREFIX . '_expand_faqs',
+			'type'    => 'checkbox',
+			'default' => 'no',
+			'desc'    => __( 'If this is checked, all FAQs will expand when the tab is visible to show the question and answer.',
 				'woocommerce-faqs' )
 		),
 		array(
-			'title'		=> __('Disable asking functionality', 'woocommerce-faqs' ),
-			'id'		=> WOOFAQS_OPTIONS_PREFIX . '_disable_ask',
-			'type'		=> 'checkbox',
-			'default'	=> 'no',
-			'desc'		=> __('If this is checked, asking/answering can only be done by someone with priveleges to edit the product.',
+			'title'   => __( 'Disable asking functionality', 'woocommerce-faqs' ),
+			'id'      => WOOFAQS_OPTIONS_PREFIX . '_disable_ask',
+			'type'    => 'checkbox',
+			'default' => 'no',
+			'desc'    => __( 'If this is checked, asking/answering can only be done by someone with priveleges to edit the product.',
 				'woocommerce-faqs' )
 		),
 		array(
-			'title'		=> __('FAQ notification email address', 'woocommerce-faqs' ),
-			'id'		=> WOOFAQS_OPTIONS_PREFIX . '_answerer_email',
-			'type'		=> 'text',
-			'desc'		=> __('Default (left blank), new FAQ email is sent to the product author.',
+			'title' => __( 'FAQ notification email address', 'woocommerce-faqs' ),
+			'id'    => WOOFAQS_OPTIONS_PREFIX . '_answerer_email',
+			'type'  => 'text',
+			'desc'  => __( 'Default (left blank), new FAQ email is sent to the product author.',
 				'woocommerce-faqs' )
 		),
 		array(
-			'title'		=> __('FAQ notification from name', 'woocommerce-faqs' ),
-			'id'		=> WOOFAQS_OPTIONS_PREFIX . '_from_name',
-			'type'		=> 'text',
-			'desc'		=> __('Default\'s to WordPress default from name.',
+			'title' => __( 'FAQ notification from name', 'woocommerce-faqs' ),
+			'id'    => WOOFAQS_OPTIONS_PREFIX . '_from_name',
+			'type'  => 'text',
+			'desc'  => __( 'Default\'s to WordPress default from name.',
 				'woocommerce-faqs' )
 		),
 		array(
-			'type'		=> 'sectionend',
-			'id'		=> WOOFAQS_OPTIONS_PREFIX . '_general'
+			'type' => 'sectionend',
+			'id'   => WOOFAQS_OPTIONS_PREFIX . '_general'
 		),
 		array(
-			'title' 		=> __('Tab Settings', 'woocommerce-faqs' ),
-			'type' 		=> 'title',
-			'id' 		=> WOOFAQS_OPTIONS_PREFIX . '_tab_settings'
+			'title' => __( 'Tab Settings', 'woocommerce-faqs' ),
+			'type'  => 'title',
+			'id'    => WOOFAQS_OPTIONS_PREFIX . '_tab_settings'
 		),
 		array(
-			'title'		=> __('Tab Title', 'woocommerce-faqs' ),
-			'id'		=> WOOFAQS_OPTIONS_PREFIX . '_tab_title',
-			'type'		=> 'text'
+			'title' => __( 'Tab Title', 'woocommerce-faqs' ),
+			'id'    => WOOFAQS_OPTIONS_PREFIX . '_tab_title',
+			'type'  => 'text'
 		),
 		array(
-			'title'		=> __('Tab Priority', 'woocommerce-faqs' ),
-			'id'		=> WOOFAQS_OPTIONS_PREFIX . '_tab_priority',
-			'type'		=> 'text'
+			'title' => __( 'Tab Priority', 'woocommerce-faqs' ),
+			'id'    => WOOFAQS_OPTIONS_PREFIX . '_tab_priority',
+			'type'  => 'text'
 		),
 		array(
-			'type'		=> 'sectionend',
-			'id'		=> WOOFAQS_OPTIONS_PREFIX . '_tab_settings'
+			'type' => 'sectionend',
+			'id'   => WOOFAQS_OPTIONS_PREFIX . '_tab_settings'
 		),
 	);
 }
@@ -178,7 +178,7 @@ function admin_enqueue_scripts() {
 		&& $screen->id == 'edit-' . WOOFAQS_POST_TYPE
 	) {
 		wp_enqueue_script(
-			'woocommerece-faqs-admin-script',
+			'woocommerce-faqs-admin-script',
 			WOOFAQS_PLUGIN_URL . '/admin/assets/js/admin.js',
 			array( 'jquery' ),
 			WOOFAQS_VERSION
@@ -198,7 +198,7 @@ function admin_enqueue_scripts() {
 
 		}
 
-		wp_localize_script( 'woocommerece-faqs-admin-script', WOOFAQS_OPTIONS_PREFIX . '_data', $localize );
+		wp_localize_script( 'woocommerce-faqs-admin-script', WOOFAQS_OPTIONS_PREFIX . '_data', $localize );
 
 	}
 }
@@ -227,17 +227,17 @@ function post_row_actions( $actions, $post ) {
 
 		$post_type_label = $post_type_object->labels->singular_name;
 
-		if( $post->post_status == 'draft' || $post->post_status == 'pending' ) {
+		if ( $post->post_status == 'draft' || $post->post_status == 'pending' ) {
 
 			$actions['publish'] = "<a href='#' class='submitpublish' data-id='" .
-			                      $post->ID."' title='" . esc_attr( __( 'Approve this ' , 'woocommerce-faqs' ) ) .
+			                      $post->ID . "' title='" . esc_attr( __( 'Approve this ', 'woocommerce-faqs' ) ) .
 			                      $post_type_label . "' data-nonce='" .
 			                      wp_create_nonce( 'publish-post_' . $post->ID ) . "'>" .
 			                      __( 'Approve', 'woocommerce-faqs' ) . "</a>";
 
-		} else{
+		} else {
 			$actions['view'] = "<a title='" . esc_attr( __( 'View this ', 'woocommerce-faqs' ) ) .
-			                   $post_type_label . "' href='" . faq_link_filter('', $post ) . "'>" .
+			                   $post_type_label . "' href='" . faq_link_filter( '', $post ) . "'>" .
 			                   __( 'View', 'woocommerce-faqs' ) . "</a>";
 		}
 
@@ -248,48 +248,23 @@ function post_row_actions( $actions, $post ) {
 }
 
 /**
- * Generates the preview/view link for our FAQs
- *
- * Not only does this take care of associating a link between
- * FAQ and product, it also allows for highlighting of this specific FAQ
- * and for auto-focus of the FAQ tab.
- *
- * @since    3.0.0
- *
- * @return string The link to the FAQ
- */
-function preview_link( $preview_link = '' ) {
-
-	global $post;
-
-	if( property_exists( $post, 'post_type') && WOOFAQS_POST_TYPE === $post->post_type ) {
-
-		$preview_link = get_permalink( (int)get_post_meta( $post->ID, '_' . WOOFAQS_POST_TYPE . '_product', true ) );
-
-		$publish = ( $post->post_status == 'publish' ? 'view' : 'preview' );
-
-		$preview_link = add_query_arg( 'faq-' . $publish, $post->ID . '#tab-faqs', $preview_link);
-
-	}
-
-	return $preview_link;
-
-}
-
-/**
  * Returns the convoluted permalink to the
  * possible products this faq can lie on.
  *
- * @since    2.0
- * @return   string		product link
+ * @param string $post_link The link to the current post
+ * @param \WP_Post $post The current post
+ *
+ * @return string The product link
  */
-function faq_link_filter( $post_link = '', $post = 0, $leavename = FALSE ){
+function faq_link_filter( $post_link = '', $post ) {
 
 	//if we don't have a post object, bail
-	if(!$post) return $post_link;
+	if ( ! $post ) {
+		return $post_link;
+	}
 
 	//if this isn't the right post type, bail
-	if( ! property_exists( $post, 'post_type' ) || WOOFAQS_POST_TYPE !== $post->post_type ) {
+	if ( ! property_exists( $post, 'post_type' ) || WOOFAQS_POST_TYPE !== $post->post_type ) {
 
 		return $post_link;
 
@@ -304,18 +279,31 @@ function faq_link_filter( $post_link = '', $post = 0, $leavename = FALSE ){
 	$view = $post->post_status == 'publish' ? 'view' : 'preview';
 
 	//if there's nothing in the post meta, we haven't assigned yet and don't have a valid url.
-	if( !$product && !$category ) return '#unassigned-faq';
+	if ( ! $product && ! $category ) {
+		return '#unassigned-faq';
+	}
 
 	//if the faq is for all products, just use the product archive (like /shop)
-	if( $product == 'all' ) return get_post_type_archive_link( 'product' );
+	if ( $product == 'all' ) {
+		return get_post_type_archive_link( 'product' );
+	}
 
-	if( $category ) return get_term_link( $category, 'product_cat' );
+	if ( $category ) {
+		return get_term_link( $category, 'product_cat' );
+	}
 
 	//if we're here, we should have a valid product ID
 	$product = get_permalink( $product );
 
+
+	if( get_option('permalink_structure') ) {
+		$product = add_query_arg( 'faq-' . $view, absint( $post->ID ) . '#tab-faqs', $product );
+	} else {
+		$product .= '&faq-' . $view . '=' . absint( $post->ID ) . '#tab-faqs';
+	}
+
 	//so return the link of that product, with the highlighted faq query string and tab hash
-	return $product . "?faq-$view=$post->ID#tab-faqs";
+	return $product;
 
 }
 
@@ -334,43 +322,34 @@ function approve_woo_faq() {
 	$post_id = absint( $_POST['post_id'] );
 
 	//initialize our results array
-	$result         = array();
-	$result['type'] = 'error';
+	$result = array();
 
 	//todo: move this cap to product author
 	if ( ! current_user_can( 'publish_post', $post_id ) ) {
 
-		$result['message'] = __( 'Current user does not have permissions over this post', 'woocommerce-faqs' );
-
-		echo json_encode( $result );
-
-		die();
+		wp_send_json_error( array(
+			'message' => __( 'Current user does not have permissions over this post', 'woocommerce-faqs' ),
+		) );
 
 	}
 
 	//verify the posted nonce
 	if ( ! wp_verify_nonce( $_POST['nonce'], 'publish-post_' . $post_id ) ) {
 
-		$result['message'] = __( 'Cheatin&#8217; uh?' );
-
-		echo json_encode( $result );
-
-		die();
+		wp_send_json_error( array(
+			'message' => __( 'Cheatin&#8217; uh?' ),
+		) );
 
 	}
 
 	//if we got this far, publish the post and generate the success
 	wp_publish_post( $post_id );
 
-	$result['type'] = 'success';
-
 	$result['message'] = __( 'Approved...reloading now.', 'woocommerce-faqs' );
 
 	$result['redirect'] = admin_url( 'edit.php?post_type=' . WOOFAQS_POST_TYPE );
 
-	echo json_encode( $result );
-
-	die();
+	wp_send_json_success( $result );
 
 }
 
@@ -412,13 +391,13 @@ function custom_column( $column, $post_id ) {
 
 		case 'asker' :
 
-			echo get_post_meta( $post_id, '_' . WOOFAQS_POST_TYPE . '_author_name', true );
+			echo esc_html( get_post_meta( $post_id, '_' . WOOFAQS_POST_TYPE . '_author_name', true ) );
 
 			break;
 
 		case 'asker_email' :
 
-			echo get_post_meta( $post_id, '_' . WOOFAQS_POST_TYPE . '_author_email', true );
+			echo sanitize_email( get_post_meta( $post_id, '_' . WOOFAQS_POST_TYPE . '_author_email', true ) );
 
 			break;
 
@@ -474,17 +453,17 @@ function metabox( $post ) {
 	//get all products
 	//todo: refactor to use paginated or searchable select instead of -1
 	$args = array(
-
-		'post_type'   => 'product',
-		'numberposts' => - 1
-
+		'post_type'              => 'product',
+		'numberposts'            => - 1,
+		'update_post_meta_cache' => false,
+		'update_post_term_cache' => false,
 	);
 
-	$products = get_posts( $args );
+	$products = new \WP_Query( $args );
 
 	if ( $products ) {
 		//Product relationship label
-		echo '<p><label for="_' . '_' . WOOFAQS_POST_TYPE . '_product">';
+		echo '<p><label for="_' . WOOFAQS_POST_TYPE . '_product">';
 		_e( 'Product this question is shown on.', 'woocommerce-faqs' );
 		echo '</label></p>';
 
@@ -493,7 +472,7 @@ function metabox( $post ) {
 		echo '<option ' . selected( $current_product, '0', false ) . ' value="0">' . __( 'No product selection (use category only)', 'woocommerce-faqs' ) . '</option>';
 		echo '<option ' . selected( $current_product, 'all', false ) . ' value="' . 'all' . '">' . __( 'All products', 'woocommerce-faqs' ) . '</option>';
 		foreach ( $products as $product ) {
-			echo '<option ' . selected( $current_product, $product->ID, false ) . ' value="' . $product->ID . '">' . $product->post_title . '</option>';
+			echo '<option ' . selected( $current_product, $product->ID, false ) . ' value="' . absint( $product->ID ) . '">' . esc_html( $product->post_title ) . '</option>';
 		}
 		echo '</select></p>';
 	} //otherwise, just say there are no products
@@ -542,13 +521,13 @@ function metabox( $post ) {
 	echo '<p><label for="_' . WOOFAQS_POST_TYPE . '_author_name">';
 	_e( 'Author: ', 'woocommerce-faqs' );
 	echo '</label>';
-	echo '<input type="text" name="_' . WOOFAQS_POST_TYPE . '_author_name" value="' . $author_name . '"/></p>';
+	echo '<input type="text" name="_' . WOOFAQS_POST_TYPE . '_author_name" value="' . esc_html( $author_name ) . '"/></p>';
 
 	//author's email
 	echo '<p><label for="_' . WOOFAQS_POST_TYPE . '_author_email">';
 	_e( 'Author Email: ', 'woocommerce-faqs' );
 	echo '</label>';
-	echo '<input type="email" name="_' . WOOFAQS_POST_TYPE . '_author_email" value="' . $author_email . '"/></p>';
+	echo '<input type="email" name="_' . WOOFAQS_POST_TYPE . '_author_email" value="' . sanitize_email( $author_email ) . '"/></p>';
 }
 
 /**
@@ -574,17 +553,21 @@ function save_meta( $post_id ) {
 		return;
 	}
 
-	$author_name = sanitize_text_field( $_POST[ '_' . WOOFAQS_POST_TYPE . '_author_name' ] );
-	$author_email = sanitize_text_field( $_POST[ '_' . WOOFAQS_POST_TYPE . '_author_email' ] );
-	$product = sanitize_text_field( $_POST[ '_' . WOOFAQS_POST_TYPE . '_product' ] );
-	$category = intval( $_POST[ '_' . WOOFAQS_POST_TYPE . '_categories' ] );
+	$author_name  = sanitize_text_field( $_POST[ '_' . WOOFAQS_POST_TYPE . '_author_name' ] );
+	$author_email = sanitize_email( $_POST[ '_' . WOOFAQS_POST_TYPE . '_author_email' ] );
+	$product      = absint( $_POST[ '_' . WOOFAQS_POST_TYPE . '_product' ] );
+	$category     = absint( $_POST[ '_' . WOOFAQS_POST_TYPE . '_categories' ] );
 
 	if ( $author_name ) {
 		update_post_meta( $post_id, '_' . WOOFAQS_POST_TYPE . '_author_name', $author_name );
+	} else {
+		delete_post_meta( $post_id, '_' . WOOFAQS_POST_TYPE . '_author_name' );
 	}
 
 	if ( $author_email ) {
 		update_post_meta( $post_id, '_' . WOOFAQS_POST_TYPE . '_author_email', $author_email );
+	} else {
+		delete_post_meta( $post_id, '_' . WOOFAQS_POST_TYPE . '_author_email' );
 	}
 
 	if ( isset( $product ) ) {

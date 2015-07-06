@@ -76,7 +76,7 @@ function enqueue_scripts() {
 
 			//and localize the color with a filter, so it can be changed either by user or maybe later as a settings option
 
-			$localize['faq_highlight_color'] = apply_filters( WOOFAQS_OPTIONS_PREFIX . '_front_faq_highlight_color', '#9ED1D6' );
+			$localize['faq_highlight_color'] = esc_attr( apply_filters( WOOFAQS_OPTIONS_PREFIX . '_front_faq_highlight_color', '#9ED1D6' ) );
 
 		}
 
@@ -101,10 +101,10 @@ function answer_posted( $comment_id, $comment_object ) {
 
 		$post_data = array(
 			'post_id'          => $post_id,
-			'question_title'   => get_the_title( $post_id ),
-			'product_title'    => get_the_title( $product_id ),
-			'product_id'       => $product_id,
-			'faq_author_email' => get_post_meta( $post_id, '_' . WOOFAQS_POST_TYPE . '_author_email', true )
+			'question_title'   => esc_html( get_the_title( $post_id ) ),
+			'product_title'    => esc_html( get_the_title( $product_id ) ),
+			'product_id'       => esc_html( absint( $product_id ) ),
+			'faq_author_email' => sanitize_email( get_post_meta( $post_id, '_' . WOOFAQS_POST_TYPE . '_author_email', true ) ),
 		);
 
 		send_notifications( 'asker', $post_data );
@@ -122,12 +122,10 @@ function redirect_comment_form( $location, $comment ) {
 
 	$faq = $comment->comment_post_ID;
 
-	//die( var_dump( $faq ) );
-
 	if ( $product = get_post_meta( $faq, '_' . WOOFAQS_POST_TYPE . '_product', true ) ) {
-		$location = get_permalink( $product ) . '#tab-faqs';
+		$location = esc_url( get_permalink( $product ) ) . '#tab-faqs';
 	} else if ( isset( $_SERVER['HTTP_REFERER'] ) && $_SERVER['HTTP_REFERER'] ) {
-		$location = $_SERVER['HTTP_REFERER'];
+		$location = esc_url( $_SERVER['HTTP_REFERER'] );
 	}
 
 	return $location;
@@ -216,7 +214,6 @@ function handle_submission() {
 		$errors['faq_author_email'] = __( 'Please enter a valid email!', 'woocommerce-faqs' );
 	}
 
-	//antispam handler, with or without AYAH enabled
 	$result = handle_antispam();
 
 	//if antispam returned a error type result, asker failed antispam check
@@ -246,9 +243,9 @@ function handle_submission() {
 		$input['product_title']     = $post->post_title;
 		$input['question_title']    = $post_info['post_title'];
 		$input['question_content']  = $post_info['post_content'];
-		$input['post_id']           = $post_id;
-		$input['product_id']        = $post->ID;
-		$input['product_author_id'] = $post->post_author;
+		$input['post_id']           = absint( $post_id );
+		$input['product_id']        = absint( $post->ID );
+		$input['product_author_id'] = absint( $post->post_author );
 
 		//result for the form (success)
 		$result['type']    = 'success';
@@ -270,7 +267,6 @@ function handle_submission() {
 /**
  * Handler for building and sending out
  * asker and answerer emails
- * TODO - make this behavior based off of the product author instead of admin
  *
  * @since    3.0.0
  */
@@ -321,7 +317,7 @@ function send_notifications( $to_whom = false, $post_data = null ) {
 	if ( $to_whom ) {
 
 		//filter wp mail to html
-		add_filter( 'wp_mail_content_type', 'Woo_Faqs\CorePublic\set_html_content_type' );
+		add_filter( 'wp_mail_content_type', __NAMESPACE__ . '\set_html_content_type' );
 
 		$from = '';
 		$from .= 'From: ' . $from_name;
@@ -335,20 +331,24 @@ function send_notifications( $to_whom = false, $post_data = null ) {
 			case 'answerer':
 				$headers[] = 'Reply-To: ' . $post_data['faq_author_name'] . ' <' . $post_data['faq_author_email'] . '>';
 				$to        = $answerer_email;
-				$subject   = __( 'New ', 'woocommerce-faqs' ) . $post_data['question_title'];
+
+				$subject = sprintf( __( 'New %1$s', 'woocommerce-faqs' ), $post_data['question_title'] );
 
 				$subject = apply_filters( WOOFAQS_OPTIONS_PREFIX . '_answerer_email_subject', $subject, $post_data );
 
-				$message = '<p>' . $post_data['faq_author_name'] .
-				           __( ' asked the following question about ', 'woocommerce-faqs' ) .
-				           '<a href="' . $product_link . '">' .
-				           $post_data['product_title'] . ':</a></p>';
+				$message = '<p>' .
+				           sprintf( __( '%1$s asked the following question about %2$s', 'woocommerce-faqs' ),
+					           $post_data['faq_author_name'],
+					           '<a href="' . esc_url( $product_link ) . '">' . $post_data['product_title']
+				           );
+				$message .= ':</a></p>';
 
 				$message .= '<p>"' . $post_data['question_content'] . '"</p>';
 
-				$message .= '<p>' . __( 'The question can be administered ', 'woocommerce-faqs' ) . '<a href="';
-				$message .= admin_url( '/edit.php?post_type=' ) . WOOFAQS_POST_TYPE . '&highlight=' .
-				            absint( $post_data['post_id'] ) . '">' . __( 'here', 'woocommerce-faqs' ) . '.</a>';
+				$message .= '<p>' . sprintf( __( 'The question can be administered <a href="%1$s">here</a>.', 'woocommerce-faqs' ),
+							admin_url( '/edit.php?post_type=' ) . WOOFAQS_POST_TYPE . '&highlight=' .
+							absint( $post_data['post_id'] )
+							) . '</p>';
 
 				$message .= '<p>' . __( 'If the question asker left a valid email, you can reply directly to them
 				from this email. Note this will not post the reply on your website. ', 'woocommerce-faqs' ) . '</p>';
@@ -359,17 +359,19 @@ function send_notifications( $to_whom = false, $post_data = null ) {
 				break;
 			case 'asker':
 				$to      = $asker_email;
-				$subject = __( 'Response to ', 'woocommerce-faqs' ) . $post_data['question_title'];
+
+				$subject = sprintf( __( 'Response to %1$s', 'woocommerce-faqs' ), $post_data['question_title'] );
+
 				//allow the subject to be filtered
 				$subject = apply_filters( WOOFAQS_OPTIONS_PREFIX . '_asker_email_subject', $subject, $post_data );
 
-				$message = '<p>' . __( 'A reply to your question about ', 'woocommerce-faqs' ) .
-				           $post_data['product_title'] . __( ' has been posted!', 'woocommerce-faqs' )
-				           . '</p>';
+				$message = '<p>' . sprintf( __( 'A reply to your question about %1$s has been posted!', 'woocommerce-faqs' ),
+										$post_data['product_title']
+									) . '</p>';
 
-				$message .= '<p>' . __( 'View the answer', 'woocommerce-faqs' ) .
-				            ' <a href="' . add_query_arg( 'faq-view', $post_data['post_id'] . '#tab-faqs', $product_link ) .
-				            '">' . __( 'here.', 'woocommerce-faqs' ) . '</a></p>';
+				$message .= '<p>' . sprintf( __( 'View the answer <a href="%1$s">here</a>.', 'woocommerce-faqs' ),
+										add_query_arg( 'faq-view', $post_data['post_id'] . '#tab-faqs', $product_link )
+									) . '</p>';
 
 				//allow the final message to be filtered
 				$message = apply_filters( WOOFAQS_OPTIONS_PREFIX . '_asker_email_message', $message, $post_data );
@@ -378,7 +380,7 @@ function send_notifications( $to_whom = false, $post_data = null ) {
 		if ( ! empty( $to ) ) {
 			$success = wp_mail( $to, $subject, $message, $headers );
 		}
-		remove_filter( 'wp_mail_content_type', 'Woo_Faqs\CorePublic\set_html_content_type' );
+		remove_filter( 'wp_mail_content_type', __NAMESPACE__ . '\set_html_content_type' );
 	}
 
 	//we may want to check on this later
@@ -401,7 +403,7 @@ function get_from_name( $post_data ) {
 		$from_name = get_bloginfo( 'name' );
 	}
 
-	return apply_filters( WOOFAQS_OPTIONS_PREFIX . '_from_name', $from_name, $post_data );
+	return esc_html( apply_filters( WOOFAQS_OPTIONS_PREFIX . '_from_name', $from_name, $post_data ) );
 }
 
 /**
@@ -427,7 +429,7 @@ function get_answerer_email( $author ) {
 		return $email;
 	}
 
-	return get_option( 'admin_email' );
+	return sanitize_email( get_option( 'admin_email' ) );
 
 }
 
@@ -460,11 +462,6 @@ function handle_antispam() {
 		$result['message'] = __( 'You\'ve triggered our anti-spam filter. If you have a form-filling application/extension, please disable it temporarily.', 'woocommerce-faqs' );
 	} else {
 		$result['type'] = 'success';
-	}
-
-	if ( $result['type'] == 'error' ) {
-		//allow the error message to be filtered
-		apply_filters( WOOFAQS_OPTIONS_PREFIX . '_antispam_error_message', $result['message'], $_POST );
 	}
 
 	return $result;
@@ -518,15 +515,9 @@ function comment_callback( $comment, $args, $depth ) {
 
 			<div class="wrapper">
 
-				<?php if ( $comment->comment_approved == '0' ) : ?>
-
-					<em><?php echo theme_locals( "your_comment" ) ?></em>
-
-				<?php endif; ?>
-
 				<div class="extra-wrap">
 
-					<span><?php _e( 'A: ', 'woocommerce-faqs' ); ?><?php echo get_comment_text(); ?></span>
+					<span><?php _e( 'A: ', 'woocommerce-faqs' ); ?><?php echo esc_html( get_comment_text() ); ?></span>
 
 				</div>
 
@@ -534,7 +525,7 @@ function comment_callback( $comment, $args, $depth ) {
 
 					<?php echo get_avatar( $comment->comment_author_email, 65 ); ?>
 
-					<?php printf( '<span class="author">— %1$s</span>', get_comment_author_link() ); ?>
+					<?php printf( '<span class="author">— %1$s</span>', esc_url( get_comment_author_link() ) ); ?>
 
 				</div>
 

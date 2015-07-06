@@ -53,20 +53,19 @@ function load_translations() {
 function register_post_types() {
 	$labels = array(
 
-		'name'               => 'FAQs',
-		'singular_name'      => 'FAQ',
-		'add_new'            => 'Add New',
-		'add_new_item'       => 'Add New FAQ',
-		'edit_item'          => 'Edit FAQ',
-		'edit_item'          => 'Edit FAQ',
-		'new_item'           => 'New FAQ',
-		'all_items'          => 'FAQs',
-		'view_item'          => 'View FAQ',
-		'search_items'       => 'Search FAQs',
-		'not_found'          => 'No FAQs found',
-		'not_found_in_trash' => 'No FAQs found in Trash',
+		'name'               => __( 'FAQs', 'woocommerce-faqs' ),
+		'singular_name'      => __( 'FAQ', 'woocommerce-faqs' ),
+		'add_new'            => __( 'Add New', 'woocommerce-faqs' ),
+		'add_new_item'       => __( 'Add New FAQ', 'woocommerce-faqs' ),
+		'edit_item'          => __( 'Edit FAQ', 'woocommerce-faqs' ),
+		'new_item'           => __( 'New FAQ', 'woocommerce-faqs' ),
+		'all_items'          => __( 'FAQs', 'woocommerce-faqs' ),
+		'view_item'          => __( 'View FAQ', 'woocommerce-faqs' ),
+		'search_items'       => __( 'Search FAQs', 'woocommerce-faqs' ),
+		'not_found'          => __( 'No FAQs found', 'woocommerce-faqs' ),
+		'not_found_in_trash' => __( 'No FAQs found in Trash', 'woocommerce-faqs' ),
 		'parent_item_colon'  => '',
-		'menu_name'          => 'FAQs',
+		'menu_name'          => __( 'FAQs', 'woocommerce-faqs' ),
 	);
 
 	$args = array(
@@ -139,7 +138,7 @@ function upgrade() {
 function php_version_check() {
 	if ( version_compare( phpversion(), '5.3', '<' ) ) {
 		deactivate_plugins( WOOFAQS_PLUGIN_FILE );
-		exit( 'This plugin requires PHP 5.3+' );
+		exit( 'Requires PHP 5.3+' );
 	}
 }
 

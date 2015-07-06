@@ -16,7 +16,7 @@
  * Plugin Name:       WooCommerce Product FAQs
  * Plugin URI:        http://joshlevinson.me/
  * Description:       WooCommerce Product FAQs enables your WooCommerce powered site to utilize a FAQ system, allowing both users and site owners to add questions to products.
- * Version:           3.0.1
+ * Version:           3.0.2
  * Author:            Josh Levinson
  * Author URI:        http://joshlevinson.me/
  * License:           GPL-2.0+
@@ -41,13 +41,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-// If this file is called directly, or if WC isn't activated, abort.
+// If this file is called directly, abort
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
 //versioning constants
-define( 'WOOFAQS_VERSION', '3.0.1' );
+define( 'WOOFAQS_VERSION', '3.0.2' );
 define( 'WOOFAQS_MINIMUM_WP_VERSION', '3.5' );
 define( 'WOOFAQS_MINIMUM_WC_VERSION', '2.0' );
 
@@ -77,8 +77,10 @@ add_action( 'woocommerce_loaded', function () {
 
 	//bootstrap the shared functionality
 	Woo_Faqs\CoreShared\hooks();
+
 	//bootstrap the public functionality
 	Woo_Faqs\CorePublic\hooks();
+
 	//if in the admin, bootstrap the admin functionality
 	if ( is_admin() ) {
 		Woo_Faqs\CoreAdmin\hooks();

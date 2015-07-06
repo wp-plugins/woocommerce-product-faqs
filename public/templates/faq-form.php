@@ -10,9 +10,9 @@ get_currentuserinfo();
 
 $is_logged_in = is_user_logged_in();
 
-$author_name = $is_logged_in && $current_user->display_name ? $current_user->display_name : '';
+$author_name  = $is_logged_in && $current_user->display_name ? $current_user->display_name : '';
 $author_email = $is_logged_in && $current_user->user_email ? $current_user->user_email : '';
-$faq_content = '';
+$faq_content  = '';
 
 //handle the submission results
 if ( isset( $result ) && $result ) {
@@ -42,7 +42,7 @@ if ( isset( $result ) && $result ) {
 		foreach ( $result['errors'] as $key => $error ) {
 
 			//so add them as list items
-			$result_message .= '<li class="single-faq-error">' . $error . '</li>';
+			$result_message .= '<li class="single-faq-error">' . esc_html( $error ) . '</li>';
 
 		}
 		//close the error messages
@@ -61,7 +61,7 @@ if ( isset( $result ) && $result ) {
 	//add the $result_message to the $html variable.
 	//at this point, it doesn't matter if it is a success or an error,
 	//as $result_message is just an html string
-	$html .= '">' . $result_message . '</div>';
+	$html .= '">' . esc_html( $result_message ) . '</div>';
 
 } else {
 	$result = '';
@@ -73,7 +73,7 @@ $html .= '<form method="POST" action="#tab-faqs" class="faq-form">';
 //and the inputs
 if ( ! $is_logged_in ) {
 	$html .= '<label for="faq_author_name">' .
-	         __( 'Your Name', 'woocommerce-faqs' ) .
+	         esc_html_x( 'Your Name', 'woocommerce-faqs' ) .
 	         ':</label> <abbr class="required" title="required">*</abbr><br />';
 }
 
@@ -81,7 +81,7 @@ if ( ! $is_logged_in ) {
 //which checks if the current input's name exists in the result variable.
 //should_display_errors checks if $result['errors'] is an array, 
 //so we don't need to worry about that here.
-$html .= '<input class="' . Woo_Faqs\CorePublic\should_display_error( $result, 'faq_author_name' ) . '" id="faq-author-name-input"';
+$html .= '<input class="' . esc_attr( Woo_Faqs\CorePublic\should_display_error( $result, 'faq_author_name' ) ) . '" id="faq-author-name-input"';
 if ( $is_logged_in ) {
 	$html .= ' readonly hidden';
 }
@@ -96,7 +96,7 @@ if ( ! $is_logged_in ) {
 	         ':</label> <abbr class="required" title="required">*</abbr>';
 }
 
-$html .= '<input class="' . Woo_Faqs\CorePublic\should_display_error( $result, 'faq_author_email' ) . '" id="faq-author-email-input" ';
+$html .= '<input class="' . esc_attr( Woo_Faqs\CorePublic\should_display_error( $result, 'faq_author_email' ) ) . '" id="faq-author-email-input" ';
 if ( $is_logged_in ) {
 	$html .= ' readonly hidden';
 }
@@ -105,12 +105,12 @@ $html .= ' value="' . esc_attr( $author_email ) .
          esc_attr_x( 'Your Email', 'woocommerce-faqs' ) . '" />';
 
 $html .= '<p><label for="faq_content">'
-         . __( 'Your Question', 'woocommerce-faqs' )
+         . esc_html_x( 'Your Question', 'woocommerce-faqs' )
          . ':</label> <abbr class="required" title="required">*</abbr>';
 
 $html .= '<textarea class="' .
-         Woo_Faqs\CorePublic\should_display_error( $result, 'faq_content' ) .
-         '"  placeholder="' . __( 'Your Question', 'woocommerce-faqs' ) .
+         esc_attr( Woo_Faqs\CorePublic\should_display_error( $result, 'faq_content' ) ) .
+         '"  placeholder="' . esc_attr_x( 'Your Question', 'woocommerce-faqs' ) .
          '" required="required" id="faq-content-input" name="faq_content" />' .
          esc_textarea( $faq_content ) .
          '</textarea></p>';
@@ -118,7 +118,7 @@ $html .= '<textarea class="' .
 //honeypot anti-spam
 $html .= '<input type="text" name="primary_email" id="poohbear" />';
 
-$html .= '<input type="submit" name="submit_faq" value="' . __( 'Submit', 'woocommerce-faqs' ) . '" />';
+$html .= '<input type="submit" name="submit_faq" value="' . esc_attr_x( 'Submit', 'woocommerce-faqs' ) . '" />';
 
 $html .= '</form>';
 

@@ -4,7 +4,7 @@ Donate link: http://redactweb.com
 Tags: woocommerce, faq, frequently asked questions, faqs, woocommerce faqs, woocommerce frequently asked questions, woocommerce product questions
 Requires at least: 3.5.1
 Tested up to: 4.1
-Stable tag: 3.0.1
+Stable tag: 3.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,6 +89,16 @@ This plugin is currently incompatible with the 404 Redirected plugin. This plugi
 6. Adding a FAQ Manually
 
 == Changelog ==
+
+= 3.0.2 =
+- Sanitize/escape all the things
+- Full support for translation, including use of sprintf to wrap complete strings instead of concacentation
+- Fixed preview link for sites that do not have permalinks enabled
+- Switched to wp_json_send_* functions vs custom
+- Removed unnecessary term/meta caching for some queries
+- Fixed borked spinner on admin post row quick approve
+- Removed _antispam_error_message filter
+
 
 = 3.0.0 =
 - Complete rewrite using namespaces vs class wrappers
