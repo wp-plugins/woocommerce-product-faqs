@@ -271,7 +271,7 @@ function faq_link_filter( $post_link = '', $post ) {
 	}
 
 	//get the product this faq is associated with
-	$product = get_post_meta( $post->ID, '_' . WOOFAQS_POST_TYPE . '_product', true );
+	$product = (int) get_post_meta( $post->ID, '_' . WOOFAQS_POST_TYPE . '_product', true );
 
 	$category = (int) get_post_meta( $post->ID, '_' . WOOFAQS_POST_TYPE . '_categories', true );
 
@@ -289,7 +289,12 @@ function faq_link_filter( $post_link = '', $post ) {
 	}
 
 	if ( $category ) {
-		return get_term_link( $category, 'product_cat' );
+		$term_link = get_term_link( $category, 'product_cat' );
+		
+		// get_term_link could return wp_error object and we should check it first
+		if ( !is_wp_error( $term_link ) ) {
+			return $term_link;
+		}
 	}
 
 	//if we're here, we should have a valid product ID
